@@ -1,14 +1,3 @@
-import random
-import time, sys
-import math
-
-from curtsies import FullscreenWindow, Input, FSArray
-from curtsies.fmtfuncs import red, bold, green, on_blue, yellow, on_red
-from draw import Ship, Menu, designs
-
-"""Space game to kill Aliens Invasion (like space invaders, but left to write"""
-
-
 class Scene:
     """Scene class to manage the game"""
 
@@ -22,7 +11,7 @@ class Scene:
             "<LEFT>",
             "<RIGHT>",
             "<SPACE>",
-            "<Ctrl-j>",
+            "<ENTER>",
         ]
         # create initial conditions
         menu_spanw = window.width // 2, window.height // 2
@@ -38,6 +27,7 @@ class Scene:
 
     def update_scene(self, msg):
         """Update the scene"""
+
         if msg == "<ESC>" and not self.in_menu:
             self.in_menu = True
             msg = "<UP>"
@@ -70,15 +60,15 @@ class Scene:
             self.in_menu = False  # stop to show menu
 
         # enter the submenus
-        elif (msg == "<SPACE>" or msg == "<Ctrl-j>") and self.menu.option == 0:
+        elif msg == "<SPACE>" and self.menu.option == 0:
             self.render(self.menu, True)
             self.in_menu = False  # need to restart the game
 
-        elif (msg == "<SPACE>" or msg == "<Ctrl-j>") and self.menu.option == 1:
+        elif msg == "<SPACE>" and self.menu.option == 1:
             self.render(self.menu, True)
             self.menu.set_option(11)
 
-        elif (msg == "<SPACE>" or msg == "<Ctrl-j>") and self.menu.option == 2:
+        elif msg == "<SPACE>" and self.menu.option == 2:
             self.render(self.menu, True)
             self.menu.set_option(12)
 
@@ -113,23 +103,3 @@ class Scene:
         elif msg == "<RIGHT>":
             self.ship.x += 1
         self.render(self.ship)
-
-
-def run_game():
-    """Main function to run the game"""
-    with FullscreenWindow() as window:
-        # Initialize scene
-        scene = Scene(window)
-        with Input(sys.stdin) as input_generator:
-            while True:
-                window.render_to_terminal(scene.grid)
-                for msg in input_generator:
-                    if msg:
-                        break
-                scene.update_scene(msg)
-                time.sleep(0.01)
-
-
-if __name__ == "__main__":
-    # start with menu
-    run_game()
