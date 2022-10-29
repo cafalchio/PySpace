@@ -1,12 +1,3 @@
-class Ship:
-    def __init__(self, lives, gun, spawn, design):
-        self.lives = lives
-        self.gun = 0
-        self.x = spawn[0]
-        self.y = spawn[1]
-        self.design = design
-
-
 designs = {
     "spaceship": ["▄»", "██)»", "▀»"],
     "aliens_0": ["<║E", "<║E"],
@@ -22,8 +13,13 @@ designs = {
     ],
 }
 
-
-
+class Ship:
+    def __init__(self, lives, gun, spawn, design):
+        self.lives = lives
+        self.gun = 0
+        self.x = spawn[0]
+        self.y = spawn[1]
+        self.design = design
 
 
 class Menu:
