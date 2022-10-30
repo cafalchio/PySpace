@@ -5,10 +5,10 @@ import math
 from curtsies import FullscreenWindow, Input, FSArray, fsarray, fmtstr
 from curtsies.fmtfuncs import red, bold, green, on_blue, yellow, on_red
 from draw import Ship, Menu, designs
-import itertools
 
 """Space game to kill Aliens Invasion (like space invaders, but left to write"""
 
+        
 
 class Background:
     """Create The stars background"""
@@ -136,7 +136,7 @@ class Scene:
         self.render(self.ship)
 
 def run_game():
-    MAX_FPS = 5
+    MAX_FPS = 10
     time_per_frame = 1.0 / MAX_FPS
     """Main function to run the game"""
     with FullscreenWindow() as window:

@@ -15,6 +15,13 @@ designs = {
     ],
 }
 
+class Bullet:
+    def __init__(self, object):
+        self.x = len(object.design[0]) + object.x
+        if len(object.design) == 1:
+            self.y = object.y
+        self.y = object.gun
+
 
 class Ship:
     def __init__(self, lives, gun, spawn, design):
