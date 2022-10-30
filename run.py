@@ -140,13 +140,14 @@ class Scene:
 
 
 def run_game():
-    MAX_FPS = 30
+    MAX_FPS = 10
+    cnt = 0
     time_per_frame = 1.0 / MAX_FPS
     """Main function to run the game"""
     with FullscreenWindow() as window:
         scene = Scene(window)
         with Input() as input_generator:
-            cnt = 0
+            
             scene = Scene(window)
             msg = None
             # Game loop
@@ -170,7 +171,6 @@ def run_game():
                 if cnt % 20 == 0:
                     scene.update_scene(msg)
                 
-                        
                 if scene.in_menu:
                     msg = None
                     
