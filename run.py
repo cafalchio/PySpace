@@ -4,7 +4,7 @@ import math
 
 from curtsies import FullscreenWindow, Input, FSArray, fsarray, fmtstr
 from curtsies.fmtfuncs import red, bold, green, on_blue, yellow, on_red
-from draw import Ship, Menu, designs
+from draw import Ship, Menu, designs, Bullet
 
 """Space game to kill Aliens Invasion (like space invaders, but left to write"""
 
@@ -51,9 +51,11 @@ class Scene:
         self.render(self.menu)
         self.ship = Ship(lives=3, gun=0, spawn=[10, 10], design=designs["spaceship"])
         self.background = Background(window.width, window.height)
+        self.bullets = [] # List of bullets to be updated every frame
 
     def update_scene(self, msg, cnt=None):
         """Update the scene"""
+                    
         if msg == "<ESC>" and not self.in_menu:
             self.in_menu = True
             msg = "<UP>"
@@ -64,8 +66,6 @@ class Scene:
         elif msg in self.keys and not self.in_menu:
             self.move_ship(msg)
 
-    def set_menu(self, in_menu):
-        self.in_menu = in_menu
 
     def menu_options(self, msg):
         """Manage the menu options"""
@@ -109,7 +109,7 @@ class Scene:
 
     def render(self, obj, delete=False):
         """Function that draw objects in the screen"""
-
+        # update line per line to be faster
         if delete:
             self.grid[
                 obj.y : obj.y + len(obj.design), obj.x : obj.x + len(obj.design[0])
@@ -131,12 +131,16 @@ class Scene:
             self.ship.x -= 1
         elif msg == "<RIGHT>":
             self.ship.x += 1
+        elif msg == "<SPACE>":
+            self.bullets.append(self.ship.fire())
+            msg = None
+            
         self.render(self.background)
         self.render(self.ship)
 
 
 def run_game():
-    MAX_FPS = 10
+    MAX_FPS = 30
     time_per_frame = 1.0 / MAX_FPS
     """Main function to run the game"""
     with FullscreenWindow() as window:
@@ -145,7 +149,6 @@ def run_game():
             cnt = 0
             scene = Scene(window)
             msg = None
-
             # Game loop
             # FPS example from curties library examples:
             # https://github.com/bpython/curtsies/blob/0a6fd78f6daa3a3cbf301376552ada6c1bd7dc83/examples/realtime.py
@@ -163,9 +166,20 @@ def run_game():
                 if cnt % 60 == 0:
                     scene.background.move_background()
                     cnt = 0
-                scene.update_scene(msg)
+                
+                if cnt % 20 == 0:
+                    scene.update_scene(msg)
+                
+                        
                 if scene.in_menu:
                     msg = None
+                    
+                if scene.bullets:
+                    for bullet in scene.bullets:
+                        bullet.move()
+                        scene.render(bullet)
+                
+                # Render the scene
                 window.render_to_terminal(scene.grid)
 
 
