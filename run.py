@@ -8,23 +8,30 @@ from draw import Ship, Menu, designs
 
 """Space game to kill Aliens Invasion (like space invaders, but left to write"""
 
+
 class Background:
-    """ Create The stars background"""
+    """Create The stars background"""
+
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.design = [random.choices([" "] * 20 + ["."]) * width for _ in range(height)]
+        self.design = [
+            random.choices([" "] * 20 + ["."]) * width for _ in range(height)
+        ]
         self.x = 0
         self.y = 0
-        
+
     def move_grid(self):
         """Move the background right to left"""
         ## remove first colum and add random colum at the end
-        self.design = [row[1:] + random.choices([" "] * 20 + ["."]) for row in self.design]
-            
-        
+        self.design = [
+            row[1:] + random.choices([" "] * 20 + ["."]) for row in self.design
+        ]
+
+
 class Scene:
     """Scene class to manage the game"""
+
     def __init__(self, window):
         self.window = window
         self.grid = FSArray(window.height, window.width)
@@ -44,7 +51,6 @@ class Scene:
         self.render(self.menu)
         self.ship = Ship(lives=3, gun=0, spawn=[10, 10], design=designs["spaceship"])
         self.background = Background(window.width, window.height)
-        
 
     def update_scene(self, msg, cnt=None):
         """Update the scene"""
@@ -56,9 +62,8 @@ class Scene:
             self.menu_options(msg)
 
         elif msg in self.keys and not self.in_menu:
-            
+
             self.move_ship(msg)
-        
 
     def set_menu(self, in_menu):
         self.in_menu = in_menu
@@ -105,12 +110,15 @@ class Scene:
 
     def render(self, obj, delete=False):
         """Function that draw objects in the screen"""
-        
+
         if delete:
-            self.grid[obj.y : obj.y + len(obj.design), obj.x : obj.x + len(obj.design[0])] = fsarray(
-                [" " * len(obj.design[0]) for _ in range(len(obj.design))])
+            self.grid[
+                obj.y : obj.y + len(obj.design), obj.x : obj.x + len(obj.design[0])
+            ] = fsarray([" " * len(obj.design[0]) for _ in range(len(obj.design))])
         else:
-            self.grid[obj.y : obj.y + len(obj.design), obj.x : obj.x + len(obj.design[0])] = fsarray(obj.design)
+            self.grid[
+                obj.y : obj.y + len(obj.design), obj.x : obj.x + len(obj.design[0])
+            ] = fsarray(obj.design)
 
     def move_ship(self, msg):
         """Move the spaceship to all directions"""
@@ -128,25 +136,36 @@ class Scene:
 
 
 def run_game():
+    
+    MAX_FPS = 50 
+    time_per_frame = lambda: 1. / MAX_FPS
+    
     """Main function to run the game"""
     with FullscreenWindow() as window:
         cnt = 0
         # Initialize scene
         scene = Scene(window)
         
-        with Input(sys.stdin) as input_generator:
+        # Initialize input
+        with Input() as input_generator:
             while True:
-                window.render_to_terminal(scene.grid)
-                for msg in input_generator:
-                    if msg:
+                t0 = time.time()
+                msg = None
+                # FPS example from curties examples
+                while True:
+                    t = time.time()
+                    temp_msg = input_generator.send(max(0, t - (t0 + time_per_frame())))
+                    if temp_msg:
+                        msg = temp_msg # save this keypress to be used
+                    if time_per_frame() < t - t0:
                         break
-                if cnt > 10:
-                    # scene.background.move_grid()
-                    scene.render(scene.background)
-                    cnt = 0
+                    
+                print(f"{t - t0:.3f} seconds to process input")
+                
+                # Update the scene
                 scene.update_scene(msg)
-                time.sleep(0.01)
-                cnt+=1
+                window.render_to_terminal(scene.grid)
+ 
 
 
 if __name__ == "__main__":
