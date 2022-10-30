@@ -5,6 +5,7 @@ import math
 from curtsies import FullscreenWindow, Input, FSArray, fsarray, fmtstr
 from curtsies.fmtfuncs import red, bold, green, on_blue, yellow, on_red
 from draw import Ship, Menu, designs
+import itertools
 
 """Space game to kill Aliens Invasion (like space invaders, but left to write"""
 
@@ -134,43 +135,36 @@ class Scene:
         self.render(self.background)
         self.render(self.ship)
 
-
 def run_game():
-
-    MAX_FPS = 60
-    time_per_frame = lambda: 1.0 / MAX_FPS
+    MAX_FPS = 10
+    time_per_frame = 1.0 / MAX_FPS
 
     """Main function to run the game"""
     with FullscreenWindow() as window:
-        cnt = 0
-        # Initialize scene
         scene = Scene(window)
-
-        # Initialize input
         with Input() as input_generator:
+            cnt = 0
+            scene = Scene(window)
+            msg = None
+            # Game loop
+            # FPS example from curties library examples:
+            # https://github.com/bpython/curtsies/blob/0a6fd78f6daa3a3cbf301376552ada6c1bd7dc83/examples/realtime.py
             while True:
                 t0 = time.time()
-                msg = None
+                while True:
+                    t = time.time()
+                    temp_msg = input_generator.send(max(0, t - (t0 + time_per_frame)))
+                    if temp_msg is not None:
+                        msg = temp_msg
+                    if time_per_frame < t - t0:
+                        break
+
+                #Update the scene
                 if cnt % 60 == 0:
                     scene.background.move_background()
                     cnt = 0
-                # FPS example from curties examples
-                while True:
-                    t = time.time()
-                    temp_msg = input_generator.send(max(0, t - (t0 + time_per_frame())))
-                    if temp_msg:
-                        msg = temp_msg  # save this keypress to be used
-                    if time_per_frame() < t - t0:
-                        break
-
-                print(f"{t - t0:.3f} seconds to process input")
-
-                #Update the scene
-                
                 scene.update_scene(msg)
                 window.render_to_terminal(scene.grid)
 
-
 if __name__ == "__main__":
-    # start with menu
     run_game()
