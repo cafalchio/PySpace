@@ -13,14 +13,14 @@ class Background:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.design = [[random.choices([" "] * 20 + ["."]) for _ in range(self.width)] for _ in range(self.height)]
+        self.design = [random.choices([" "] * 20 + ["."]) * width for _ in range(height)]
         self.x = 0
         self.y = 0
         
     def move_grid(self):
         """Move the background right to left"""
         ## remove first colum and add random colum at the end
-        self.design = [row[1:] + [random.choices([" "] * 20 + ["."])] for row in self.design]
+        self.design = [row[1:] + random.choices([" "] * 20 + ["."]) for row in self.design]
             
         
 class Scene:
@@ -103,29 +103,14 @@ class Scene:
         if self.in_menu:
             self.render(self.menu)
 
-    # world.grid[0:4, 0:25] = fsarray(
-    #                     [
-    #                         world.winner_msg(tick),
-    #                         "r to restart",
-    #                         "q to quit",
-    #                         "b to make player 2 a bot",
-    #                     ]
-
-
     def render(self, obj, delete=False):
         """Function that draw objects in the screen"""
-        # if delete:
-        #     self.grid[obj.y: len(obj.design) + obj.y, obj.x: len(obj.design) + obj.x] = fsarray(
-        #         [[" "] * len(obj.design[0]) for _ in range(len(obj.design))]
-        # else:    
-        #     self.grid[obj.y: len(obj.design) + obj.y, obj.x: len(obj.design) + obj.x] = fsarray(obj.design)
         
-        # for i, part in enumerate(obj.design):
-        #     for j, char in enumerate(part):
-        #         if delete:
-        #             self.grid[obj.y + i, obj.x + j] = " "
-        #         else:
-        #             self.grid[obj.y + i, obj.x + j] = char
+        if delete:
+            self.grid[obj.y : obj.y + len(obj.design), obj.x : obj.x + len(obj.design[0])] = fsarray(
+                [" " * len(obj.design[0]) for _ in range(len(obj.design))])
+        else:
+            self.grid[obj.y : obj.y + len(obj.design), obj.x : obj.x + len(obj.design[0])] = fsarray(obj.design)
 
     def move_ship(self, msg):
         """Move the spaceship to all directions"""
@@ -155,8 +140,8 @@ def run_game():
                 for msg in input_generator:
                     if msg:
                         break
-                if cnt > 100:
-                    scene.background.move_grid()
+                if cnt > 10:
+                    # scene.background.move_grid()
                     scene.render(scene.background)
                     cnt = 0
                 scene.update_scene(msg)

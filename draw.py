@@ -1,5 +1,7 @@
 designs = {
-    "spaceship": ["▄»", "██)»", "▀»"],
+    "spaceship": ["▄-» ", 
+                  "██)»", 
+                  "▀-» "],
     "aliens_0": ["<║E", "<║E"],
     "aliens_1": [
         "   █§",
@@ -12,6 +14,7 @@ designs = {
         " ╚-{",
     ],
 }
+
 
 class Ship:
     def __init__(self, lives, gun, spawn, design):
