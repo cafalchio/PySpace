@@ -8,7 +8,6 @@ from draw import Ship, Menu, designs
 
 """Space game to kill Aliens Invasion (like space invaders, but left to write"""
 
-        
 
 class Background:
     """Create The stars background"""
@@ -135,6 +134,7 @@ class Scene:
         self.render(self.background)
         self.render(self.ship)
 
+
 def run_game():
     MAX_FPS = 10
     time_per_frame = 1.0 / MAX_FPS
@@ -145,7 +145,7 @@ def run_game():
             cnt = 0
             scene = Scene(window)
             msg = None
-            
+
             # Game loop
             # FPS example from curties library examples:
             # https://github.com/bpython/curtsies/blob/0a6fd78f6daa3a3cbf301376552ada6c1bd7dc83/examples/realtime.py
@@ -159,7 +159,7 @@ def run_game():
                     if time_per_frame < t - t0:
                         break
 
-                #Update the scene
+                # Update the scene
                 if cnt % 60 == 0:
                     scene.background.move_background()
                     cnt = 0
@@ -167,6 +167,7 @@ def run_game():
                 if scene.in_menu:
                     msg = None
                 window.render_to_terminal(scene.grid)
+
 
 if __name__ == "__main__":
     run_game()

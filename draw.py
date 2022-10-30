@@ -1,7 +1,5 @@
 designs = {
-    "spaceship": ["▄-» ", 
-                  "██)»", 
-                  "▀-» "],
+    "spaceship": ["▄-» ", "██)»", "▀-» "],
     "aliens_0": ["<║E", "<║E"],
     "aliens_1": [
         "   █§",
@@ -15,12 +13,8 @@ designs = {
     ],
 }
 
-class Bullet:
-    def __init__(self, object):
-        self.x = len(object.design[0]) + object.x
-        if len(object.design) == 1:
-            self.y = object.y
-        self.y = object.gun
+# class Bullet:
+#     def __init__(self, gun, )
 
 
 class Ship:
@@ -31,7 +25,24 @@ class Ship:
         self.y = spawn[1]
         self.design = design
 
+class Bullet:
+    def __init__(self, gun, spawn):
+        self.x = spawn[0]
+        self.y = spawn[1]
+        self.gun = gun
+        self.design = self.get_desing(self.gun)
 
+    def get_desing(self, gun):
+        if gun == 0:
+            return ["-"]
+        elif gun == 1:
+            return ["="]
+        elif gun == 2:
+            return ["»"]
+    
+    def go(self):
+        self.x += 1    
+    
 class Menu:
     def __init__(self, spawn):
         self.x = spawn[0] - 8
