@@ -177,8 +177,11 @@ def run_game():
                 if scene.bullets:
                     for bullet in scene.bullets:
                         bullet.move()
-                        scene.render(bullet)
-                
+                        if bullet.x < window.width:
+                            scene.render(bullet)
+                        else:
+                            scene.bullets.remove(bullet)
+                                 
                 # Render the scene
                 window.render_to_terminal(scene.grid)
 
