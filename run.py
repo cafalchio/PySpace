@@ -16,17 +16,17 @@ class Background:
         self.width = width
         self.height = height
         self.design = [
-            random.choices([" "] * 20 + ["."]) * width for _ in range(height)
+            "".join(random.choice(" " * 20 + ".") for i in range(width))
+            for _ in range(height)
         ]
+
         self.x = 0
         self.y = 0
 
-    def move_grid(self):
+    def move_background(self):
         """Move the background right to left"""
         ## remove first colum and add random colum at the end
-        self.design = [
-            row[1:] + random.choices([" "] * 20 + ["."]) for row in self.design
-        ]
+        self.design = [row[1:] + random.choice(" " * 20 + ".") for row in self.design]
 
 
 class Scene:
@@ -62,7 +62,6 @@ class Scene:
             self.menu_options(msg)
 
         elif msg in self.keys and not self.in_menu:
-
             self.move_ship(msg)
 
     def set_menu(self, in_menu):
@@ -132,40 +131,44 @@ class Scene:
             self.ship.x -= 1
         elif msg == "<RIGHT>":
             self.ship.x += 1
+        self.render(self.background)
         self.render(self.ship)
 
 
 def run_game():
-    
-    MAX_FPS = 50 
-    time_per_frame = lambda: 1. / MAX_FPS
-    
+
+    MAX_FPS = 60
+    time_per_frame = lambda: 1.0 / MAX_FPS
+
     """Main function to run the game"""
     with FullscreenWindow() as window:
         cnt = 0
         # Initialize scene
         scene = Scene(window)
-        
+
         # Initialize input
         with Input() as input_generator:
             while True:
                 t0 = time.time()
                 msg = None
+                if cnt % 60 == 0:
+                    scene.background.move_background()
+                    cnt = 0
                 # FPS example from curties examples
                 while True:
                     t = time.time()
                     temp_msg = input_generator.send(max(0, t - (t0 + time_per_frame())))
                     if temp_msg:
-                        msg = temp_msg # save this keypress to be used
+                        msg = temp_msg  # save this keypress to be used
                     if time_per_frame() < t - t0:
                         break
-                    
+
                 print(f"{t - t0:.3f} seconds to process input")
+
+                #Update the scene
                 
-                # Update the scene
                 scene.update_scene(msg)
                 window.render_to_terminal(scene.grid)
- 
 
 
 if __name__ == "__main__":
