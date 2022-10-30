@@ -136,9 +136,8 @@ class Scene:
         self.render(self.ship)
 
 def run_game():
-    MAX_FPS = 10
+    MAX_FPS = 5
     time_per_frame = 1.0 / MAX_FPS
-
     """Main function to run the game"""
     with FullscreenWindow() as window:
         scene = Scene(window)
@@ -146,6 +145,7 @@ def run_game():
             cnt = 0
             scene = Scene(window)
             msg = None
+            
             # Game loop
             # FPS example from curties library examples:
             # https://github.com/bpython/curtsies/blob/0a6fd78f6daa3a3cbf301376552ada6c1bd7dc83/examples/realtime.py
@@ -164,6 +164,8 @@ def run_game():
                     scene.background.move_background()
                     cnt = 0
                 scene.update_scene(msg)
+                if scene.in_menu:
+                    msg = None
                 window.render_to_terminal(scene.grid)
 
 if __name__ == "__main__":
