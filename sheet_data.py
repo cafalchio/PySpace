@@ -30,3 +30,10 @@ class Sheet:
         """
         self.records.append_row(record)
         return "Records updated"
+
+    def get_scores(self):
+        """Get scores from google sheet
+        Return a list of scores
+        """
+        data = get_records(self)
+        return [int(row[1]) for row in data]

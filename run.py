@@ -20,7 +20,6 @@ class Background:
             "".join(random.choice(" " * 20 + ".") for i in range(width))
             for _ in range(height)
         ]
-
         self.x = 0
         self.y = 0
 
@@ -53,6 +52,9 @@ class Scene:
         self.ship = Ship(lives=3, gun=0, spawn=[10, 10], design=designs["spaceship"])
         self.background = Background(window.width, window.height)
         self.bullets = [] # List of bullets to be updated every frame
+        self.score = 0
+        sheet = Sheet()
+        self.data = sheet.get_scores()
 
     def update_scene(self, msg, cnt=None):
         """Update the scene"""
@@ -144,6 +146,14 @@ class Scene:
     def end_game(self):
         f = Figlet(font='epic')
         print(f.renderText("       GAME OVER"))
+        if scene.score > self.data[-1]:
+            print("You are in the top 7")
+            name = input("Enter your name (7 characters): ")
+            if len(name) > 7:
+                name = name[:7]
+            sheet.add_score(name, scene.score)
+            print("Your score has been added to the leaderboard!")
+            
         input('press Enter key to start')
         run_game()
 
@@ -179,7 +189,6 @@ def run_game():
                     scene.background.move_background()
                     scene.render(scene.background)
             
-                
                 # update scene
                 scene.update_scene(msg, cnt)
                 
