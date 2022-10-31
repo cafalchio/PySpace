@@ -19,7 +19,7 @@ designs = {
 class Ship:
     def __init__(self, lives, gun, spawn, design):
         self.lives = lives
-        self.gun = 0
+        self.gun = 1
         self.x = spawn[0]
         self.y = spawn[1]
         self.design = design
@@ -27,6 +27,9 @@ class Ship:
 
     def fire(self):
         return Bullet(self)
+    
+    def set_lives(self, n):
+        self.lives = self.lives + n
 
 class Bullet:
     def __init__(self, object):
@@ -41,9 +44,9 @@ class Bullet:
 
     def get_desing(self):
         if self.gun == 0:
-            return [on_red("-")]
+            return [red("-")]
         elif self.gun == 1:
-            return ["="]
+            return [red("=")]
         elif self.gun == 2:
             return ["»"]
 

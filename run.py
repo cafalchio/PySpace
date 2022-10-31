@@ -4,6 +4,7 @@ import math
 
 from curtsies import FullscreenWindow, Input, FSArray, fsarray, fmtstr
 from curtsies.fmtfuncs import red, bold, green, on_blue, yellow, on_red
+
 from draw import Ship, Menu, designs, Bullet
 
 """Space game to kill Aliens Invasion (like space invaders, but left to write"""
@@ -184,6 +185,10 @@ def run_game():
                             scene.render(bullet)
                         else:
                             scene.bullets.remove(bullet)
+                
+                # update lives
+                if scene.ship.lives > 0:
+                    scene.grid[0:scene.ship.lives, 0] = fmtstr(red("♥") * scene.ship.lives)
                 
                 # Render the scene
                 window.render_to_terminal(scene.grid)
