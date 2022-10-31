@@ -188,7 +188,7 @@ def run_game():
                 
                 # update lives
                 if scene.ship.lives > 0 and not scene.in_menu:
-                    scene.grid[0: scene.ship.lives, window.width - 2] = fmtstr(red("♥") * scene.ship.lives)
+                    scene.grid[window.height - scene.ship.lives: window.height, 0 ] = fmtstr(red("♥"* scene.ship.lives) )
                 
                 # Render the scene
                 window.render_to_terminal(scene.grid)
