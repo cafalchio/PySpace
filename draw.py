@@ -134,8 +134,13 @@ class Menu:
         return art_menu_box[option]
 
     def format_score(self):
-        """Format the score to be displayed in the menu"""
-        data = sorted(self.data, key=lambda x: x[1])
+        """Format and sort the score to be displayed in the menu"""
+        # change the score to integers and sort it
+        data = []
+        for i in self.data:
+            data.append([i[0], int(i[1])])
+            
+        data = sorted(data, key=lambda x: x[1], reverse=True)
         if len(data) > 7:
             data = data[:7]
         if len(data) < 7:
@@ -144,6 +149,6 @@ class Menu:
         for d1, d2 in data:
             if len(d1) < 7:
                 d1 = d1 + " " * (7 - len(d1))
-            if len(d2) < 5:
-                d2 = " " * (5 - len(d2)) + d2
+            if len(str(d2)) < 5:
+                d2 = " " * (5 - len(str(d2))) + str(d2)
             yield f"║ {d1}  {d2} ║"
