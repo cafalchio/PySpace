@@ -60,7 +60,7 @@ class Scene:
         if msg == "<ESC>" and not self.in_menu:
             self.in_menu = True
             msg = "<UP>"
-
+            
         if msg in self.keys and self.in_menu:
             self.menu_options(msg)
 
@@ -163,8 +163,9 @@ def run_game():
                 while True:
                     t = time.time()
                     temp_msg = input_generator.send(max(0, t - (t0 + time_per_frame)))
-                    if temp_msg is not None:
+                    if temp_msg is not None and temp_msg in scene.keys:
                         msg = temp_msg
+   
                     if time_per_frame < t - t0:
                         break
                     
@@ -172,7 +173,6 @@ def run_game():
                 if cnt % 8 == 0 and not scene.in_menu:
                     scene.background.move_background()
                     scene.render(scene.background)
-                    cnt = 0
                 
                 # update scene
                 scene.update_scene(msg, cnt)
