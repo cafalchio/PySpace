@@ -129,15 +129,15 @@ class Scene:
         """Move the spaceship to all directions"""
         # Need to check borders
         self.render(self.ship, True)
-        if msg == "<UP>":
+        if msg == "<UP>" and self.ship.y > 1:
             self.ship.y -= 1
-        elif msg == "<DOWN>":
+        elif msg == "<DOWN>" and self.ship.y < self.window.height - 5:
             self.ship.y += 1
-        elif msg == "<LEFT>":
+        elif msg == "<LEFT>" and self.ship.x > 5:
             self.ship.x -= 1
-        elif msg == "<RIGHT>":
+        elif msg == "<RIGHT>" and self.ship.x < self.window.width- 10:
             self.ship.x += 1
-        elif msg == "<SPACE>":
+        elif msg == "<SPACE>" or msg == "<Ctrl-j>":
             self.bullets.append(self.ship.fire())
             msg = None
             
@@ -209,7 +209,7 @@ def run_game():
                 window.render_to_terminal(scene.grid)
                 cnt+=1
                 # reset cnt
-                if cnt > 1e6:
+                if cnt > 1e5:
                     cnt = 1
 
 if __name__ == "__main__":
