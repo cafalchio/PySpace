@@ -63,9 +63,9 @@ class Bullet:
 
     def move(self):
         if self.dir > 0:
-            self.x += 1
+            self.x += 3
         else:
-            self.x -= 1
+            self.x -= 3
 
 
 class Menu:

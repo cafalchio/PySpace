@@ -172,7 +172,7 @@ class Scene:
 
 
 def run_game():
-    MAX_FPS = 90
+    MAX_FPS = 60
     cnt = 0
     time_per_frame = 1.0 / MAX_FPS
     """Main function to run the game"""
