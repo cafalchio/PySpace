@@ -151,7 +151,7 @@ def run_game():
     """Main function to run the game"""
     with FullscreenWindow() as window:
         f = Figlet(font='epic')
-        print(f.renderText("     PySpace    Game"))
+        print(f.renderText("         PySpace    Game"))
         input('press Enter key to start')
         print(red('\nLoading...'))
         scene = Scene(window)
