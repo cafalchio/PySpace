@@ -148,10 +148,10 @@ def run_game():
     time_per_frame = 1.0 / MAX_FPS
     """Main function to run the game"""
     with FullscreenWindow() as window:
-        f = Figlet(font='big')
-        print(f.renderText("PySpace    Game    1.0"))
+        f = Figlet(font='epic')
+        print(f.renderText("PySpace    Game"))
         input('press Enter key to start')
-        print('\nLoading...')
+        print(red('\nLoading...'))
         scene = Scene(window)
         with Input() as input_generator:
             msg = None
@@ -182,7 +182,7 @@ def run_game():
                     msg = None
                 
                 # update bullets
-                if scene.bullets:
+                if scene.bullets and not scene.in_menu:
                     for bullet in scene.bullets:
                         bullet.move()
                         if bullet.x < window.width:
