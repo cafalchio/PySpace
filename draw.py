@@ -1,7 +1,7 @@
 from curtsies.fmtfuncs import red, bold, green, on_blue, yellow, on_red
 
 designs = {
-    "spaceship": ["▄-» ", "██)»", "▀-» "],
+    "spaceship": [yellow("▄-» "), yellow("██)»"), yellow("▀-» ")],
     "aliens_0": ["<║E", "<║E"],
     "aliens_1": [
         "   █§",
@@ -30,6 +30,7 @@ class Ship:
     
     def set_lives(self, n):
         self.lives = self.lives + n
+
 
 class Bullet:
     def __init__(self, object):
