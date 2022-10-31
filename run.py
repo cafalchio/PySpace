@@ -137,7 +137,7 @@ class Scene:
             self.ship.x -= 1
         elif msg == "<RIGHT>" and self.ship.x < self.window.width- 10:
             self.ship.x += 1
-        elif msg == "<SPACE>" or msg == "<Ctrl-j>":
+        elif msg == "<SPACE>":
             self.bullets.append(self.ship.fire())
             msg = None
             
