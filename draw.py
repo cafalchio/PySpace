@@ -1,4 +1,5 @@
 from curtsies.fmtfuncs import red, bold, green, on_blue, yellow, on_red
+from sheet_data import Sheet
 
 designs = {
     "spaceship": [yellow("▄-» "), yellow("██)»"), yellow("▀-» ")],
@@ -15,7 +16,6 @@ designs = {
     ],
 }
 
-
 class Ship:
     def __init__(self, lives, gun, spawn, design):
         self.lives = lives
@@ -23,14 +23,13 @@ class Ship:
         self.x = spawn[0]
         self.y = spawn[1]
         self.design = design
-        self.bullet = None        
+        self.bullet = None
 
     def fire(self):
         return Bullet(self)
-    
+
     def set_lives(self, n):
         self.lives = self.lives + n
-
 
 class Bullet:
     def __init__(self, object):
@@ -69,7 +68,10 @@ class Menu:
         self.x = spawn[0] - 8
         self.y = spawn[1] - 7
         self.option = 0
+        sheet = Sheet()
+        self.data = sheet.get_records()
         self.design = self.get_desing(self.option)
+        
 
     def set_option(self, option):
         self.option = option
@@ -122,20 +124,26 @@ class Menu:
                 "║                ║",
                 "╚════════════════╝",
             ],
-            11: [
-                "╔════════════════╗",
-                "║    Records:    ║",
-                "║ ________  000  ║",
-                "║ ________  000  ║",
-                "║ ________  000  ║",
-                "║ ________  000  ║",
-                "║ ________  000  ║",
-                "║ ________  000  ║",
-                "║ ________  000  ║",
-                "║ ________  000  ║",
-                "║ ________  000  ║",
-                "║ ________  000  ║",
+            11: ["╔════════════════╗", 
+                 "║    Records:    ║"]
+            + list(self.format_score())
+            + [
                 "╚════════════════╝",
             ],
         }
         return art_menu_box[option]
+    
+    def format_score(self):
+        """ Format the score to be displayed in the menu """
+
+        if len(self.data) > 7:
+            self.data = self.data[:7]
+        if len(self.data) < 7:
+            for i in range(7 - len(self.data)):
+                self.data.append( ["-------", "00"])           
+        for d1, d2 in self.data:
+            if len(d1) < 7:
+                d1 = d1 + " " * (7 - len(d1))
+            if len(d2) < 5:
+                d2 = " " * (5 - len(d2)) + d2
+            yield f"║ {d1}  {d2} ║"

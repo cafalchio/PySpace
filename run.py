@@ -1,13 +1,12 @@
 import random
 import time, sys
 import math
-
 from curtsies import FullscreenWindow, Input, FSArray, fsarray, fmtstr
 from curtsies.fmtfuncs import red, bold, green, on_blue, yellow, on_red
-
 from draw import Ship, Menu, designs, Bullet
+from sheet_data import Sheet
 
-"""Space game to kill Aliens Invasion (like space invaders, but left to write"""
+"""Space game to kill Aliens Invasion game"""
 
 
 class Background:
