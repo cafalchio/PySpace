@@ -52,9 +52,9 @@ class Scene:
         self.ship = Ship(lives=3, gun=0, spawn=[10, 10], design=designs["spaceship"])
         self.background = Background(window.width, window.height)
         self.bullets = [] # List of bullets to be updated every frame
-        self.score = 0
-        sheet = Sheet()
-        self.data = sheet.get_scores()
+        self.score = 2000
+        self.sheet = Sheet()
+        self.data = self.sheet.get_scores()
 
     def update_scene(self, msg, cnt=None):
         """Update the scene"""
@@ -145,17 +145,22 @@ class Scene:
 
     def end_game(self):
         f = Figlet(font='epic')
-        print(f.renderText("       GAME OVER"))
-        if scene.score > self.data[-1]:
-            print("You are in the top 7")
-            name = input("Enter your name (7 characters): ")
+        print(f.renderText("GAME OVER"))
+        print(f"Your score is: {self.score}")
+
+        time.sleep(2)
+        if self.score > sorted(self.data)[0]:
+            print("Congratulations! You are in the top 7\n")
+            name = input(fmtstr("Name for Scoreboard: "))
             if len(name) > 7:
                 name = name[:7]
-            sheet.add_score(name, scene.score)
-            print("Your score has been added to the leaderboard!")
+            self.sheet.update_records([name, self.score])
+            print("\n\nYour score has been added to the leaderboard!\n\n")
+            for rec in self.sheet.get_records():
+                print(rec)
             
-        input('press Enter key to start')
-        run_game()
+        input('\npress Enter key to exit')
+        return None
 
 def run_game():
     MAX_FPS = 80
@@ -171,6 +176,7 @@ def run_game():
         with Input() as input_generator:
             msg = None
             # Game loop
+            
             # FPS example from curties library examples:
             # https://github.com/bpython/curtsies/blob/0a6fd78f6daa3a3cbf301376552ada6c1bd7dc83/examples/realtime.py
             while True:
@@ -180,7 +186,7 @@ def run_game():
                     temp_msg = input_generator.send(max(0, t - (t0 + time_per_frame)))
                     if temp_msg is not None and temp_msg in scene.keys:
                         msg = temp_msg
-   
+                        
                     if time_per_frame < t - t0:
                         break
                     
@@ -220,13 +226,13 @@ def run_game():
                 # Render the scene
                 window.render_to_terminal(scene.grid)
                 cnt+=1
-                if scene.ship.lives == 0:
-                    scene.grid = fmtstr(" ")
-                    window.render_to_terminal(scene.grid)
-                    scene.end_game()
+                if scene.ship.lives == 0 or cnt > 200:
+                    break
+                    
                 # reset cnt
                 if cnt > 1e5:
                     cnt = 1
+    scene.end_game()
     return None
 
 if __name__ == "__main__":

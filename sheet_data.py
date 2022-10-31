@@ -35,5 +35,5 @@ class Sheet:
         """Get scores from google sheet
         Return a list of scores
         """
-        data = get_records(self)
-        return [int(row[1]) for row in data]
+        data = self.get_records()
+        return [int(row[1]) for row in data][0:7]
