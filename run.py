@@ -5,6 +5,7 @@ from curtsies import FullscreenWindow, Input, FSArray, fsarray, fmtstr
 from curtsies.fmtfuncs import red, bold, green, on_blue, yellow, on_red
 from draw import Ship, Menu, designs, Bullet
 from sheet_data import Sheet
+from pyfiglet import Figlet
 
 """Space game to kill Aliens Invasion game"""
 
@@ -147,6 +148,10 @@ def run_game():
     time_per_frame = 1.0 / MAX_FPS
     """Main function to run the game"""
     with FullscreenWindow() as window:
+        f = Figlet(font='big')
+        print(f.renderText("PySpace    Game    1.0"))
+        input('press Enter key to start')
+        print('\nLoading...')
         scene = Scene(window)
         with Input() as input_generator:
             msg = None
