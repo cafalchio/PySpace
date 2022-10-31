@@ -52,15 +52,15 @@ class Scene:
         self.render(self.menu)
         self.ship = Ship(lives=3, gun=0, spawn=[10, 10], design=designs["spaceship"])
         self.background = Background(window.width, window.height)
-        self.bullets = [] # List of bullets to be updated every frame
+        self.bullets = []  # List of bullets to be updated every frame
 
     def update_scene(self, msg, cnt=None):
         """Update the scene"""
-                    
+
         if msg == "<ESC>" and not self.in_menu:
             self.in_menu = True
             msg = "<UP>"
-            
+
         if msg in self.keys and self.in_menu:
             self.menu_options(msg)
 
@@ -69,12 +69,10 @@ class Scene:
                 self.move_ship(msg)
         if msg == None:
             self.move_ship(msg)
-        
-
 
     def menu_options(self, msg):
         """Manage the menu options"""
-        
+
         # move up and down
         if msg == "<UP>" and self.menu.option > 0:
             self.render(self.menu, True)
@@ -89,7 +87,7 @@ class Scene:
             self.menu.set_option(0)
             self.in_menu = False  # stop to show menu
             self.render(self.menu, True)
-            
+
         # enter the submenus
         elif (msg == "<SPACE>" or msg == "<Ctrl-j>") and self.menu.option == 0:
             self.render(self.menu, True)
@@ -124,7 +122,6 @@ class Scene:
                 obj.y : obj.y + len(obj.design), obj.x : obj.x + len(obj.design[0])
             ] = fsarray(obj.design)
 
-
     def move_ship(self, msg):
         """Move the spaceship to all directions"""
         # Need to check borders
@@ -135,12 +132,12 @@ class Scene:
             self.ship.y += 1
         elif msg == "<LEFT>" and self.ship.x > 5:
             self.ship.x -= 1
-        elif msg == "<RIGHT>" and self.ship.x < self.window.width- 10:
+        elif msg == "<RIGHT>" and self.ship.x < self.window.width - 10:
             self.ship.x += 1
         elif msg == "<SPACE>":
             self.bullets.append(self.ship.fire())
             msg = None
-            
+
         self.render(self.ship)
 
 
@@ -150,10 +147,10 @@ def run_game():
     time_per_frame = 1.0 / MAX_FPS
     """Main function to run the game"""
     with FullscreenWindow() as window:
-        f = Figlet(font='epic')
+        f = Figlet(font="epic")
         print(f.renderText("         PySpace    Game"))
-        input('press Enter key to start')
-        print(red('\nLoading...'))
+        input("press Enter key to start")
+        print(red("\nLoading..."))
         scene = Scene(window)
         with Input() as input_generator:
             msg = None
@@ -167,31 +164,30 @@ def run_game():
                     temp_msg = input_generator.send(max(0, t - (t0 + time_per_frame)))
                     if temp_msg is not None and temp_msg in scene.keys:
                         msg = temp_msg
-   
+
                     if time_per_frame < t - t0:
                         break
-                    
+
                 # Update the background
                 if cnt % 8 == 0 and not scene.in_menu:
                     scene.background.move_background()
                     scene.render(scene.background)
-            
-                
+
                 # update scene
                 scene.update_scene(msg, cnt)
-                
+
                 # stop to run forever in menu
                 if scene.in_menu:
                     msg = None
-                    cnt = 0 
+                    cnt = 0
                 # stop menu to run forever
                 elif not scene.in_menu and msg == "<ESC>":
                     msg = None
                     cnt = 0
-                    
+
                 scene.render(scene.ship)
                 scene.update_scene(msg, cnt)
-                
+
                 # update bullets
                 if scene.bullets and not scene.in_menu:
                     for bullet in scene.bullets:
@@ -200,17 +196,20 @@ def run_game():
                             scene.render(bullet)
                         else:
                             scene.bullets.remove(bullet)
-                
+
                 # update lives
                 if scene.ship.lives > 0 and not scene.in_menu:
-                    scene.grid[window.height - scene.ship.lives: window.height, 1 ] = fmtstr(red("♥"* scene.ship.lives) )
-                
+                    scene.grid[
+                        window.height - scene.ship.lives : window.height, 1
+                    ] = fmtstr(red("♥" * scene.ship.lives))
+
                 # Render the scene
                 window.render_to_terminal(scene.grid)
-                cnt+=1
+                cnt += 1
                 # reset cnt
                 if cnt > 1e5:
                     cnt = 1
+
 
 if __name__ == "__main__":
     run_game()

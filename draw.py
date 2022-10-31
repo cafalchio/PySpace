@@ -16,6 +16,7 @@ designs = {
     ],
 }
 
+
 class Ship:
     def __init__(self, lives, gun, spawn, design):
         self.lives = lives
@@ -30,6 +31,7 @@ class Ship:
 
     def set_lives(self, n):
         self.lives = self.lives + n
+
 
 class Bullet:
     def __init__(self, object):
@@ -71,7 +73,6 @@ class Menu:
         sheet = Sheet()
         self.data = sheet.get_records()
         self.design = self.get_desing(self.option)
-        
 
     def set_option(self, option):
         self.option = option
@@ -83,7 +84,7 @@ class Menu:
             0: [
                 "╔════════════════╗",
                 "║                ║",
-                "║   "+ green("»") + " START! "+green("«")+"   ║",
+                "║   " + green("»") + " START! " + green("«") + "   ║",
                 "║                ║",
                 "║    RECORDS!    ║",
                 "║                ║",
@@ -96,7 +97,7 @@ class Menu:
                 "║                ║",
                 "║     START!     ║",
                 "║                ║",
-                "║  "+ green("»") +" RECORDS! "+green("«")+"  ║",
+                "║  " + green("»") + " RECORDS! " + green("«") + "  ║",
                 "║                ║",
                 "║     ABOUT!     ║",
                 "║                ║",
@@ -109,7 +110,7 @@ class Menu:
                 "║                ║",
                 "║    RECORDS!    ║",
                 "║                ║",
-                "║   "+ green("»") +" ABOUT! "+green("«")+"   ║",
+                "║   " + green("»") + " ABOUT! " + green("«") + "   ║",
                 "║                ║",
                 "╚════════════════╝",
             ],
@@ -124,24 +125,23 @@ class Menu:
                 "║                ║",
                 "╚════════════════╝",
             ],
-            11: ["╔════════════════╗", 
-                 "║    Records:    ║"]
+            11: ["╔════════════════╗", "║    Records:    ║"]
             + list(self.format_score())
             + [
                 "╚════════════════╝",
             ],
         }
         return art_menu_box[option]
-    
-    def format_score(self):
-        """ Format the score to be displayed in the menu """
 
-        if len(self.data) > 7:
-            self.data = self.data[:7]
-        if len(self.data) < 7:
-            for i in range(7 - len(self.data)):
-                self.data.append( ["-------", "00"])           
-        for d1, d2 in self.data:
+    def format_score(self):
+        """Format the score to be displayed in the menu"""
+        data = sorted(self.data, key=lambda x: x[1])
+        if len(data) > 7:
+            data = data[:7]
+        if len(data) < 7:
+            for i in range(7 - len(data)):
+                data.append(["-------", "00"])
+        for d1, d2 in data:
             if len(d1) < 7:
                 d1 = d1 + " " * (7 - len(d1))
             if len(d2) < 5:
