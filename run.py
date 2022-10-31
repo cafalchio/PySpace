@@ -67,12 +67,14 @@ class Scene:
         elif msg in self.keys and not self.in_menu:
             if cnt % 4 == 0:
                 self.move_ship(msg)
-                
+        if msg == None:
+            self.move_ship(msg)
+        
 
 
     def menu_options(self, msg):
         """Manage the menu options"""
-
+        
         # move up and down
         if msg == "<UP>" and self.menu.option > 0:
             self.render(self.menu, True)
@@ -85,9 +87,9 @@ class Scene:
         # leave the menu
         elif msg == "<ESC>" and self.menu.option < 3:
             self.menu.set_option(0)
-            self.render(self.menu, True)
             self.in_menu = False  # stop to show menu
-
+            self.render(self.menu, True)
+            
         # enter the submenus
         elif (msg == "<SPACE>" or msg == "<Ctrl-j>") and self.menu.option == 0:
             self.render(self.menu, True)
@@ -149,7 +151,7 @@ def run_game():
     """Main function to run the game"""
     with FullscreenWindow() as window:
         f = Figlet(font='epic')
-        print(f.renderText("\tPySpace    Game"))
+        print(f.renderText("     PySpace    Game"))
         input('press Enter key to start')
         print(red('\nLoading...'))
         scene = Scene(window)
@@ -173,6 +175,7 @@ def run_game():
                 if cnt % 8 == 0 and not scene.in_menu:
                     scene.background.move_background()
                     scene.render(scene.background)
+            
                 
                 # update scene
                 scene.update_scene(msg, cnt)
@@ -180,6 +183,14 @@ def run_game():
                 # stop to run forever in menu
                 if scene.in_menu:
                     msg = None
+                    cnt = 0 
+                # stop menu to run forever
+                elif not scene.in_menu and msg == "<ESC>":
+                    msg = None
+                    cnt = 0
+                    
+                scene.render(scene.ship)
+                scene.update_scene(msg, cnt)
                 
                 # update bullets
                 if scene.bullets and not scene.in_menu:
