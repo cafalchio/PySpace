@@ -139,7 +139,7 @@ class Menu:
         data = []
         for i in self.data:
             data.append([i[0], int(i[1])])
-            
+
         data = sorted(data, key=lambda x: x[1], reverse=True)
         if len(data) > 7:
             data = data[:7]
