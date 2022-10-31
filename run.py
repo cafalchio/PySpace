@@ -64,7 +64,9 @@ class Scene:
             self.menu_options(msg)
 
         elif msg in self.keys and not self.in_menu:
-            self.move_ship(msg)
+            if cnt % 4 == 0:
+                self.move_ship(msg)
+                
 
 
     def menu_options(self, msg):
@@ -119,6 +121,7 @@ class Scene:
                 obj.y : obj.y + len(obj.design), obj.x : obj.x + len(obj.design[0])
             ] = fsarray(obj.design)
 
+
     def move_ship(self, msg):
         """Move the spaceship to all directions"""
         # Need to check borders
@@ -135,20 +138,17 @@ class Scene:
             self.bullets.append(self.ship.fire())
             msg = None
             
-        self.render(self.background)
         self.render(self.ship)
 
 
 def run_game():
-    MAX_FPS = 25
+    MAX_FPS = 80
     cnt = 0
     time_per_frame = 1.0 / MAX_FPS
     """Main function to run the game"""
     with FullscreenWindow() as window:
         scene = Scene(window)
         with Input() as input_generator:
-            
-            scene = Scene(window)
             msg = None
             # Game loop
             # FPS example from curties library examples:
@@ -162,18 +162,21 @@ def run_game():
                         msg = temp_msg
                     if time_per_frame < t - t0:
                         break
-
-                # Update the scene
-                if cnt % 60 == 0:
+                    
+                # Update the background
+                if cnt % 8 == 0 and not scene.in_menu:
                     scene.background.move_background()
+                    scene.render(scene.background)
                     cnt = 0
                 
-                if cnt % 20 == 0:
-                    scene.update_scene(msg)
+                # update scene
+                scene.update_scene(msg, cnt)
                 
+                # stop to run forever in menu
                 if scene.in_menu:
                     msg = None
-                    
+                
+                # update bullets
                 if scene.bullets:
                     for bullet in scene.bullets:
                         bullet.move()
@@ -181,10 +184,13 @@ def run_game():
                             scene.render(bullet)
                         else:
                             scene.bullets.remove(bullet)
-                                 
+                
                 # Render the scene
                 window.render_to_terminal(scene.grid)
-
+                cnt+=1
+                # reset cnt
+                if cnt > 1e6:
+                    cnt = 1
 
 if __name__ == "__main__":
     run_game()

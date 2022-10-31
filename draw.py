@@ -1,3 +1,5 @@
+from curtsies.fmtfuncs import red, bold, green, on_blue, yellow, on_red
+
 designs = {
     "spaceship": ["▄-» ", "██)»", "▀-» "],
     "aliens_0": ["<║E", "<║E"],
@@ -39,7 +41,7 @@ class Bullet:
 
     def get_desing(self):
         if self.gun == 0:
-            return ["-"]
+            return [on_red("-")]
         elif self.gun == 1:
             return ["="]
         elif self.gun == 2:
