@@ -159,7 +159,7 @@ class Scene:
             for rec in self.sheet.get_records():
                 print(rec)
             
-        input('\npress Enter key to exit')
+        input('\npress Enter to exit')
         return None
 
 def run_game():
@@ -226,7 +226,7 @@ def run_game():
                 # Render the scene
                 window.render_to_terminal(scene.grid)
                 cnt+=1
-                if scene.ship.lives == 0 or cnt > 200:
+                if scene.ship.lives == 0:
                     break
                     
                 # reset cnt
