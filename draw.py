@@ -3,13 +3,13 @@ from sheet_data import Sheet
 
 designs = {
     "spaceship": [yellow("▄-» "), yellow("██)»"), yellow("▀-» ")],
-    "aliens_0": ["<║E", "<║E"],
-    "aliens_1": [
+    "alien_0": ["<║E", "<║E"],
+    "alien_1": [
         "   █§",
         "<(█§",
         "   █§",
     ],
-    "aliens_2": [
+    "alien_2": [
         " ╔-{",
         "<╣-{",
         " ╚-{",
@@ -32,6 +32,9 @@ class Ship:
     def set_lives(self, n):
         self.lives = self.lives + n
 
+    def move(self, dir):
+        self.x += dir[0]
+        self.y += dir[1]
 
 class Bullet:
     def __init__(self, object):
