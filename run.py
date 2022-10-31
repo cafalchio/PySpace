@@ -187,8 +187,8 @@ def run_game():
                             scene.bullets.remove(bullet)
                 
                 # update lives
-                if scene.ship.lives > 0:
-                    scene.grid[0:scene.ship.lives, 0] = fmtstr(red("♥") * scene.ship.lives)
+                if scene.ship.lives > 0 and not scene.in_menu:
+                    scene.grid[0: scene.ship.lives, window.width - 2] = fmtstr(red("♥") * scene.ship.lives)
                 
                 # Render the scene
                 window.render_to_terminal(scene.grid)
