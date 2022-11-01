@@ -217,8 +217,8 @@ def run_game():
                 t0 = time.time()
                 while True:
                     # stop shooting forever
-                    if cnt % 10 == 0 and msg == "<SPACE>":
-                        msg = ""
+                    # if cnt % 10 == 0 and msg == "<SPACE>":
+                    #     msg = ""
                     t = time.time()
                     temp_msg = input_generator.send(max(0, t - (t0 + time_per_frame)))
                     if temp_msg is not None and temp_msg in scene.keys:
@@ -232,10 +232,10 @@ def run_game():
                     scene.update_background()
 
                 # Create enemies
-                if cnt % 90 == 0 and not scene.in_menu:
+                if cnt % 80 == 0 and not scene.in_menu:
                     if len(scene.enemies) < 5 and cnt % 400 == 0:
                         scene.enemies.append(scene.create_enemies())
-                    scene.create_enemies()
+                    scene.enemies.append(scene.create_enemies())
                 for enemy in scene.enemies:
                     if enemy:
                         scene.render(enemy)
