@@ -298,7 +298,7 @@ def run_game():
                     ] = fmtstr(red("♥" * scene.ship.lives))
     
                 # update score botton left
-                print("Score: ", scene.score)
+                print("\tScore: ", scene.score)
                 
                 # Render the scene
                 window.render_to_terminal(scene.grid)
