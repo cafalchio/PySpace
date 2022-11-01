@@ -6,6 +6,7 @@ from curtsies.fmtfuncs import red, bold, green, on_blue, yellow, on_red
 from draw import Ship, Menu, designs, Bullet
 from sheet_data import Sheet
 from pyfiglet import Figlet
+import gc
 
 """Space game to kill Aliens Invasion game"""
 
@@ -180,6 +181,18 @@ class Scene:
         input("\npress Enter to exit")
         return None
 
+    def update_background(self):
+        self.background.move_background()
+        self.render(self.background)
+        
+
+
+def intro():
+    f = Figlet(font="epic")
+    print(f.renderText("         PySpace    Game"))
+    input("press Enter key to start")
+    print(red("\nLoading..."))
+    
 
 def run_game():
     MAX_FPS = 60
@@ -187,15 +200,11 @@ def run_game():
     time_per_frame = 1.0 / MAX_FPS
     """Main function to run the game"""
     with FullscreenWindow() as window:
-        f = Figlet(font="epic")
-        print(f.renderText("         PySpace    Game"))
-        input("press Enter key to start")
-        print(red("\nLoading..."))
+        intro()
         scene = Scene(window)
         with Input() as input_generator:
             msg = None
             # Game loop
-
             # FPS example from curties library examples:
             # https://github.com/bpython/curtsies/blob/0a6fd78f6daa3a3cbf301376552ada6c1bd7dc83/examples/realtime.py
             while True:
@@ -205,14 +214,13 @@ def run_game():
                     temp_msg = input_generator.send(max(0, t - (t0 + time_per_frame)))
                     if temp_msg is not None and temp_msg in scene.keys:
                         msg = temp_msg
-
+                        
                     if time_per_frame < t - t0:
                         break
 
                 # Update the background
                 if cnt % 12 == 0 and not scene.in_menu:
-                    scene.background.move_background()
-                    scene.render(scene.background)
+                    scene.update_background()
 
                 # Create enemies
                 if cnt % 120 == 0 and not scene.in_menu:
@@ -252,6 +260,19 @@ def run_game():
                 # update enemies
                 if scene.enemies and not scene.in_menu:
                     for enemy in scene.enemies:
+                        # remove the ones that passed the screen
+                        if not enemy:
+                            continue
+                        if enemy.x < 2:
+                            scene.remove_enemy(enemy)
+                            continue
+                        # remove dead enemies
+                        if enemy.lives <= 0:
+                            scene.score += 1 + enemy.gun
+                            scene.render(enemy, True)
+                            scene.remove_enemy(enemy)
+                            continue
+                        # move the enemies
                         if enemy.y < 10:
                             enemy.y += 3
                         elif enemy.y > window.height - 10:
@@ -259,10 +280,10 @@ def run_game():
                         elif enemy.x > window.width - 10:
                             enemy.x -= 3
                         else:
-                            a = random.choice([-1, -2, -2, -2, -3, -3, -4, -4])
-                            b = random.choice([ -1, 0, 0 ,1 ])
+                            # a = random.choice([-1, -2, -2, -2, -3, -3, -4, -4])
+                            # b = random.choice([ -1, 0, 0 ,1 ])
                             if cnt % 10 == 0:
-                                enemy.move([a, b])
+                                enemy.move(window.width, window.height)
 
                         for bullet in scene.bullets:
                             if bullet.all_points() in enemy.all_points():
@@ -270,15 +291,9 @@ def run_game():
                                 scene.bullets.remove(bullet)
                                 enemy.shooted()
                                 
-                        # remove dead enemies
-                        if enemy.lives <= 0:
-                            scene.score += 1 + enemy.gun
-                            scene.render(enemy, True)
-                            scene.remove_enemy(enemy)
+                        
                             
-                        # remove the ones that passed the screen
-                        if enemy.x < 2:
-                            scene.remove_enemy(enemy)
+                        
                         
                 #         # ship collision
                 #         if enemy.all_points() in scene.ship.all_points():

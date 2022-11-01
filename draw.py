@@ -1,5 +1,6 @@
 from curtsies.fmtfuncs import red, bold, green, on_blue, yellow, on_red, blue
 from sheet_data import Sheet
+import random
 
 designs = {
     "spaceship": [yellow("▄-» "), yellow("██)»"), yellow("▀-» ")],
@@ -33,9 +34,12 @@ class Ship:
     def shooted(self):
         self.lives -= 1
 
-    def move(self, dir):
-        self.x += dir[0]
-        self.y += dir[1]
+    def move(self, max_x, max_y):
+        new_x = self.x + random.choice([-3,-2,-1])
+        new_y = self.y + random.choice([-2, 2])
+        self.x = new_x
+        self.y = new_y
+            
     
     def all_points(self):
         for i in range(len(self.design)):
