@@ -6,7 +6,6 @@ from curtsies.fmtfuncs import red
 from draw import Ship, Menu, designs, Bullet
 from sheet_data import Sheet
 from pyfiglet import Figlet
-import gc
 
 """Space game to kill Aliens Invasion game"""
 
@@ -181,10 +180,9 @@ class Scene:
                 name = name[:7]
             self.sheet.update_records([name, self.score])
             print("\n\nYour score has been added to the leaderboard!\n\n")
-            for rec in self.sheet.get_records():
-                print(rec)
+            time.sleep(2)
 
-        input("\npress Enter to exit")
+        input("\nPress Run Program to play again\n")
         return None
 
     def update_background(self):
@@ -195,7 +193,7 @@ class Scene:
 def intro():
     f = Figlet(font="epic")
     print(f.renderText("         PySpace    Game"))
-    input("press Enter key to start")
+    input("press Enter to start")
     print(red("\nLoading..."))
 
 
@@ -222,7 +220,7 @@ def run_game():
 
                     if time_per_frame < t - t0:
                         break
-                    
+
                 # Update the background
                 if cnt % 12 == 0 and not scene.in_menu:
                     scene.update_background()
@@ -294,17 +292,14 @@ def run_game():
                                 scene.render(bullet, True)
                                 scene.bullets.remove(bullet)
                                 enemy.shooted()
-                                
+
                         # fast way to detect collision
-                        if set(enemy.all_points()).intersection(set(scene.ship.all_points())):
+                        if set(enemy.all_points()).intersection(
+                            set(scene.ship.all_points())
+                        ):
                             scene.ship.shooted()
                             scene.render(enemy, True)
                             scene.remove_enemy(enemy)
-
-
-                # # end game
-                # if scene.ship.lives <= 0:
-                #     break
 
                 # negative score looses lives
                 if scene.score < 0:
@@ -329,6 +324,7 @@ def run_game():
                 # reset cnt
                 if cnt > 1e5:
                     cnt = 1
+
     scene.end_game()
     return None
 

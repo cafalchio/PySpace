@@ -1,4 +1,14 @@
-from curtsies.fmtfuncs import red, bold, green, on_blue, yellow, on_red, blue, cyan, magenta
+from curtsies.fmtfuncs import (
+    red,
+    bold,
+    green,
+    on_blue,
+    yellow,
+    on_red,
+    blue,
+    cyan,
+    magenta,
+)
 from sheet_data import Sheet
 import random
 
@@ -35,17 +45,18 @@ class Ship:
         self.lives -= 1
 
     def move(self, max_x, max_y):
-        new_x = self.x + random.choice([-3,-2,-1])
+        new_x = self.x + random.choice([-3, -2, -1])
         new_y = self.y + random.choice([-2, -1, 0, 1, 2])
         self.x = new_x
         self.y = new_y
-            
+
     def all_points(self):
         for i in range(len(self.design)):
             for j in range(len(self.design[0])):
                 self.points.append((self.x + j, self.y + i))
         return self.points
-        
+
+
 class Bullet:
     def __init__(self, object):
         self.x = object.x + len(object.design[0])
@@ -79,6 +90,7 @@ class Bullet:
 
     def all_points(self):
         return (self.x, self.y)
+
 
 class Menu:
     def __init__(self, spawn):
