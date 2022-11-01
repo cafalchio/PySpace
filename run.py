@@ -223,14 +223,17 @@ def run_game():
 
                     if time_per_frame < t - t0:
                         break
-
+                    
+                # Test online    
+                print(f"t : {t-t0:.4f}")
+                
                 # Update the background
                 if cnt % 12 == 0 and not scene.in_menu:
                     scene.update_background()
 
                 # Create enemies
-                if cnt % 50 == 0 and not scene.in_menu:
-                    if len(scene.enemies) < 10 and cnt % 200 == 0:
+                if cnt % 120 == 0 and not scene.in_menu:
+                    if len(scene.enemies) < 5 and cnt % 800 == 0:
                         scene.enemies.append(scene.create_enemies())
                     scene.create_enemies()
                 for enemy in scene.enemies:
