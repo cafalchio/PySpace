@@ -146,6 +146,7 @@ class Scene:
                 ] = fsarray(obj.design)
             except Exception as e:
                 if e == ValueError:
+                    print("-------------------------------------->")
                     # sometimes, parts of the ship are out of the screen
                     # In these cases the ship is not drawn
                     pass
@@ -168,7 +169,7 @@ class Scene:
         self.render(self.ship)
 
     def end_game(self):
-        f = Figlet(font="epic")
+        f = Figlet(font="roman")
         print(f.renderText("\nGAME  OVER"))
         print(f"Your score is: {self.score}")
 
@@ -191,11 +192,10 @@ class Scene:
 
 
 def intro():
-    f = Figlet(font="epic")
-    print(f.renderText("         PySpace    Game"))
-    print("Don't let the aliens invade your planet!")
-    print("Use the arrow keys to move, space to shoot and esc for menu")
-    print("Designed by Natheus Cafalchio\n")
+    f = Figlet(font="roman")
+    print(f.renderText("   PySpace    Game"))
+    print("\tProtect the Earth from the aliens!")
+    print("\tUse the arrow keys to move, space to shoot and esc for menu\n")
     input("press Enter to start")
     print(red("\nLoading..."))
 
@@ -216,6 +216,10 @@ def run_game():
             while True:
                 t0 = time.time()
                 while True:
+                    # stop shooting forever
+                    if cnt % 10 == 0 and msg == "<SPACE>":
+                        msg = ""
+                    
                     t = time.time()
                     temp_msg = input_generator.send(max(0, t - (t0 + time_per_frame)))
                     if temp_msg is not None and temp_msg in scene.keys:
@@ -239,7 +243,7 @@ def run_game():
 
                 # update scene
                 scene.update_scene(msg, cnt)
-
+                scene.render(scene.ship)
                 # stop to run forever in menu
                 if scene.in_menu:
                     msg = None

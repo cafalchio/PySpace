@@ -29,6 +29,7 @@ designs = {
 
 
 class Ship:
+    """ A spaceship that can be drawn on the screen. """
     def __init__(self, lives, gun, spawn, design):
         self.lives = lives
         self.gun = gun
@@ -47,17 +48,14 @@ class Ship:
     def move(self, max_x, max_y, target = None):
         """Move enemy ship"""
         if self.gun == 0:
-            # teleguided
-            direct_x = self.x - target[0]
+            # direct_x = self.x - target[0]
             direct_y = self.y - target[1]
-            if direct_x >= 0:
-                self.x -= random.choice([3, 4, 4, 5, 5, 5])
-            elif direct_x < 0:
-                self.x += random.choice([1, 2, 3])
+            self.x -= random.choice([3, 4, 4, 5, 5, 5])
+            # get out of the shooting range
             if direct_y >= 0:
-                self.y += random.choice([2, 1, 1])
+                self.y += random.choice([2, 1])
             elif direct_y < 0:
-                self.y -= random.choice([2, 1, 1])
+                self.y -= random.choice([2, 1])
                 
         elif self.gun == 1:
             self.x -= random.choice([3, 4, 5, 5, 6])
