@@ -64,7 +64,7 @@ class Ship:
             self.x -= random.choice([3, 4, 5, 5, 6])
             self.y += random.choice([-3, -2, -1, 1, 2, 3])
             
-            
+
     def all_points(self):
         for i in range(len(self.design)):
             for j in range(len(self.design[0])):

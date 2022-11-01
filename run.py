@@ -59,7 +59,7 @@ class Scene:
         self.data = self.sheet.get_scores()
 
     def create_enemies(self):
-        tipo = random.choice([0, 0, 0, 1, 1, 1, 1, 1,  2, 2, 2, 2])
+        tipo = random.choice([1, 1, 1, 1, 1,  2, 2, 2, 2])
         self.enemies.append(
             Ship(
                 lives=tipo + 3,
@@ -275,7 +275,7 @@ def run_game():
                         # remove dead enemies
                         if enemy.lives <= 0:
                             scene.score += 1 + enemy.gun
-                            scene.render(enemy, True)
+                            # scene.render(enemy, True)
                             scene.remove_enemy(enemy)
                             continue
 
