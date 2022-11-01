@@ -202,7 +202,7 @@ def intro():
 
 def run_game():
     cnt = 0
-    fps = 35
+    fps = 45
     """Main function to run the game"""
     with FullscreenWindow() as window:
         intro()
@@ -232,8 +232,8 @@ def run_game():
                     scene.update_background()
 
                 # Create enemies
-                if cnt % 120 == 0 and not scene.in_menu:
-                    if len(scene.enemies) < 5 and cnt % 800 == 0:
+                if cnt % 90 == 0 and not scene.in_menu:
+                    if len(scene.enemies) < 5 and cnt % 400 == 0:
                         scene.enemies.append(scene.create_enemies())
                     scene.create_enemies()
                 for enemy in scene.enemies:
