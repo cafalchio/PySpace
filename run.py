@@ -192,7 +192,7 @@ class Scene:
 
 
 def intro():
-    f = Figlet(font="roman")
+    f = Figlet(font="big")
     print(f.renderText("   PySpace    Game"))
     print("\tProtect the Earth from the aliens!")
     print("\tUse the arrow keys to move, space to shoot and esc for menu\n")
