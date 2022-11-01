@@ -170,7 +170,7 @@ class Scene:
 
     def end_game(self):
         f = Figlet(font="epic")
-        print(f.renderText("GAME OVER"))
+        print(f.renderText("\nGAME OVER"))
         print(f"Your score is: {self.score}")
 
         time.sleep(2)
