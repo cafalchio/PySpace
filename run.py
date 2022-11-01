@@ -50,21 +50,31 @@ class Scene:
         self.in_menu = True
         self.render(self.menu)
         self.ship = Ship(lives=3, gun=0, spawn=[10, 10], design=designs["spaceship"])
-        self.enemies = [
-            Ship(
-                lives=1,
-                gun=0,
-                spawn=[window.width - 10, random.randint(1, window.height - 5)],
-                design=designs["alien_" + str(random.choice([0, 1, 2]))],
-            )
-            for i in range(5)
-        ]
+        self.enemies = []
 
         self.background = Background(window.width, window.height)
         self.bullets = []  # List of bullets to be updated every frame
-        self.score = 2000
+        self.score = 0
         self.sheet = Sheet()
         self.data = self.sheet.get_scores()
+
+    def create_enemies(self):
+        tipo = random.choice([0, 0, 1, 1, 1, 2, 2, 2])
+        self.enemies.append(
+            Ship(
+                lives=tipo + 3,
+                gun=tipo,
+                spawn=[
+                    self.window.width - 12,
+                    random.randint(1, self.window.height - 10),
+                ],
+                design=designs["alien_" + str(tipo)],
+            )
+        )
+    
+    def remove_enemy(self, enemy):
+        """Remove enemy from the list"""
+        self.enemies.remove(enemy)
 
     def update_scene(self, msg, cnt=None):
         """Update the scene"""
@@ -204,6 +214,16 @@ def run_game():
                     scene.background.move_background()
                     scene.render(scene.background)
 
+                # Create enemies
+                if cnt % 120 == 0 and not scene.in_menu:
+                    if len(scene.enemies) < 4 and cnt % 800 == 0:
+                        scene.enemies.append(scene.create_enemies())
+                        scene.render
+                    scene.create_enemies()
+                for enemy in scene.enemies:
+                    if enemy:
+                        scene.render(enemy)
+
                 # update scene
                 scene.update_scene(msg, cnt)
 
@@ -211,13 +231,14 @@ def run_game():
                 if scene.in_menu:
                     msg = None
                     cnt = 0
+
                 # stop menu to run forever
                 elif not scene.in_menu and msg == "<ESC>":
                     msg = None
                     cnt = 0
 
                 scene.render(scene.ship)
-                scene.update_scene(msg, cnt)
+                # scene.update_scene(msg, cnt)
 
                 # update bullets
                 if scene.bullets and not scene.in_menu:
@@ -227,23 +248,56 @@ def run_game():
                             scene.render(bullet)
                         else:
                             scene.bullets.remove(bullet)
-                
+
                 # update enemies
                 if scene.enemies and not scene.in_menu:
-                    dir = [0]*2
-                    for alien in scene.enemies:
-                        dir[0] = random.choice([-2, -3, -2, -4, -2, 1, -1])
-                        dir[1] = random.choice([-2, 2])
-                        if cnt % 20 == 0:
-                            alien.move(dir)
-                        if alien.x < window.width-10 and alien.x > 0 and alien.y > 0 and alien.y < window.height-5:
-                            scene.render(alien)
+                    for enemy in scene.enemies:
+                        if enemy.y < 10:
+                            enemy.y += 3
+                        elif enemy.y > window.height - 10:
+                            enemy.y -= 3
+                        elif enemy.x > window.width - 10:
+                            enemy.x -= 3
+                        else:
+                            a = random.choice([-1, -2, -2, -2, -3, -3, -4, -4])
+                            b = random.choice([ -1, 0, 0 ,1 ])
+                            if cnt % 10 == 0:
+                                enemy.move([a, b])
 
+                        for bullet in scene.bullets:
+                            if bullet.all_points() in enemy.all_points():
+                                scene.render(bullet, True)
+                                scene.bullets.remove(bullet)
+                                enemy.shooted()
+                                
+                        # remove dead enemies
+                        if enemy.lives <= 0:
+                            scene.score += 1 + enemy.gun
+                            scene.render(enemy, True)
+                            scene.remove_enemy(enemy)
+                            
+                        # remove the ones that passed the screen
+                        if enemy.x < 0:
+                            scene.render(enemy, True)
+                            scene.remove_enemy(enemy)
+                        
+                        # ship collision
+                        if enemy.all_points() in scene.ship.all_points():
+                            scene.ship.shooted()
+                            scene.render(enemy, True)
+                            scene.remove_enemy(enemy)
+                
+                # end game
+                if scene.ship.lives <= 0:
+                    break
+                        
+                        
                 # update lives
                 if scene.ship.lives > 0 and not scene.in_menu:
                     scene.grid[
                         window.height - scene.ship.lives : window.height, 1
                     ] = fmtstr(red("♥" * scene.ship.lives))
+    
 
                 # Render the scene
                 window.render_to_terminal(scene.grid)

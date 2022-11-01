@@ -1,9 +1,9 @@
-from curtsies.fmtfuncs import red, bold, green, on_blue, yellow, on_red
+from curtsies.fmtfuncs import red, bold, green, on_blue, yellow, on_red, blue
 from sheet_data import Sheet
 
 designs = {
     "spaceship": [yellow("▄-» "), yellow("██)»"), yellow("▀-» ")],
-    "alien_0": ["<║E", "<║E"],
+    "alien_0": [blue("<║E")],
     "alien_1": [
         "   █§",
         "<(█§",
@@ -25,16 +25,22 @@ class Ship:
         self.y = spawn[1]
         self.design = design
         self.bullet = None
+        self.points = []
 
     def fire(self):
         return Bullet(self)
 
-    def set_lives(self, n):
-        self.lives = self.lives + n
+    def shooted(self):
+        self.lives -= 1
 
     def move(self, dir):
         self.x += dir[0]
         self.y += dir[1]
+    
+    def all_points(self):
+        for i in range(len(self.design)):
+            self.points.append((self.x, self.y + i))
+        return self.points
 
 class Bullet:
     def __init__(self, object):
@@ -67,6 +73,8 @@ class Bullet:
         else:
             self.x -= 3
 
+    def all_points(self):
+        return (self.x, self.y)
 
 class Menu:
     def __init__(self, spawn):
