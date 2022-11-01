@@ -193,6 +193,9 @@ class Scene:
 def intro():
     f = Figlet(font="epic")
     print(f.renderText("         PySpace    Game"))
+    print("Don't let the aliens invade your planet!")
+    print("Use the arrow keys to move, space to shoot and esc for menu")
+    print("Designed by Natheus Cafalchio\n")
     input("press Enter to start")
     print(red("\nLoading..."))
 
