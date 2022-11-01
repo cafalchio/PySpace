@@ -1,19 +1,19 @@
-from curtsies.fmtfuncs import red, bold, green, on_blue, yellow, on_red, blue
+from curtsies.fmtfuncs import red, bold, green, on_blue, yellow, on_red, blue, cyan, magenta
 from sheet_data import Sheet
 import random
 
 designs = {
-    "spaceship": [yellow("▄-» "), yellow("██)»"), yellow("▀-» ")],
-    "alien_0": [blue("<║E")],
+    "spaceship": [cyan("▄-  "), cyan("██)»"), cyan("▀-  ")],
+    "alien_0": [yellow("<║E")],
     "alien_1": [
-        "   █§",
-        "<(█§",
-        "   █§",
+        magenta("   █§"),
+        magenta(" <(█§"),
+        magenta("   █§"),
     ],
     "alien_2": [
-        " ╔-{",
-        "<╣-{",
-        " ╚-{",
+        red(" ╔-{"),
+        red("<╣-{"),
+        red(" ╚-{"),
     ],
 }
 
@@ -43,7 +43,7 @@ class Ship:
     def all_points(self):
         for i in range(len(self.design)):
             for j in range(len(self.design[0])):
-                self.points.append((self.x + j, self.y - i))
+                self.points.append((self.x + j, self.y + i))
         return self.points
         
 class Bullet:

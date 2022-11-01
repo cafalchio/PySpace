@@ -2,7 +2,7 @@ import random
 import time, sys
 import math
 from curtsies import FullscreenWindow, Input, FSArray, fsarray, fmtstr
-from curtsies.fmtfuncs import red, bold, green, on_blue, yellow, on_red
+from curtsies.fmtfuncs import red
 from draw import Ship, Menu, designs, Bullet
 from sheet_data import Sheet
 from pyfiglet import Figlet
@@ -200,7 +200,7 @@ def intro():
 
 
 def run_game():
-    MAX_FPS = 60
+    MAX_FPS = 50
     cnt = 0
     time_per_frame = 1.0 / MAX_FPS
     """Main function to run the game"""
@@ -222,7 +222,7 @@ def run_game():
 
                     if time_per_frame < t - t0:
                         break
-                print(f"{t - t0:.3f} s")
+                # print(f"{t - t0:.3f} s")
                 # Update the background
                 if cnt % 12 == 0 and not scene.in_menu:
                     scene.update_background()
