@@ -49,7 +49,7 @@ class Scene:
         self.menu = Menu(menu_spanw)
         self.in_menu = True
         self.render(self.menu)
-        self.ship = Ship(lives=3, gun=0, spawn=[10, 10], design=designs["spaceship"])
+        self.ship = Ship(lives=3, gun=2, spawn=[10, 10], design=designs["spaceship"])
         self.enemies = []
 
         self.background = Background(window.width, window.height)
@@ -59,7 +59,7 @@ class Scene:
         self.data = self.sheet.get_scores()
 
     def create_enemies(self):
-        tipo = random.choice([0, 0, 1, 1, 1, 2, 2, 2])
+        tipo = random.choice([0, 0, 0, 1, 1, 1, 1, 1,  2, 2, 2, 2])
         self.enemies.append(
             Ship(
                 lives=tipo + 3,
@@ -226,8 +226,8 @@ def run_game():
                     scene.update_background()
 
                 # Create enemies
-                if cnt % 120 == 0 and not scene.in_menu:
-                    if len(scene.enemies) < 4 and cnt % 800 == 0:
+                if cnt % 100 == 0 and not scene.in_menu:
+                    if len(scene.enemies) < 7 and cnt % 500 == 0:
                         scene.enemies.append(scene.create_enemies())
                     scene.create_enemies()
                 for enemy in scene.enemies:
@@ -246,8 +246,6 @@ def run_game():
                 elif not scene.in_menu and msg == "<ESC>":
                     msg = None
                     cnt = 0
-
-                scene.render(scene.ship)
 
                 # update bullets
                 if scene.bullets and not scene.in_menu:
@@ -285,7 +283,7 @@ def run_game():
                         else:
                             if cnt % 10 == 0:
                                 scene.render(enemy, True)
-                                enemy.move(window.width, window.height)
+                                enemy.move(window.width, window.height, target = (scene.ship.x, scene.ship.y))
 
                         for bullet in scene.bullets:
                             if bullet.all_points() in enemy.all_points():

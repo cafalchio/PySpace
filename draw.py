@@ -14,7 +14,7 @@ import random
 
 designs = {
     "spaceship": [cyan("▄-  "), cyan("██)»"), cyan("▀-  ")],
-    "alien_0": [yellow("<║E")],
+    "alien_0": [yellow("<○█")],
     "alien_1": [
         magenta("   █§"),
         magenta(" <(█§"),
@@ -31,7 +31,7 @@ designs = {
 class Ship:
     def __init__(self, lives, gun, spawn, design):
         self.lives = lives
-        self.gun = 1
+        self.gun = gun
         self.x = spawn[0]
         self.y = spawn[1]
         self.design = design
@@ -44,11 +44,29 @@ class Ship:
     def shooted(self):
         self.lives -= 1
 
-    def move(self, max_x, max_y):
-        new_x = self.x + random.choice([-3, -2, -1])
-        new_y = self.y + random.choice([-2, -1, 0, 1, 2])
-        self.x = new_x
-        self.y = new_y
+    def move(self, max_x, max_y, target = None):
+        """Move enemy ship"""
+        if self.gun == 0:
+            # teleguided
+            direct_x = self.x - target[0]
+            direct_y = self.y - target[1]
+            if direct_x >= 0:
+                self.x -= random.choice([3, 4, 5, 5, 6])
+            elif direct_x < 0:
+                self.x += random.choice([1, 2, 3])
+            if direct_y >= 0:
+                self.y -= random.choice([2, 1, 1])
+            elif direct_y < 0:
+                self.y += random.choice([2, 1, 1])
+                
+        elif self.gun == 1:
+            self.x += random.choice([-3, -3, -2, -2, -1])
+            self.y += random.choice([-1, 0, 0, 1])
+            
+        elif self.gun == 2:
+            self.x += random.choice([-2, -2, -1])
+            self.y += random.choice([-3, -2, -1, 1, 2, 3])
+            
 
     def all_points(self):
         for i in range(len(self.design)):
@@ -70,11 +88,11 @@ class Bullet:
 
     def get_desing(self):
         if self.gun == 0:
-            return [red("-")]
+            return ["-"]
         elif self.gun == 1:
             return [red("=")]
         elif self.gun == 2:
-            return ["»"]
+            return [yellow("»")]
 
     def get_y(self, object):
         if len(object.design) == 3:
@@ -84,9 +102,9 @@ class Bullet:
 
     def move(self):
         if self.dir > 0:
-            self.x += 3
+            self.x += 4
         else:
-            self.x -= 3
+            self.x -= 4
 
     def all_points(self):
         return (self.x, self.y)
