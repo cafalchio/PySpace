@@ -62,7 +62,7 @@ class Scene:
         tipo = random.choice([0, 0, 0, 1, 1, 1, 1, 1,  2, 2, 2, 2])
         self.enemies.append(
             Ship(
-                lives=tipo + 3,
+                lives=tipo + 1,
                 gun=tipo,
                 spawn=[
                     self.window.width - 15,
@@ -201,9 +201,8 @@ def intro():
 
 
 def run_game():
-    MAX_FPS = 50
     cnt = 0
-    time_per_frame = 1.0 / MAX_FPS
+    fps = 35
     """Main function to run the game"""
     with FullscreenWindow() as window:
         intro()
@@ -214,12 +213,12 @@ def run_game():
             # FPS example from curties library examples:
             # https://github.com/bpython/curtsies/blob/0a6fd78f6daa3a3cbf301376552ada6c1bd7dc83/examples/realtime.py
             while True:
+                time_per_frame = 1.0 / fps                                        
                 t0 = time.time()
                 while True:
                     # stop shooting forever
                     if cnt % 10 == 0 and msg == "<SPACE>":
                         msg = ""
-                    
                     t = time.time()
                     temp_msg = input_generator.send(max(0, t - (t0 + time_per_frame)))
                     if temp_msg is not None and temp_msg in scene.keys:
@@ -227,7 +226,7 @@ def run_game():
 
                     if time_per_frame < t - t0:
                         break
-
+                print(f"t: {t-t0:.4f}s")
                 # Update the background
                 if cnt % 12 == 0 and not scene.in_menu:
                     scene.update_background()
@@ -238,8 +237,8 @@ def run_game():
                         scene.enemies.append(scene.create_enemies())
                     scene.create_enemies()
                 for enemy in scene.enemies:
-                    # if enemy:
-                    scene.render(enemy)
+                    if enemy:
+                        scene.render(enemy)
 
                 # update scene
                 scene.update_scene(msg, cnt)
@@ -269,6 +268,11 @@ def run_game():
                         # remove the ones that passed the screen
                         if not enemy:
                             continue
+                        
+                        # Increase randomnes of the enemies
+                        if scene.score % 100 == 0 and scene.score != 0:
+                            enemy.inc_dificulty()
+                        
                         if enemy.x < 2:
                             scene.score -= enemy.lives
                             scene.remove_enemy(enemy)
@@ -279,17 +283,17 @@ def run_game():
                             scene.render(enemy, True)
                             scene.remove_enemy(enemy)
                             continue
-
-                        # move the enemies
-                        if enemy.y < 10:
-                            enemy.y += 3
-                        elif enemy.y > window.height - 10:
-                            enemy.y -= 3
-                        elif enemy.x > window.width - 10:
-                            enemy.x -= 3
-                        else:
-                            if cnt % 10 == 0:
-                                scene.render(enemy, True)
+                        
+                        if cnt % 5 == 0:
+                            # move the enemies
+                            if enemy.y < 10:
+                                enemy.y += 3
+                            elif enemy.y > window.height - 10:
+                                enemy.y -= 3
+                            elif enemy.x > window.width - 10:
+                                enemy.x -= 3
+                            else:
+                                # scene.render(enemy, True)
                                 enemy.move(window.width, window.height, target = (scene.ship.x, scene.ship.y))
 
                         for bullet in scene.bullets:
@@ -317,9 +321,8 @@ def run_game():
                         window.height - scene.ship.lives : window.height, 1
                     ] = fmtstr(red("♥" * scene.ship.lives))
 
-                # update score botton left
-                print("\tScore: ", scene.score)
-
+                print(f"Score: {scene.score}")
+                
                 # Render the scene
                 window.render_to_terminal(scene.grid)
                 cnt += 1

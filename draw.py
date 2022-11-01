@@ -38,32 +38,41 @@ class Ship:
         self.design = design
         self.bullet = None
         self.points = []
+        self.difficulty = 0
 
     def fire(self):
         return Bullet(self)
 
     def shooted(self):
         self.lives -= 1
+    
+    def inc_dificulty(self):
+        self.difficulty += 1
 
     def move(self, max_x, max_y, target = None):
         """Move enemy ship"""
+        new_x, new_y = None, None
+        y_diff = target[1] - self.y
+        # scape from the bullet
+        if y_diff > 0: # keep bellow the bullet
+            new_y = random.choice([0,-1]) 
+        elif y_diff < 0: # keep above the bullet
+            new_y = random.choice([0,1]) 
+        else:
+            new_y = random.choice([-1,1]) 
+            
         if self.gun == 0:
-            # direct_x = self.x - target[0]
-            direct_y = self.y - target[1]
-            self.x -= random.choice([3, 4, 4, 5, 5, 5])
-            # get out of the shooting range
-            if direct_y >= 0:
-                self.y += random.choice([2, 1])
-            elif direct_y < 0:
-                self.y -= random.choice([2, 1])
-                
+            
+            self.x -= random.choice([0,1,2,2,3,3,4,4]) + self.difficulty
+            self.y += new_y 
+
         elif self.gun == 1:
-            self.x -= random.choice([3, 4, 5, 5, 6])
-            self.y += random.choice([-1, 0, 0, 1])
+            self.x -= random.choice([0,0,1,1,2,2,3,3]) + self.difficulty
+            self.y += new_y 
             
         elif self.gun == 2:
-            self.x -= random.choice([3, 4, 5, 5, 6])
-            self.y += random.choice([-3, -2, -1, 1, 2, 3])
+            self.x -= random.choice([0,0,0,1,1,2,2,3,3]) + self.difficulty
+            self.y += new_y 
             
 
     def all_points(self):
