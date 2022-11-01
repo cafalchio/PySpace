@@ -55,9 +55,9 @@ class Ship:
             elif direct_x < 0:
                 self.x += random.choice([1, 2, 3])
             if direct_y >= 0:
-                self.y -= random.choice([2, 1, 1])
-            elif direct_y < 0:
                 self.y += random.choice([2, 1, 1])
+            elif direct_y < 0:
+                self.y -= random.choice([2, 1, 1])
                 
         elif self.gun == 1:
             self.x -= random.choice([3, 4, 5, 5, 6])

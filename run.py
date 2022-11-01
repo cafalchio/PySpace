@@ -229,8 +229,8 @@ def run_game():
                     scene.update_background()
 
                 # Create enemies
-                if cnt % 100 == 0 and not scene.in_menu:
-                    if len(scene.enemies) < 7 and cnt % 500 == 0:
+                if cnt % 50 == 0 and not scene.in_menu:
+                    if len(scene.enemies) < 10 and cnt % 200 == 0:
                         scene.enemies.append(scene.create_enemies())
                     scene.create_enemies()
                 for enemy in scene.enemies:
