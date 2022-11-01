@@ -170,7 +170,7 @@ class Scene:
 
     def end_game(self):
         f = Figlet(font="epic")
-        print(f.renderText("\nGAME OVER"))
+        print(f.renderText("\nGAME  OVER"))
         print(f"Your score is: {self.score}")
 
         time.sleep(2)
@@ -222,7 +222,7 @@ def run_game():
 
                     if time_per_frame < t - t0:
                         break
-
+                print(f"{t - t0:.3f} s")
                 # Update the background
                 if cnt % 12 == 0 and not scene.in_menu:
                     scene.update_background()
