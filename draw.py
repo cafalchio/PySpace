@@ -36,7 +36,7 @@ class Ship:
 
     def move(self, max_x, max_y):
         new_x = self.x + random.choice([-3,-2,-1])
-        new_y = self.y + random.choice([-2, 2])
+        new_y = self.y + random.choice([-2, -1, 0, 1, 2])
         self.x = new_x
         self.y = new_y
             

@@ -222,7 +222,7 @@ def run_game():
 
                     if time_per_frame < t - t0:
                         break
-                # print(f"{t - t0:.3f} s")
+                    
                 # Update the background
                 if cnt % 12 == 0 and not scene.in_menu:
                     scene.update_background()
@@ -295,8 +295,8 @@ def run_game():
                                 scene.bullets.remove(bullet)
                                 enemy.shooted()
                                 
-                        # print(enemy.all_points())
-                        if enemy.all_points() in scene.ship.all_points():
+                        # fast way to detect collision
+                        if set(enemy.all_points()).intersection(set(scene.ship.all_points())):
                             scene.ship.shooted()
                             scene.render(enemy, True)
                             scene.remove_enemy(enemy)
