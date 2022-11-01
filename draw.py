@@ -40,12 +40,12 @@ class Ship:
         self.x = new_x
         self.y = new_y
             
-    
     def all_points(self):
         for i in range(len(self.design)):
-            self.points.append((self.x, self.y + i))
+            for j in range(len(self.design[0])):
+                self.points.append((self.x + j, self.y - i))
         return self.points
-
+        
 class Bullet:
     def __init__(self, object):
         self.x = object.x + len(object.design[0])

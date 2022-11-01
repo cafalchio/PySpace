@@ -66,13 +66,13 @@ class Scene:
                 lives=tipo + 3,
                 gun=tipo,
                 spawn=[
-                    self.window.width - 12,
-                    random.randint(1, self.window.height - 10),
+                    self.window.width - 15,
+                    random.randint(10, self.window.height - 10),
                 ],
                 design=designs["alien_" + str(tipo)],
             )
         )
-    
+
     def remove_enemy(self, enemy):
         """Remove enemy from the list"""
         self.enemies.remove(enemy)
@@ -88,7 +88,7 @@ class Scene:
             self.menu_options(msg)
 
         elif msg in self.keys and not self.in_menu:
-            if cnt % 8 == 0:
+            if cnt % 3 == 0:
                 self.move_ship(msg)
         if msg == None:
             self.move_ship(msg)
@@ -141,9 +141,15 @@ class Scene:
                 obj.y : obj.y + len(obj.design), obj.x : obj.x + len(obj.design[0])
             ] = fsarray([" " * len(obj.design[0]) for _ in range(len(obj.design))])
         else:
-            self.grid[
-                obj.y : obj.y + len(obj.design), obj.x : obj.x + len(obj.design[0])
-            ] = fsarray(obj.design)
+            try:
+                self.grid[
+                    obj.y : obj.y + len(obj.design), obj.x : obj.x + len(obj.design[0])
+                ] = fsarray(obj.design)
+            except Exception as e:
+                if e == ValueError:
+                    # sometimes, parts of the ship are out of the screen
+                    # In these cases the ship is not drawn
+                    pass
 
     def move_ship(self, msg):
         """Move the spaceship to all directions"""
@@ -184,7 +190,6 @@ class Scene:
     def update_background(self):
         self.background.move_background()
         self.render(self.background)
-        
 
 
 def intro():
@@ -192,7 +197,7 @@ def intro():
     print(f.renderText("         PySpace    Game"))
     input("press Enter key to start")
     print(red("\nLoading..."))
-    
+
 
 def run_game():
     MAX_FPS = 60
@@ -214,7 +219,7 @@ def run_game():
                     temp_msg = input_generator.send(max(0, t - (t0 + time_per_frame)))
                     if temp_msg is not None and temp_msg in scene.keys:
                         msg = temp_msg
-                        
+
                     if time_per_frame < t - t0:
                         break
 
@@ -226,11 +231,10 @@ def run_game():
                 if cnt % 120 == 0 and not scene.in_menu:
                     if len(scene.enemies) < 4 and cnt % 800 == 0:
                         scene.enemies.append(scene.create_enemies())
-                        scene.render
                     scene.create_enemies()
                 for enemy in scene.enemies:
-                    if enemy:
-                        scene.render(enemy)
+                    # if enemy:
+                    scene.render(enemy)
 
                 # update scene
                 scene.update_scene(msg, cnt)
@@ -246,7 +250,6 @@ def run_game():
                     cnt = 0
 
                 scene.render(scene.ship)
-                # scene.update_scene(msg, cnt)
 
                 # update bullets
                 if scene.bullets and not scene.in_menu:
@@ -264,6 +267,7 @@ def run_game():
                         if not enemy:
                             continue
                         if enemy.x < 2:
+                            scene.score -= enemy.lives
                             scene.remove_enemy(enemy)
                             continue
                         # remove dead enemies
@@ -272,6 +276,7 @@ def run_game():
                             scene.render(enemy, True)
                             scene.remove_enemy(enemy)
                             continue
+
                         # move the enemies
                         if enemy.y < 10:
                             enemy.y += 3
@@ -280,9 +285,8 @@ def run_game():
                         elif enemy.x > window.width - 10:
                             enemy.x -= 3
                         else:
-                            # a = random.choice([-1, -2, -2, -2, -3, -3, -4, -4])
-                            # b = random.choice([ -1, 0, 0 ,1 ])
                             if cnt % 10 == 0:
+                                scene.render(enemy, True)
                                 enemy.move(window.width, window.height)
 
                         for bullet in scene.bullets:
@@ -291,30 +295,31 @@ def run_game():
                                 scene.bullets.remove(bullet)
                                 enemy.shooted()
                                 
-                        
-                            
-                        
-                        
-                #         # ship collision
-                #         if enemy.all_points() in scene.ship.all_points():
-                #             scene.ship.shooted()
-                #             scene.render(enemy, True)
-                #             scene.remove_enemy(enemy)
-                
+                        # print(enemy.all_points())
+                        if enemy.all_points() in scene.ship.all_points():
+                            scene.ship.shooted()
+                            scene.render(enemy, True)
+                            scene.remove_enemy(enemy)
+
+
                 # # end game
                 # if scene.ship.lives <= 0:
                 #     break
-                        
-                        
+
+                # negative score looses lives
+                if scene.score < 0:
+                    scene.ship.lives -= 1
+                    scene.score = 0
+
                 # update lives
                 if scene.ship.lives > 0 and not scene.in_menu:
                     scene.grid[
                         window.height - scene.ship.lives : window.height, 1
                     ] = fmtstr(red("♥" * scene.ship.lives))
-    
+
                 # update score botton left
                 print("\tScore: ", scene.score)
-                
+
                 # Render the scene
                 window.render_to_terminal(scene.grid)
                 cnt += 1
