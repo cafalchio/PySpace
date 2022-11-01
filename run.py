@@ -277,19 +277,18 @@ def run_game():
                             scene.remove_enemy(enemy)
                             
                         # remove the ones that passed the screen
-                        if enemy.x < 0:
-                            scene.render(enemy, True)
+                        if enemy.x < 2:
                             scene.remove_enemy(enemy)
                         
-                        # ship collision
-                        if enemy.all_points() in scene.ship.all_points():
-                            scene.ship.shooted()
-                            scene.render(enemy, True)
-                            scene.remove_enemy(enemy)
+                #         # ship collision
+                #         if enemy.all_points() in scene.ship.all_points():
+                #             scene.ship.shooted()
+                #             scene.render(enemy, True)
+                #             scene.remove_enemy(enemy)
                 
-                # end game
-                if scene.ship.lives <= 0:
-                    break
+                # # end game
+                # if scene.ship.lives <= 0:
+                #     break
                         
                         
                 # update lives
@@ -298,7 +297,9 @@ def run_game():
                         window.height - scene.ship.lives : window.height, 1
                     ] = fmtstr(red("♥" * scene.ship.lives))
     
-
+                # update score botton left
+                print("Score: ", scene.score)
+                
                 # Render the scene
                 window.render_to_terminal(scene.grid)
                 cnt += 1
