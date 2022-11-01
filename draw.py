@@ -47,17 +47,14 @@ class Ship:
     def move(self, max_x, max_y, target = None):
         """Move enemy ship"""
         if self.gun == 0:
-            # teleguided
             direct_x = self.x - target[0]
             direct_y = self.y - target[1]
-            if direct_x >= 0:
-                self.x -= random.choice([3, 4, 4, 5, 5, 5])
-            elif direct_x < 0:
-                self.x += random.choice([1, 2, 3])
+            self.x -= random.choice([3, 4, 4, 5, 5, 5])
+            # get out of the shooting range
             if direct_y >= 0:
-                self.y += random.choice([2, 1, 1])
+                self.y += random.choice([2, 1])
             elif direct_y < 0:
-                self.y -= random.choice([2, 1, 1])
+                self.y -= random.choice([2, 1])
                 
         elif self.gun == 1:
             self.x -= random.choice([3, 4, 5, 5, 6])
@@ -67,7 +64,7 @@ class Ship:
             self.x -= random.choice([3, 4, 5, 5, 6])
             self.y += random.choice([-3, -2, -1, 1, 2, 3])
             
-
+            
     def all_points(self):
         for i in range(len(self.design)):
             for j in range(len(self.design[0])):
