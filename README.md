@@ -59,34 +59,45 @@ The technologies used in this project were the following:
 
 ### Main Page
 
+![Main page](images/main_page.png)
+
 When the user opens the website, the page is displayed with the game title, the game description, rules and a message to press the start button to start the game.
 
 ![Game menu](images/menu.gif)
 
 The menu is displayed in the terminal. The user can navigate through the menu with the arrow keys and press Enter key to select an option. 
 
-### Options Menu
+### Start option
 
-The options menu allows the user to change the game settings. The user can change the sound On/Off and the higlight On/Off. The highlight is the highlight of the possible moves of the selected piece. The sound is the sound of the pieces moving and the sound of the pieces being captured.
+![Options Start](images/game_start.gif)
 
-![Options menu](assets/images/options_menu.png)
+Once the user selects the start option, the game starts. 
 
-### Rules Menu
+### Records Menu
 
-The rules menu shows the rules of the game. The rules are based on the international rules but using a 8x8 board. The text can be scrolled up and down.
+The user can select the records option to see the best seven scores saved in the database.
 
-![Rules menu](assets/images/rules_menu.png)
+![Rules menu](images/records.png)
 
-### Results Menu
+### About Menu
 
-The results menu shows the results of the game. The results are the number of games won by the player and the number of games won by the computer. The results are saved in the local storage of the browser.
+When the user selects the about option, a window with the game autor and version is displayed.
 
-![Results menu](assets/images/results_menu.png)
+![Results menu](images/about.png)
 
 ### Game
 
-The game page is where the game will be played, it has a board with 64 squares, 32 of which are occupied by 16 black and 16 white pieces. The pieces are placed in the 12 squares closest to each player. The objective of the game is to capture all the opponent's pieces or to block them so that they cannot move.
-Once in the Game, the user can go back to the menu using the small cog icon in the top right corner of the screen.
+The game is played on a 90x30 terminal screen. There are three enemy ships that move in random directions. 
+
+
+![enemy 0](images/s0.png)
+![enemy 1](images/s1.png)
+![enemy 2](images/s2.png)
+
+
+
+
+The player can move his ship in all directions and shoot at the enemy ships. The game ends when the player loses all his lives. The best score is saved in a database and displayed on the website.
 
 ![Game](assets/images/game_play.png)
 

@@ -48,7 +48,7 @@ class Ship:
 
     def move(self, max_x, max_y, target=None):
         """Move enemy ship"""
-        new_x, new_y = None, None
+        new_y = None
         y_diff = target[1] - self.y
         # scape from the bullet
         if y_diff > 0:  # keep bellow the bullet
