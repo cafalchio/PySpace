@@ -317,8 +317,8 @@ def run_game():
                     scene.score = 0
 
                 # update score and lives                   
-                scene.grid[0 , 0:len(f"Score: {scene.score}")] = [f"Score: {scene.score}"]
-                scene.grid[1 , 0: scene.ship.lives*2] = [fmtstr(red("♥ " * scene.ship.lives))]
+                scene.grid[0 , 1:1+len(f"Score: {scene.score}")] = [f"Score: {scene.score}"]
+                scene.grid[1 , 1:1+scene.ship.lives*2] = [fmtstr(red("♥ " * scene.ship.lives))]
 
                 # rencer the entire grid
                 window.render_to_terminal(scene.grid)
