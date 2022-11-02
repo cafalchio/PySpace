@@ -63,7 +63,7 @@ The technologies used in this project were the following:
 
 When the user opens the website, the page is displayed with the game title, the game description, rules and a message to press the start button to start the game.
 
-![Game menu](images/menu.gif)
+<img src="images/menu.gif" alt="Rules menu" width="120" height="160"/>
 
 The menu is displayed in the terminal. The user can navigate through the menu with the arrow keys and press Enter key to select an option. 
 
