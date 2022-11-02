@@ -8,7 +8,7 @@ The game was created as a project for the course "Diploma in Software Developmen
 ![PySpace](images/game_start.gif)
 
 
-<a href="https://cligame.herokuapp.com/" rel="nofolow">Visit and play the live version of the game here</a>
+<a href="https://cligame.herokuapp.com" rel="nofolow">Visit and play the live version of the game here</a>
 
 
 ## Table of Contents
