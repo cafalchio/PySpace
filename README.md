@@ -61,12 +61,9 @@ The technologies used in this project were the following:
 
 When the user opens the website, the page is displayed with the game title, the game description, rules and a message to press the start button to start the game.
 
-![Game menu](assets/images/main_menu.png)
+![Game menu](images/menu.gif)
 
-Once the player has started the game, the the Start Game button will be replaced by a button to restart the game.
-All menus pages have a button to return to the main page and a button to close the menu.
-
-![Restart Game](assets/images/reset_game.png)
+The menu is displayed in the terminal. The user can navigate through the menu with the arrow keys and press Enter key to select an option. 
 
 ### Options Menu
 
