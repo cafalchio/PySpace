@@ -77,23 +77,23 @@ Once the user selects the start option, the game starts.
 
 The user can select the records option to see the best seven scores saved in the database.
 
-<img src="images/records.png" alt="Rules menu" width="60" height="60"/>
+<img src="images/records.png" alt="Rules menu" width="120" height="160"/>
 
 
 ### About Menu
 
 When the user selects the about option, a window with the game autor and version is displayed.
 
-<img src="images/about.png" alt="About" width="60" height="60"/>
+<img src="images/about.png" alt="About" width="120" height="160"/>
 
 ### Game
 
 The game is played on a 90x30 terminal screen. There are three enemy ships that move in random directions. 
 
 
-<img src="images/s0.png" alt="ship 0" width="60" height="60"/>
-<img src="images/s1.png" alt="ship 1" width="60" height="60"/>
-<img src="images/s3.png" alt="ship 2" width="60" height="60"/>
+<img src="images/s0.png" alt="ship 0" width="120" height="120"/>
+<img src="images/s1.png" alt="ship 1" width="120" height="120"/>
+<img src="images/s3.png" alt="ship 2" width="120" height="120"/>
 
 New enemies and movement rules can be easilly added to the game. 
 
