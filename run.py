@@ -169,7 +169,7 @@ class Scene:
         self.render(self.ship)
 
     def end_game(self):
-        f = Figlet(font="roman")
+        f = Figlet(font="big")
         print(f.renderText("\nGAME  OVER"))
         print(f"Your score is: {self.score}")
 
