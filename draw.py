@@ -1,6 +1,7 @@
+import random
 from curtsies.fmtfuncs import red, green, yellow, cyan, magenta
 from sheet_data import Sheet
-import random
+
 
 designs = {
     "spaceship": [cyan("▄-  "), cyan("██)»"), cyan("▀-  ")],
@@ -13,6 +14,8 @@ designs = {
 class Ship:
     """A spaceship that can be drawn on the screen."""
 
+    # pylint: disable=too-many-instance-attributes
+    # 8 is reasonable in this case. I could use a dict but I prefer this way
     def __init__(self, lives, gun, spawn, design):
         self.lives = lives
         self.gun = gun
@@ -89,19 +92,20 @@ class Bullet:
 
     def get_desing(self):
         """ Return the design of the bullet """
+        style = ""
         if self.gun == 0:
-            return ["-"]
+            style = ["-"]
         elif self.gun == 1:
-            return [red("=")]
+            style = [red("=")]
         elif self.gun == 2:
-            return [yellow("»")]
+            style = [yellow("»")]
+        return style
 
     def get_y(self, obj):
         """ Return the y position of the bullet """
         if len(obj.design) == 3:
             return obj.col + 1
-        else:
-            return obj.col
+        return obj.col
 
     def move(self):
         """ Move the bullet """
@@ -197,9 +201,9 @@ class Menu:
         if len(data) < 7:
             for i in range(7 - len(data)):
                 data.append(["-------", "00"])
-        for d1, d2 in data:
-            if len(d1) < 7:
-                d1 = d1 + " " * (7 - len(d1))
-            if len(str(d2)) < 5:
-                d2 = " " * (5 - len(str(d2))) + str(d2)
-            yield f"║ {d1}  {d2} ║"
+        for name, score in data:
+            if len(name) < 7:
+                name = name + " " * (7 - len(name))
+            if len(str(score)) < 5:
+                score = " " * (5 - len(str(score))) + str(score)
+            yield f"║ {name}  {score} ║"

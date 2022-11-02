@@ -1,20 +1,24 @@
+""" Access data from google sheets. """
 from google.oauth2.service_account import Credentials
 import gspread
 
+
 class Sheet:
+    """ Manages the data from the google sheet. """
+
     def __init__(self):
         """Get the google sheet"""
-        SCOPE = [
+        scope = [
             "https://www.googleapis.com/auth/spreadsheets",
             "https://www.googleapis.com/auth/drive.file",
             "https://www.googleapis.com/auth/drive",
         ]
 
-        CREDS = Credentials.from_service_account_file("creds.json")
-        SCOPRED_CREDS = CREDS.with_scopes(SCOPE)
-        GSPREAD_CLIENT = gspread.authorize(SCOPRED_CREDS)
-        SHEET = GSPREAD_CLIENT.open("space_game")
-        self.records = SHEET.worksheet("records")
+        creds = Credentials.from_service_account_file("creds.json")
+        scoped_creds = creds.with_scopes(scope)
+        gspread_client = gspread.authorize(scoped_creds)
+        sheet = gspread_client.open("space_game")
+        self.records = sheet.worksheet("records")
 
     def get_records(self):
         """Get records from google sheet
