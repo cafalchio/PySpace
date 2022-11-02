@@ -61,28 +61,25 @@ class Scene:
 
     def create_enemies(self):
         """ Create enemies in the screen"""
-        type_ship = random.choice([0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3,3,3,3, 5, 5, 5, 5])
+        type_ship = random.choice([0, 0, 1, 1, 2, 3, 3, 4, 4, 5])
         self.enemies.append(
             Ship(
-                lives=type_ship + 1,
+                lives=(type_ship + 1) * 2,
                 gun=type_ship,
                 spawn=[
                     self.window.width - 15,
-                    random.randint(10, self.window.height - 10),
+                    random.randint(9, self.window.height - 9),
                 ],
                 design=designs["alien_" + str(type_ship)],
             )
         )
 
-    def make_enemies(self, cnt, in_menu):
+    def make_enemies(self, cnt, in_menu, dificulty):
         """Create enemies"""
-        if cnt % 80 == 0 and not in_menu:
-            if len(self.enemies) < 5 and cnt % 200 == 0:
-                self.enemies.append(self.create_enemies())
+        if cnt % 50 == 0 and not in_menu:
             self.enemies.append(self.create_enemies())
-        # for enemy in self.enemies:
-        #     if enemy:
-        #         self.render(enemy)
+        if len(self.enemies) < 5 and cnt % max(30, 200 - (10 * dificulty)) == 0:
+            self.enemies.append(self.create_enemies())
 
     def remove_enemy(self, enemy):
         """Remove enemy from the list"""
@@ -149,16 +146,10 @@ class Scene:
                 obj.row : obj.row + len(obj.design[0]),
             ] = fsarray([" " * len(obj.design[0]) for _ in range(len(obj.design))])
         else:
-            try:
-                self.grid[
-                    obj.col : obj.col + len(obj.design),
-                    obj.row : obj.row + len(obj.design[0]),
-                ] = fsarray(obj.design)
-
-            except ValueError:
-                # sometimes, parts of the ship are out of the screen
-                # In these cases the ship is not drawn
-                pass
+            self.grid[
+                obj.col : obj.col + len(obj.design),
+                obj.row : obj.row + len(obj.design[0]),
+            ] = fsarray(obj.design)
 
     def move_ship(self, msg):
         """Move the spaceship to all directions"""
@@ -218,14 +209,16 @@ class Scene:
                 if not enemy:
                     continue
 
-                # Increase randomnes of the enemies
+                # Increase dificulty
                 if self.score % 100 == 0 and self.score != 0:
                     enemy.inc_dificulty()
 
+                # remove the ones that passed the screen
                 if enemy.row < 2:
-                    self.score -= enemy.lives
+                    self.score -= enemy.lives * 10
                     self.remove_enemy(enemy)
                     continue
+
                 # remove dead enemies
                 if enemy.lives <= 0:
                     self.score += 1 + enemy.gun
@@ -245,8 +238,9 @@ class Scene:
                 if set(enemy.all_points()).intersection(set(self.ship.all_points())):
                     self.ship.shooted()
                     self.remove_enemy(enemy)
-                self.render(enemy)
-                    
+                if enemy:
+                    self.render(enemy)
+
 
 def intro():
     """ Intro of the game"""
@@ -262,11 +256,13 @@ def run_game():
     """Main function to run the game"""
     cnt = 0
     fps = 45
+    dificulty = 0
     with FullscreenWindow() as window:
         intro()
         scene = Scene(window)
         with Input() as input_generator:
             msg = None
+
             # Game loop
             # FPS example from curties library examples:
             # https://github.com/bpython/curtsies/blob/0a6fd78f6daa3a3cbf301376552ada6c1bd7dc83/examples/realtime.py
@@ -287,7 +283,7 @@ def run_game():
                 scene.update_background(cnt, scene.in_menu)
 
                 # Create the aliens
-                scene.make_enemies(cnt, scene.in_menu)
+                scene.make_enemies(cnt, scene.in_menu, dificulty)
 
                 # update scene
                 scene.update_ship(msg, cnt)
@@ -306,7 +302,7 @@ def run_game():
                 scene.update_bullets(scene.in_menu)
                 # update enemies
                 scene.update_enemies(cnt, scene.in_menu)
-              
+
                 # negative score looses lives
                 if scene.score < 0:
                     scene.ship.lives -= 1
@@ -326,6 +322,9 @@ def run_game():
                 # check if game is over
                 if scene.ship.lives == 0:
                     break
+                # increase dificulty
+                if cnt != 0 and cnt % 100 == 0:
+                    dificulty += 1
 
                 # add or reset cnt
                 cnt += 1

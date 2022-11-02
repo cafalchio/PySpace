@@ -12,10 +12,10 @@ designs = {
     "alien_3": [green("  /"), green("<<{"), green("  \\")],
     "alien_4": [yellow("  /"), yellow("<<{"), yellow("  \\")],
     "alien_5": [
-        magenta("          __    "),
-        magenta("  _______/  /   "),
+        magenta("         ___    "),
+        magenta("  ______/  /    "),
         magenta("< ______ --]%%% "),
-        magenta("         \\__\\ "),
+        magenta("        \\__\\ "),
     ],
 }
 
@@ -49,17 +49,15 @@ class Ship:
 
     def move(self, window):
         """Move enemy ship"""
-
-        speed = random.choice([4,3,3,2,2])
-        up_down = random.choice([1,0,0,0,-1])
-        self.row -= speed + self.difficulty
+        speed = random.choice([4, 3, 2, 2, 1, 1, 1])
+        up_down = random.choice([1, 0, 0, 0, -1])
+        # limit the speed
+        self.row -= min(3, speed + self.difficulty)
         self.col -= up_down
         if self.row + up_down <= 10:
             self.row += up_down + 1
         elif self.row + up_down >= window.height - 10:
             self.row += up_down - 1
-
-
 
     def all_points(self):
         """ Return all the points of the ship """
