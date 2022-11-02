@@ -59,7 +59,7 @@ class Scene:
         self.data = self.sheet.get_scores()
 
     def create_enemies(self):
-        tipo = random.choice([1, 1, 1, 1, 1,  2, 2, 2, 2])
+        tipo = random.choice([1, 1, 1, 1, 1, 2, 2, 2, 2])
         self.enemies.append(
             Ship(
                 lives=tipo + 1,
@@ -213,12 +213,9 @@ def run_game():
             # FPS example from curties library examples:
             # https://github.com/bpython/curtsies/blob/0a6fd78f6daa3a3cbf301376552ada6c1bd7dc83/examples/realtime.py
             while True:
-                time_per_frame = 1.0 / fps                                        
+                time_per_frame = 1.0 / fps
                 t0 = time.time()
                 while True:
-                    # stop shooting forever
-                    # if cnt % 10 == 0 and msg == "<SPACE>":
-                    #     msg = ""
                     t = time.time()
                     temp_msg = input_generator.send(max(0, t - (t0 + time_per_frame)))
                     if temp_msg is not None and temp_msg in scene.keys:
@@ -226,14 +223,14 @@ def run_game():
 
                     if time_per_frame < t - t0:
                         break
-                print(f"t: {t-t0:.4f}s")
+
                 # Update the background
                 if cnt % 12 == 0 and not scene.in_menu:
                     scene.update_background()
 
                 # Create enemies
                 if cnt % 80 == 0 and not scene.in_menu:
-                    if len(scene.enemies) < 5 and cnt % 400 == 0:
+                    if len(scene.enemies) < 5 and cnt % 200 == 0:
                         scene.enemies.append(scene.create_enemies())
                     scene.enemies.append(scene.create_enemies())
                 for enemy in scene.enemies:
@@ -268,11 +265,11 @@ def run_game():
                         # remove the ones that passed the screen
                         if not enemy:
                             continue
-                        
+
                         # Increase randomnes of the enemies
                         if scene.score % 100 == 0 and scene.score != 0:
                             enemy.inc_dificulty()
-                        
+
                         if enemy.x < 2:
                             scene.score -= enemy.lives
                             scene.remove_enemy(enemy)
@@ -283,7 +280,7 @@ def run_game():
                             # scene.render(enemy, True)
                             scene.remove_enemy(enemy)
                             continue
-                        
+
                         if cnt % 5 == 0:
                             # move the enemies
                             if enemy.y < 10:
@@ -294,7 +291,11 @@ def run_game():
                                 enemy.x -= 3
                             else:
                                 # scene.render(enemy, True)
-                                enemy.move(window.width, window.height, target = (scene.ship.x, scene.ship.y))
+                                enemy.move(
+                                    window.width,
+                                    window.height,
+                                    target=(scene.ship.x, scene.ship.y),
+                                )
 
                         for bullet in scene.bullets:
                             if bullet.all_points() in enemy.all_points():
@@ -315,21 +316,19 @@ def run_game():
                     scene.ship.lives -= 1
                     scene.score = 0
 
-                # update lives
-                if scene.ship.lives > 0 and not scene.in_menu:
-                    scene.grid[
-                        window.height - scene.ship.lives : window.height, 1
-                    ] = fmtstr(red("♥" * scene.ship.lives))
+                # update score and lives                   
+                scene.grid[0 , 0:len(f"Score: {scene.score}")] = [f"Score: {scene.score}"]
+                scene.grid[1 , 0: scene.ship.lives*2] = [fmtstr(red("♥ " * scene.ship.lives))]
 
-                print(f"Score: {scene.score}")
-                
-                # Render the scene
+                # rencer the entire grid
                 window.render_to_terminal(scene.grid)
-                cnt += 1
+                
+                # check if game is over
                 if scene.ship.lives == 0:
                     break
 
-                # reset cnt
+                # add or reset cnt
+                cnt += 1
                 if cnt > 1e5:
                     cnt = 1
 

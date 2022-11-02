@@ -29,7 +29,8 @@ designs = {
 
 
 class Ship:
-    """ A spaceship that can be drawn on the screen. """
+    """A spaceship that can be drawn on the screen."""
+
     def __init__(self, lives, gun, spawn, design):
         self.lives = lives
         self.gun = gun
@@ -45,35 +46,34 @@ class Ship:
 
     def shooted(self):
         self.lives -= 1
-    
+
     def inc_dificulty(self):
         self.difficulty += 1
 
-    def move(self, max_x, max_y, target = None):
+    def move(self, max_x, max_y, target=None):
         """Move enemy ship"""
         new_x, new_y = None, None
         y_diff = target[1] - self.y
         # scape from the bullet
-        if y_diff > 0: # keep bellow the bullet
-            new_y = random.choice([0,-1]) 
-        elif y_diff < 0: # keep above the bullet
-            new_y = random.choice([0,1]) 
+        if y_diff > 0:  # keep bellow the bullet
+            new_y = random.choice([0, -1])
+        elif y_diff < 0:  # keep above the bullet
+            new_y = random.choice([0, 1])
         else:
-            new_y = random.choice([-1,1]) 
-            
+            new_y = random.choice([-1, 1])
+
         if self.gun == 0:
-            
-            self.x -= random.choice([0,1,2,2,3,3,4,4]) + self.difficulty
-            self.y += new_y 
+
+            self.x -= random.choice([0, 1, 2, 2, 3, 3, 4, 4]) + self.difficulty
+            self.y += new_y
 
         elif self.gun == 1:
-            self.x -= random.choice([0,0,1,1,2,2,3,3]) + self.difficulty
-            self.y += new_y 
-            
+            self.x -= random.choice([0, 0, 1, 1, 2, 2, 3, 3]) + self.difficulty
+            self.y += new_y
+
         elif self.gun == 2:
-            self.x -= random.choice([0,0,0,1,1,2,2,3,3]) + self.difficulty
-            self.y += new_y 
-            
+            self.x -= random.choice([0, 0, 0, 1, 1, 2, 2, 3, 3]) + self.difficulty
+            self.y += new_y
 
     def all_points(self):
         for i in range(len(self.design)):
