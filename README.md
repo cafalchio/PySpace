@@ -90,16 +90,13 @@ When the user selects the about option, a window with the game autor and version
 The game is played on a 90x30 terminal screen. There are three enemy ships that move in random directions. 
 
 
-![enemy 0](images/s0.png)
-![enemy 1](images/s1.png)
-![enemy 2](images/s2.png)
+<img src="s0.png" alt="ship 0" width="80" height="80"/>
+<img src="s1.png" alt="ship 1" width="80" height="80"/>
+<img src="s2.png" alt="ship 2" width="80" height="80"/>
 
+New enemies and movement rules can be easilly added to the game. 
 
-
-
-The player can move his ship in all directions and shoot at the enemy ships. The game ends when the player loses all his lives. The best score is saved in a database and displayed on the website.
-
-![Game](assets/images/game_play.png)
+Each ship has a number of lives and the score will be determined 
 
 ## Testing
 
