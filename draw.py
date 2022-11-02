@@ -1,3 +1,4 @@
+""" Draw.py - Contains the Draw, Menu, Ship and Bullet classes. """
 import random
 from curtsies.fmtfuncs import red, green, yellow, cyan, magenta
 from sheet_data import Sheet

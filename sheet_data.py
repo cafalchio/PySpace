@@ -1,4 +1,4 @@
-""" Access data from google sheets. """
+""" Access data from google sheets using Sheets class """
 from google.oauth2.service_account import Credentials
 import gspread
 

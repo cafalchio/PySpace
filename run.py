@@ -1,4 +1,4 @@
-"""run.py starts here"""
+"""run.py is the main file to run the game"""
 import random
 import time
 import dataclasses
@@ -314,56 +314,9 @@ def run_game():
 
                 # update bullets
                 scene.update_bullets(scene.in_menu)
-
+                # update enemies
                 scene.update_enemies(cnt, scene.in_menu)
-                # # update enemies
-                # if scene.enemies and not scene.in_menu:
-                #     for enemy in scene.enemies:
-                #         # remove the ones that passed the screen
-                #         if not enemy:
-                #             continue
-
-                #         # Increase randomnes of the enemies
-                #         if scene.score % 100 == 0 and scene.score != 0:
-                #             enemy.inc_dificulty()
-
-                #         if enemy.row < 2:
-                #             scene.score -= enemy.lives
-                #             scene.remove_enemy(enemy)
-                #             continue
-                #         # remove dead enemies
-                #         if enemy.lives <= 0:
-                #             scene.score += 1 + enemy.gun
-                #             # scene.render(enemy, True)
-                #             scene.remove_enemy(enemy)
-                #             continue
-
-                #         if cnt % 5 == 0:
-                #             # move the enemies
-                #             if enemy.col < 10:
-                #                 enemy.col += 3
-                #             elif enemy.col > window.height - 10:
-                #                 enemy.col -= 3
-                #             elif enemy.row > window.width - 10:
-                #                 enemy.row -= 3
-                #             else:
-                #                 # scene.render(enemy, True)
-                #                 enemy.move(target=(scene.ship.row, scene.ship.col))
-
-                #         for bullet in scene.bullets:
-                #             if bullet.all_points() in enemy.all_points():
-                #                 scene.render(bullet, True)
-                #                 scene.bullets.remove(bullet)
-                #                 enemy.shooted()
-
-                #         # fast way to detect collision
-                #         if set(enemy.all_points()).intersection(
-                #             set(scene.ship.all_points())
-                #         ):
-                #             scene.ship.shooted()
-                #             scene.render(enemy, True)
-                #             scene.remove_enemy(enemy)
-
+              
                 # negative score looses lives
                 if scene.score < 0:
                     scene.ship.lives -= 1
