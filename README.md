@@ -5,7 +5,10 @@
 The game was created as a project for the course "Diploma in Software Development at Code Institute" in 2022. The requirement was to create an iteractive pure Terminal Python app deployed on a front end website. The game is a space shooter with a simple storyline. A space pilot who has to defend Earth from enemy ships. He can move his ship in all directions and shoot at the enemy ships. The game ends when the player loses all his lives. The best score is saved in a database and displayed on the website.
 
 
-<a href="https://cafalchio.github.io/checkers_game/" rel="nofolow">Visit and play the live version of the game here</a>
+![PySpace](images/game_start.gif)
+
+
+<a href="https://cligame.herokuapp.com/" rel="nofolow">Visit and play the live version of the game here</a>
 
 
 ## Table of Contents
@@ -13,8 +16,7 @@ The game was created as a project for the course "Diploma in Software Developmen
 - [PySpace](#pyspace)
   - [Introduction](#introduction)
   - [Table of Contents](#table-of-contents)
-  - [UX](#ux)
-      - [Strategy](#strategy)
+  - [Strategy](#strategy)
   - [Technologies](#technologies)
   - [Features](#features)
     - [Main Page](#main-page)
@@ -29,36 +31,35 @@ The game was created as a project for the course "Diploma in Software Developmen
   - [Credits](#credits)
   - [Acknowledgements](#acknowledgements)
 
-## UX
 
 #### Strategy
 
-- Site goals
+- Game goal: Defend Earth from enemy ships
 
-  - The main goal of the site is to provide a fun and interactive game for the user to play.
-  - To have a pleasant wood theme that is easy to use and navigate.
-  - To have a responsive design that is easy to use on any device.
-  - With a intuituve menu that is easy to use and navigate.
+  - Player can move his ship in all directions
+  - Can shoot at enemy ships
+  - Best seven scores are saved in a database
+  - Lives and score are displayed on the screen
+  - Game ends when player loses all his lives
+
 
 - User goals
-  - The user goals are to have a fun and interactive game to play.
-  - The user can play the game on any device.
+  - Shoot at enemy ships
+  - Make a high score
 
 ## Technologies
 
-The technologies used in this project were HTML, CSS and JavaScript. The HTML was used to create the structure of the page, the CSS was used to style the page and the JavaScript was used to make the entire game work.
-
+The technologies used in this project were the following:
     * HTML
     * CSS
     * JavaScript
-    * GitHub
-    * GIMP
+    * Python
 
 ## Features
 
 ### Main Page
 
-The main page is the first page that the user sees when they visit the site. It has four buttons, one to start the game, one to see the rules, one to see the options and one to see the results.
+When the user opens the website, the page is displayed with the game title, the game description, rules and a message to press the start button to start the game.
 
 ![Game menu](assets/images/main_menu.png)
 

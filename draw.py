@@ -1,11 +1,7 @@
 from curtsies.fmtfuncs import (
     red,
-    bold,
     green,
-    on_blue,
     yellow,
-    on_red,
-    blue,
     cyan,
     magenta,
 )

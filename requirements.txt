@@ -1,7 +1,5 @@
 # Your requirements go here
-evdev==1.6.0
 python-xlib==0.31
-six==1.16.0
 pyfiglet==0.7
 curtsies==0.4.1
 google_auth==2.13.0

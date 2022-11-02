@@ -1,13 +1,10 @@
 import random
-import time, sys
-import math
+import time
 from curtsies import FullscreenWindow, Input, FSArray, fsarray, fmtstr
 from curtsies.fmtfuncs import red
-from draw import Ship, Menu, designs, Bullet
-from sheet_data import Sheet
 from pyfiglet import Figlet
-
-"""Space game to kill Aliens Invasion game"""
+from draw import Ship, Menu, designs
+from sheet_data import Sheet
 
 
 class Background:
@@ -59,16 +56,17 @@ class Scene:
         self.data = self.sheet.get_scores()
 
     def create_enemies(self):
-        tipo = random.choice([1, 1, 1, 1, 1, 2, 2, 2, 2])
+        """ Create enemies in the screen"""
+        type_ship = random.choice([1, 1, 1, 1, 1, 2, 2, 2, 2])
         self.enemies.append(
             Ship(
-                lives=tipo + 1,
-                gun=tipo,
+                lives = type_ship + 1,
+                gun = type_ship,
                 spawn=[
                     self.window.width - 15,
                     random.randint(10, self.window.height - 10),
                 ],
-                design=designs["alien_" + str(tipo)],
+                design=designs["alien_" + str(type_ship)],
             )
         )
 
@@ -89,7 +87,7 @@ class Scene:
         elif msg in self.keys and not self.in_menu:
             if cnt % 3 == 0:
                 self.move_ship(msg)
-        if msg == None:
+        if msg is None:
             self.move_ship(msg)
 
     def menu_options(self, msg):
@@ -111,15 +109,15 @@ class Scene:
             self.render(self.menu, True)
 
         # enter the submenus
-        elif (msg == "<SPACE>" or msg == "<Ctrl-j>") and self.menu.option == 0:
+        elif (msg in ["<SPACE>", "<Ctrl-j>"]) and self.menu.option == 0:
             self.render(self.menu, True)
             self.in_menu = False  # need to restart the game
 
-        elif (msg == "<SPACE>" or msg == "<Ctrl-j>") and self.menu.option == 1:
+        elif (msg in ["<SPACE>", "<Ctrl-j>"]) and self.menu.option == 1:
             self.render(self.menu, True)
             self.menu.set_option(11)
 
-        elif (msg == "<SPACE>" or msg == "<Ctrl-j>") and self.menu.option == 2:
+        elif (msg in ["<SPACE>", "<Ctrl-j>"]) and self.menu.option == 2:
             self.render(self.menu, True)
             self.menu.set_option(12)
 
@@ -128,7 +126,7 @@ class Scene:
             self.render(self.menu, True)
             self.menu.set_option(self.menu.option - 10)
 
-        # render menu if meny is active
+        # render menu if menu is active
         if self.in_menu:
             self.render(self.menu)
 
@@ -144,9 +142,8 @@ class Scene:
                 self.grid[
                     obj.y : obj.y + len(obj.design), obj.x : obj.x + len(obj.design[0])
                 ] = fsarray(obj.design)
-            except Exception as e:
-                if e == ValueError:
-                    print("-------------------------------------->")
+                
+            except ValueError:
                     # sometimes, parts of the ship are out of the screen
                     # In these cases the ship is not drawn
                     pass
