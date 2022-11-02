@@ -6,9 +6,17 @@ from sheet_data import Sheet
 
 designs = {
     "spaceship": [cyan("▄-  "), cyan("██)»"), cyan("▀-  ")],
-    "alien_0": [yellow("<○█")],
+    "alien_0": [yellow("<○{")],
     "alien_1": [magenta("   █§"), magenta(" <(█§"), magenta("   █§")],
     "alien_2": [red(" ╔-{"), red("<╣-{"), red(" ╚-{")],
+    "alien_3": [green("  /"), green("<<{"), green("  \\")],
+    "alien_4": [yellow("  /"), yellow("<<{"), yellow("  \\")],
+    "alien_5": [
+        magenta("          __    "),
+        magenta("  _______/  /   "),
+        magenta("< ______ --]%%% "),
+        magenta("         \\__\\ "),
+    ],
 }
 
 
@@ -39,30 +47,19 @@ class Ship:
         """ Increase the difficulty """
         self.difficulty += 1
 
-    def move(self, target=None):
+    def move(self, window):
         """Move enemy ship"""
-        new_y = None
-        y_diff = target[1] - self.col
-        # scape from the bullet
-        if y_diff > 0:  # keep bellow the bullet
-            new_y = random.choice([0, -1])
-        elif y_diff < 0:  # keep above the bullet
-            new_y = random.choice([0, 1])
-        else:
-            new_y = random.choice([-1, 1])
 
-        if self.gun == 0:
+        speed = random.choice([4,3,3,2,2])
+        up_down = random.choice([1,0,0,0,-1])
+        self.row -= speed + self.difficulty
+        self.col -= up_down
+        if self.row + up_down <= 10:
+            self.row += up_down + 1
+        elif self.row + up_down >= window.height - 10:
+            self.row += up_down - 1
 
-            self.row -= random.choice([0, 1, 2, 2, 3, 3, 4, 4]) + self.difficulty
-            self.col += new_y
 
-        elif self.gun == 1:
-            self.row -= random.choice([0, 0, 1, 1, 2, 2, 3, 3]) + self.difficulty
-            self.col += new_y
-
-        elif self.gun == 2:
-            self.row -= random.choice([0, 0, 0, 1, 1, 2, 2, 3, 3]) + self.difficulty
-            self.col += new_y
 
     def all_points(self):
         """ Return all the points of the ship """
@@ -70,12 +67,6 @@ class Ship:
             for j in range(len(self.design[0])):
                 self.points.append((self.row + j, self.col + i))
         return self.points
-
-    def check_borders(self, window):
-        """ Check if the ship is out of the screen """
-        if self.col < 0 or self.row > window.height or self.col > window.width:
-            return True
-        return False
 
 
 class Bullet:

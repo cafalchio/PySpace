@@ -61,7 +61,7 @@ class Scene:
 
     def create_enemies(self):
         """ Create enemies in the screen"""
-        type_ship = random.choice([0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2])
+        type_ship = random.choice([0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3,3,3,3, 5, 5, 5, 5])
         self.enemies.append(
             Ship(
                 lives=type_ship + 1,
@@ -80,15 +80,15 @@ class Scene:
             if len(self.enemies) < 5 and cnt % 200 == 0:
                 self.enemies.append(self.create_enemies())
             self.enemies.append(self.create_enemies())
-        for enemy in self.enemies:
-            if enemy:
-                self.render(enemy)
+        # for enemy in self.enemies:
+        #     if enemy:
+        #         self.render(enemy)
 
     def remove_enemy(self, enemy):
         """Remove enemy from the list"""
         self.enemies.remove(enemy)
 
-    def update_scene(self, msg, cnt=None):
+    def update_ship(self, msg, cnt=None):
         """Update the scene"""
         if msg == "<ESC>" and not self.in_menu:
             self.in_menu = True
@@ -229,12 +229,11 @@ class Scene:
                 # remove dead enemies
                 if enemy.lives <= 0:
                     self.score += 1 + enemy.gun
-                    # scene.render(enemy, True)
                     self.remove_enemy(enemy)
                     continue
 
-                if cnt % 10 and self.is_inside_screen(enemy):
-                    enemy.move(target=(self.ship.row, self.ship.col))
+                if cnt % 10 == 0:
+                    enemy.move(self.window)
 
                 for bullet in self.bullets:
                     if bullet.all_points() in enemy.all_points():
@@ -245,18 +244,9 @@ class Scene:
                 # fast way to detect collision
                 if set(enemy.all_points()).intersection(set(self.ship.all_points())):
                     self.ship.shooted()
-                    self.render(enemy, True)
                     self.remove_enemy(enemy)
-
-    def is_inside_screen(self, obj):
-        """Check if the object is inside the screen"""
-        return (
-            obj.row > 0
-            and obj.row < self.window.width - 4
-            and obj.col > 0
-            and obj.col < self.window.height - 4
-        )
-
+                self.render(enemy)
+                    
 
 def intro():
     """ Intro of the game"""
@@ -300,7 +290,7 @@ def run_game():
                 scene.make_enemies(cnt, scene.in_menu)
 
                 # update scene
-                scene.update_scene(msg, cnt)
+                scene.update_ship(msg, cnt)
                 scene.render(scene.ship)
                 # stop to run forever in menu
                 if scene.in_menu:
