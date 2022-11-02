@@ -1,26 +1,12 @@
-from curtsies.fmtfuncs import (
-    red,
-    green,
-    yellow,
-    cyan,
-    magenta,
-)
+from curtsies.fmtfuncs import red, green, yellow, cyan, magenta
 from sheet_data import Sheet
 import random
 
 designs = {
     "spaceship": [cyan("▄-  "), cyan("██)»"), cyan("▀-  ")],
     "alien_0": [yellow("<○█")],
-    "alien_1": [
-        magenta("   █§"),
-        magenta(" <(█§"),
-        magenta("   █§"),
-    ],
-    "alien_2": [
-        red(" ╔-{"),
-        red("<╣-{"),
-        red(" ╚-{"),
-    ],
+    "alien_1": [magenta("   █§"), magenta(" <(█§"), magenta("   █§")],
+    "alien_2": [red(" ╔-{"), red("<╣-{"), red(" ╚-{")],
 }
 
 
@@ -30,26 +16,29 @@ class Ship:
     def __init__(self, lives, gun, spawn, design):
         self.lives = lives
         self.gun = gun
-        self.x = spawn[0]
-        self.y = spawn[1]
+        self.row = spawn[0]
+        self.col = spawn[1]
         self.design = design
         self.bullet = None
         self.points = []
         self.difficulty = 0
 
     def fire(self):
+        """ Fire a bullet """
         return Bullet(self)
 
     def shooted(self):
+        """ Remove a life from the ship """
         self.lives -= 1
 
     def inc_dificulty(self):
+        """ Increase the difficulty """
         self.difficulty += 1
 
-    def move(self, max_x, max_y, target=None):
+    def move(self, target=None):
         """Move enemy ship"""
         new_y = None
-        y_diff = target[1] - self.y
+        y_diff = target[1] - self.col
         # scape from the bullet
         if y_diff > 0:  # keep bellow the bullet
             new_y = random.choice([0, -1])
@@ -60,36 +49,46 @@ class Ship:
 
         if self.gun == 0:
 
-            self.x -= random.choice([0, 1, 2, 2, 3, 3, 4, 4]) + self.difficulty
-            self.y += new_y
+            self.row -= random.choice([0, 1, 2, 2, 3, 3, 4, 4]) + self.difficulty
+            self.col += new_y
 
         elif self.gun == 1:
-            self.x -= random.choice([0, 0, 1, 1, 2, 2, 3, 3]) + self.difficulty
-            self.y += new_y
+            self.row -= random.choice([0, 0, 1, 1, 2, 2, 3, 3]) + self.difficulty
+            self.col += new_y
 
         elif self.gun == 2:
-            self.x -= random.choice([0, 0, 0, 1, 1, 2, 2, 3, 3]) + self.difficulty
-            self.y += new_y
+            self.row -= random.choice([0, 0, 0, 1, 1, 2, 2, 3, 3]) + self.difficulty
+            self.col += new_y
 
     def all_points(self):
+        """ Return all the points of the ship """
         for i in range(len(self.design)):
             for j in range(len(self.design[0])):
-                self.points.append((self.x + j, self.y + i))
+                self.points.append((self.row + j, self.col + i))
         return self.points
+
+    def check_borders(self, window):
+        """ Check if the ship is out of the screen """
+        if self.col < 0 or self.row > window.height or self.col > window.width:
+            return True
+        return False
 
 
 class Bullet:
-    def __init__(self, object):
-        self.x = object.x + len(object.design[0])
-        self.y = self.get_y(object)
-        self.gun = object.gun
-        if object == "spaceship":
+    """A bullet that can be drawn on the screen."""
+
+    def __init__(self, obj):
+        self.row = obj.row + len(obj.design[0])
+        self.col = self.get_y(obj)
+        self.gun = obj.gun
+        if obj == "spaceship":
             self.dir = -1
         else:
             self.dir = 1
         self.design = self.get_desing()
 
     def get_desing(self):
+        """ Return the design of the bullet """
         if self.gun == 0:
             return ["-"]
         elif self.gun == 1:
@@ -97,37 +96,43 @@ class Bullet:
         elif self.gun == 2:
             return [yellow("»")]
 
-    def get_y(self, object):
-        if len(object.design) == 3:
-            return object.y + 1
+    def get_y(self, obj):
+        """ Return the y position of the bullet """
+        if len(obj.design) == 3:
+            return obj.col + 1
         else:
-            return object.y
+            return obj.col
 
     def move(self):
+        """ Move the bullet """
         if self.dir > 0:
-            self.x += 4
+            self.row += 4
         else:
-            self.x -= 4
+            self.row -= 4
 
     def all_points(self):
-        return (self.x, self.y)
+        """ Return all the points of the bullet """
+        return (self.row, self.col)
 
 
 class Menu:
+    """ Create the design of the menu """
+
     def __init__(self, spawn):
-        self.x = spawn[0] - 8
-        self.y = spawn[1] - 7
+        self.row = spawn[0] - 8
+        self.col = spawn[1] - 7
         self.option = 0
         sheet = Sheet()
         self.data = sheet.get_records()
         self.design = self.get_desing(self.option)
 
     def set_option(self, option):
+        """ Set the option of the menu """
         self.option = option
         self.design = self.get_desing(self.option)
 
     def get_desing(self, option):
-
+        """ Return the design of the menu """
         art_menu_box = {
             0: [
                 "╔════════════════╗",
@@ -175,9 +180,7 @@ class Menu:
             ],
             11: ["╔════════════════╗", "║    Records:    ║"]
             + list(self.format_score())
-            + [
-                "╚════════════════╝",
-            ],
+            + ["╚════════════════╝"],
         }
         return art_menu_box[option]
 
