@@ -99,7 +99,7 @@ Main ship:
 
 <img src="images/ship.png" alt="main ship" width="120" height="120"/>
 
-Alien ships in the order of strength:
+Alien ships in the order of strength 0 - 6:
 
 
 
@@ -107,34 +107,30 @@ Alien ships in the order of strength:
 <img src="images/s3.png" alt="ship 1" width="120" height="120"/> | <img src="images/s4.png" alt="ship 2" width="120" height="120"/> | <img src="images/s5.png" alt="ship 3" width="120" height="120"/> |
 
 
-
 The ship lives are got from the equation: (type_ship + 1) * 2. For example, the ship 0 has live 2. The ship 5 has lives 12.
 
 New enemies and movement rules can be easilly added to the game. 
 
 
-
 ## Testing
 
 The manual testing was done by playing the game and checking the functionality of the game and printing necessary information on the terminal screen.
-The code is tested with the PEP8 pylint extension in VS Code.
+The code is tested with the PEP8 pylint extension in VS Code. To pass the pylint test, the code had to be refactored to meet the pylint requirements. The pylint score is 10/10.
 
 <img src="images/linter.png" alt="pylint report"/>
 
 ## Unfixed Bugs
 
-- Based on the checkers rules, the player needs to capture as many pieces as possible. The game is not programmed to do that neither to check if the player is taking the best possible move. The game is programmed to force a take.
-
-- The computer is not programmed to take the best possible move. The computer is programmed to take a random piece.
-
-- It was reported to crash in Android, but I was not able to reproduce the error.
+- The game is not responsive to the terminal window size. It was designed to be played on a 90x30 terminal window. If the window is smaller, the game is not displayed correctly. If the window is bigger, it can get sloow.
 
 ## Features Left to Implement
 
-- Implement a better AI for the computer.
-- A timer to limit the time of each player.
-- A smoother animation for the pieces moving.
-- In the future, a multiplayer mode.
+There are few ideas left to be implemented:
+- Make enemies shoot at the player
+- Add random power ups to change the player gun or add extra lives
+- Add a boss enemy
+- Add a level system
+- Make better enemies movement
 
 ## Deployment
 
@@ -142,15 +138,10 @@ The code is tested with the PEP8 pylint extension in VS Code.
 
 ## Credits
 
-- Stack Overflow
-- Guido, my mentor
-- w3Schools
-- This channel that teaches cheker's https://www.youtube.com/watch?v=WD3NTNQElew
-- developer.mozilla.org (where I passed most of my time)
+- curtsies example and documentation: without understanding the curtsies library, the game would not be possible. 
+- The slack community for the support and help.
 
 ## Acknowledgements
 
-- My mentor for saving me from starting in a wrong way, which would make the project impossible to finish.
-- My colleagues for the slack channel.
-- The tutors for the help.
-- My last hackathon team which tested the game and gave great feedbacks
+- Curtsies example and documentation: without understanding the curtsies library, the game would not be possible.
+- Rick Van Hatten, for the book Mastering Python and which I used as a reference for better development practices.
