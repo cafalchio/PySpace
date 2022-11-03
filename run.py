@@ -24,8 +24,9 @@ class Background:
 
     def move_background(self):
         """Move the background right to left"""
-        ## remove first colum and add random colum at the end
-        self.design = [row[1:] + random.choice(" " * 20 + ".") for row in self.design]
+        # remove first colum and add random colum at the end
+        self.design = [row[1:] + random.choice(" " * 20 + ".")
+                       for row in self.design]
 
 
 class Scene:
@@ -56,7 +57,8 @@ class Scene:
         menu_spanw = window.width // 2, window.height // 2
         self.menu = Menu(menu_spanw)
         self.render(self.menu)
-        self.ship = Ship(lives=3, gun=2, spawn=[10, 10], design=designs["spaceship"])
+        self.ship = Ship(lives=3, gun=2, spawn=[10, 10],
+                         design=designs["spaceship"])
         self.enemies = []
         self.background = Background(window.width, window.height)
         self.bullets = []  # List of bullets to be updated every frame
@@ -80,7 +82,8 @@ class Scene:
         """Create enemies"""
         if cnt % 50 == 0 and not in_menu:
             self.enemies.append(self.create_enemies())
-        if len(self.enemies) < 5 and cnt % max(30, 200 - (10 * dificulty)) == 0:
+        if len(self.enemies) < 5 and cnt % max(30, 200 -
+                                               (10 * dificulty)) == 0:
             self.enemies.append(self.create_enemies())
 
     def remove_enemy(self, enemy):
@@ -144,13 +147,14 @@ class Scene:
         # update line per line to be faster
         if delete:
             self.game["grid"][
-                obj.x_y[1] : obj.x_y[1] + len(obj.design),
-                obj.x_y[0] : obj.x_y[0] + len(obj.design[0]),
-            ] = fsarray([" " * len(obj.design[0]) for _ in range(len(obj.design))])
+                obj.x_y[1]: obj.x_y[1] + len(obj.design),
+                obj.x_y[0]: obj.x_y[0] + len(obj.design[0]),
+            ] = fsarray([" " * len(obj.design[0]) for _
+                         in range(len(obj.design))])
         else:
             self.game["grid"][
-                obj.x_y[1] : obj.x_y[1] + len(obj.design),
-                obj.x_y[0] : obj.x_y[0] + len(obj.design[0]),
+                obj.x_y[1]: obj.x_y[1] + len(obj.design),
+                obj.x_y[0]: obj.x_y[0] + len(obj.design[0]),
             ] = fsarray(obj.design)
 
     def move_ship(self, msg):
@@ -159,11 +163,13 @@ class Scene:
         self.render(self.ship, True)
         if msg == "<UP>" and self.ship.x_y[1] > 1:
             self.ship.x_y[1] -= 1
-        elif msg == "<DOWN>" and self.ship.x_y[1] < self.game["window"].height - 5:
+        elif (msg == "<DOWN>" and
+              self.ship.x_y[1] < self.game["window"].height - 5):
             self.ship.x_y[1] += 1
         elif msg == "<LEFT>" and self.ship.x_y[0] > 5:
             self.ship.x_y[0] -= 1
-        elif msg == "<RIGHT>" and self.ship.x_y[0] < self.game["window"].width - 10:
+        elif (msg == "<RIGHT>" and
+              self.ship.x_y[0] < self.game["window"].width - 10):
             self.ship.x_y[0] += 1
         elif msg == "<SPACE>":
             self.bullets.append(self.ship.fire())
@@ -238,7 +244,8 @@ class Scene:
                         enemy.shooted()
 
                 # fast way to detect collision
-                if set(enemy.all_points()).intersection(set(self.ship.all_points())):
+                if (set(enemy.all_points()).intersection(
+                            set(self.ship.all_points()))):
                     self.ship.shooted()
                     self.remove_enemy(enemy)
                 if enemy:
@@ -314,10 +321,11 @@ def run_game():
                     scene.game["score"] = 0
 
                 # update score and lives
-                scene.game["grid"][0, 1 : 1 + len(f"Score: {scene.game['score']}")] = [
+                scene.game["grid"][0, 1: 1 +
+                                   len(f"Score: {scene.game['score']}")] = [
                     f"Score: {scene.game['score']}"
                 ]
-                scene.game["grid"][1, 1 : 1 + scene.ship.lives * 2] = [
+                scene.game["grid"][1, 1: 1 + scene.ship.lives * 2] = [
                     fmtstr(red("♥ " * scene.ship.lives))
                 ]
 
