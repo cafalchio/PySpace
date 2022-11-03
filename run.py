@@ -35,9 +35,11 @@ class Scene:
     def __init__(self, window):
 
         sheet = Sheet()
+        width, height = window.width, window.height
         self.game = {
-            "window": window,
-            "grid": FSArray(window.height, window.width),
+            "width": width,
+            "height": height,
+            "grid": FSArray(height, width),
             "keys": [
                 "<ESC>",
                 "<UP>",
@@ -54,13 +56,13 @@ class Scene:
         }
 
         # create initial conditions
-        menu_spanw = window.width // 2, window.height // 2
+        menu_spanw = self.game["width"] // 2, self.game["height"] // 2
         self.menu = Menu(menu_spanw)
         self.render(self.menu)
         self.ship = Ship(lives=3, gun=2, spawn=[10, 10],
                          design=designs["spaceship"])
         self.enemies = []
-        self.background = Background(window.width, window.height)
+        self.background = Background(self.game["width"], self.game["height"])
         self.bullets = []  # List of bullets to be updated every frame
 
     def create_enemies(self):
@@ -70,8 +72,8 @@ class Scene:
                 lives=(type_ship + 1) * 2,
                 gun=type_ship,
                 spawn=[
-                    int(self.game["window"].width - 15),
-                    random.randint(9, int(self.game["window"].height - 9)),
+                    int(self.game["width"] - 15),
+                    random.randint(9, int(self.game["height"] - 9)),
                 ],
                 design=designs["alien_" + str(type_ship)],
             )
@@ -162,12 +164,12 @@ class Scene:
         if msg == "<UP>" and self.ship.x_y[1] > 1:
             self.ship.x_y[1] -= 1
         elif (msg == "<DOWN>" and
-              self.ship.x_y[1] < self.game["window"].height - 5):
+              self.ship.x_y[1] < self.game["height"] - 5):
             self.ship.x_y[1] += 1
         elif msg == "<LEFT>" and self.ship.x_y[0] > 5:
             self.ship.x_y[0] -= 1
         elif (msg == "<RIGHT>" and
-              self.ship.x_y[0] < self.game["window"].width - 10):
+              self.ship.x_y[0] < self.game["width"] - 10):
             self.ship.x_y[0] += 1
         elif msg == "<SPACE>":
             self.bullets.append(self.ship.fire())
@@ -199,7 +201,7 @@ class Scene:
         if self.bullets and not in_menu:
             for bullet in self.bullets:
                 bullet.move()
-                if bullet.x_y[0] < self.game["window"].width:
+                if bullet.x_y[0] < self.game["width"]:
                     self.render(bullet)
                 else:
                     self.bullets.remove(bullet)
@@ -224,8 +226,8 @@ class Scene:
                     self.enemies.remove(enemy)
                     continue
 
-                if cnt % 10 == 0:
-                    enemy.move(self.game["window"])
+                if cnt % 6 == 0:
+                    enemy.move([self.game["width"], self.game["height"]])
 
                 for bullet in self.bullets:
                     if bullet.all_points() in enemy.all_points():
@@ -240,6 +242,7 @@ class Scene:
                     self.enemies.remove(enemy)
                     continue
                 if enemy:
+                    self.render(enemy, True)
                     self.render(enemy)
 
 
@@ -249,7 +252,7 @@ def get_name():
     while name == "":
         name = input("Enter your name for the scoreboard (max 7 characters): ")
         try:
-            if int(name):
+            if isinstance(int(name), int):
                 print("Sorry but you can't use just numbers")
                 name = ""
         except ValueError:
@@ -273,7 +276,7 @@ def intro():
 def run_game():
     """Main function to run the game"""
     cnt = 0
-    fps = 45
+    fps = 35
     dificulty = 0
     with FullscreenWindow() as window:
         # call intro
@@ -293,11 +296,13 @@ def run_game():
                     temp_msg = input_generator.send(
                         max(0, t_now - (time_0 + time_per_frame))
                     )
+                    
+                    if time_per_frame < t_now - time_0:
+                        break
+                    
                     if temp_msg is not None and temp_msg in scene.game["keys"]:
                         msg = temp_msg
 
-                    if time_per_frame < t_now - time_0:
-                        break
                 # ----------------end of FPS example----------------
                 # Update the background
                 scene.update_background(cnt, scene.game["in_menu"])
