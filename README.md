@@ -68,7 +68,7 @@ The diagram below show the main classes and interactions between them. Scene is 
 
 When the user opens the website, the page is displayed with the game title, the game description, rules and a message to press the start button to start the game.
 
-<img src="images/menu.gif" alt="Rules menu" width="120" height="160"/>
+<img src="images/menu.gif" alt="Rules menu"/>
 
 The menu is displayed in the terminal. The user can navigate through the menu with the arrow keys and press Enter key to select an option. 
 
