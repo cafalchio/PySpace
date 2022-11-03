@@ -104,7 +104,7 @@ Alien ships in the order of strength 0 - 6:
 
 
 <img src="images/s1.png" alt="ship 1" width="120" height="120"/> | <img src="images/s2.png" alt="ship 2" width="120" height="120"/> | <img src="images/s3.png" alt="ship 3" width="120" height="120"/> |
-<img src="images/s3.png" alt="ship 1" width="120" height="120"/> | <img src="images/s4.png" alt="ship 2" width="120" height="120"/> | <img src="images/s5.png" alt="ship 3" width="120" height="120"/> |
+<img src="images/s3.png" alt="ship 1" width="120" height="120"/> | <img src="images/s4.png" alt="ship 2" width="120" height="120"/> | 
 
 
 The ship lives are got from the equation: (type_ship + 1) * 2. For example, the ship 0 has live 2. The ship 5 has lives 12.
@@ -130,6 +130,14 @@ On the image bellow is possible to see that I was adding a new enemy ship to the
 -I have tried both cProfile and memory profiler, but I cound not find it.
 
 - The game is not responsive to the terminal window size. It was designed to be played on a 90x30 terminal window. If the window is smaller, the game is not displayed correctly. If the window is bigger, it can get slow.
+
+
+- During the development process, I have also discovered that depending on the characters on the ship, the curties library crash. I removed one of the ships that was causing the problem. This bug took me all day to solve.
+
+Problematic ship removed:
+
+<img src="images/s5.png" alt="ship 3" width="120" height="120"/> |
+
 
 ## Features Left to Implement
 
