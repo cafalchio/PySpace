@@ -178,6 +178,7 @@ class Scene:
         if self.game["score"] > sorted(self.game["records"])[0]:
             print("Congratulations! You are in the top 7\n")
             name = input(fmtstr("Name for Scoreboard: "))
+            # check if name is bigger than scoreboard max size
             if len(name) > 7:
                 name = name[:7]
             self.game["sheet"].update_records([name, self.game["score"]])
@@ -259,6 +260,7 @@ def run_game():
     fps = 45
     dificulty = 0
     with FullscreenWindow() as window:
+        # call intro
         intro()
         scene = Scene(window)
         with Input() as input_generator:
@@ -279,6 +281,7 @@ def run_game():
                         msg = temp_msg
                     if time_per_frame < t_now - time_0:
                         break
+                # ----------------end of FPS example----------------
 
                 # Update the background
                 scene.update_background(cnt, scene.game["in_menu"])
