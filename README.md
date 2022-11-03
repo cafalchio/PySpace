@@ -102,17 +102,11 @@ Main ship:
 Alien ships in the order of strength:
 
 
-alien 0:                                                         | alien 1:                                                          |  alien 2:
-:---------------------------------------------------------------:| :----------------------------------------------------------------:| :----------------------------------------------------------------:| <img src="images/s1.png" alt="ship 1" width="120" height="120"/> | <img src="images/s2.png" alt="ship 2" width="120" height="120"/> | <img src="images/s3.png" alt="ship 3" width="120" height="120"/> |
+
+<img src="images/s1.png" alt="ship 1" width="120" height="120"/> | <img src="images/s2.png" alt="ship 2" width="120" height="120"/> | <img src="images/s3.png" alt="ship 3" width="120" height="120"/> |
+<img src="images/s3.png" alt="ship 1" width="120" height="120"/> | <img src="images/s4.png" alt="ship 2" width="120" height="120"/> | <img src="images/s5.png" alt="ship 3" width="120" height="120"/> |
 
 
-
-<img src="images/s0.png" alt="ship 0" width="120" height="120"/>|
-<img src="images/s1.png" alt="ship 1" width="120" height="120"/> 
-<img src="images/s2.png" alt="ship 2" width="120" height="120"/> 
-<img src="images/s3.png" alt="ship 3" width="120" height="120"/>
-<img src="images/s4.png" alt="ship 4" width="120" height="120"/>
-<img src="images/s5.png" alt="ship 5" width="120" height="120"/>
 
 The ship lives are got from the equation: (type_ship + 1) * 2. For example, the ship 0 has live 2. The ship 5 has lives 12.
 
