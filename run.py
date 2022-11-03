@@ -35,9 +35,11 @@ class Scene:
     def __init__(self, window):
 
         sheet = Sheet()
+        width, height = window.width, window.height
         self.game = {
-            "window": window,
-            "grid": FSArray(window.height, window.width),
+            "width": width,
+            "height": height,
+            "grid": FSArray(height, width),
             "keys": [
                 "<ESC>",
                 "<UP>",
@@ -54,41 +56,39 @@ class Scene:
         }
 
         # create initial conditions
-        menu_spanw = window.width // 2, window.height // 2
+        menu_spanw = self.game["width"] // 2, self.game["height"] // 2
         self.menu = Menu(menu_spanw)
         self.render(self.menu)
         self.ship = Ship(lives=3, gun=2, spawn=[10, 10],
                          design=designs["spaceship"])
         self.enemies = []
-        self.background = Background(window.width, window.height)
+        self.background = Background(self.game["width"], self.game["height"])
         self.bullets = []  # List of bullets to be updated every frame
 
     def create_enemies(self):
         """ Create enemies in the screen"""
         type_ship = random.choice([0, 1, 2, 3, 4, 5])
-        self.enemies.append(
-            Ship(
+        ship = Ship(
                 lives=(type_ship + 1) * 2,
                 gun=type_ship,
                 spawn=[
-                    self.game["window"].width - 15,
-                    random.randint(9, self.game["window"].height - 9),
+                    int(self.game["width"] - 15),
+                    random.randint(9, int(self.game["height"] - 9)),
                 ],
                 design=designs["alien_" + str(type_ship)],
             )
-        )
+        self.enemies.append(ship)
 
     def make_enemies(self, cnt, in_menu, dificulty):
         """Create enemies"""
         if cnt % 50 == 0 and not in_menu:
-            self.enemies.append(self.create_enemies())
-        if len(self.enemies) < 5 and cnt % max(30, 200 -
-                                               (10 * dificulty)) == 0:
-            self.enemies.append(self.create_enemies())
-
-    def remove_enemy(self, enemy):
-        """Remove enemy from the list"""
-        self.enemies.remove(enemy)
+            self.create_enemies()
+        if (
+            len(self.enemies) < 5 and
+            cnt % max(30, 200 - (10 * dificulty)) == 0 and
+            not in_menu
+        ):
+            self.create_enemies()
 
     def update_ship(self, msg, cnt=None):
         """Update the scene"""
@@ -164,12 +164,12 @@ class Scene:
         if msg == "<UP>" and self.ship.x_y[1] > 1:
             self.ship.x_y[1] -= 1
         elif (msg == "<DOWN>" and
-              self.ship.x_y[1] < self.game["window"].height - 5):
+              self.ship.x_y[1] < self.game["height"] - 5):
             self.ship.x_y[1] += 1
         elif msg == "<LEFT>" and self.ship.x_y[0] > 5:
             self.ship.x_y[0] -= 1
         elif (msg == "<RIGHT>" and
-              self.ship.x_y[0] < self.game["window"].width - 10):
+              self.ship.x_y[0] < self.game["width"] - 10):
             self.ship.x_y[0] += 1
         elif msg == "<SPACE>":
             self.bullets.append(self.ship.fire())
@@ -184,10 +184,7 @@ class Scene:
         time.sleep(2)
         if self.game["score"] > self.game["records"][0]:
             print("Congratulations! You are in the top 7\n")
-            name = input(fmtstr("Name for Scoreboard: "))
-            # check if name is bigger than scoreboard max size
-            if len(name) > 7:
-                name = name[:7]
+            name = get_name()
             self.game["sheet"].update_records([name, self.game["score"]])
             print("\n\nYour score has been added to the leaderboard!\n\n")
             time.sleep(1)
@@ -201,23 +198,18 @@ class Scene:
 
     def update_bullets(self, in_menu):
         """Update the bullets"""
-        # update bullets
         if self.bullets and not in_menu:
             for bullet in self.bullets:
                 bullet.move()
-                if bullet.x_y[0] < self.game["window"].width:
+                if bullet.x_y[0] < self.game["width"]:
                     self.render(bullet)
                 else:
                     self.bullets.remove(bullet)
 
     def update_enemies(self, cnt, in_menu):
         """Update the enemies"""
-        if self.enemies and not in_menu:
+        if len(self.enemies) > 0 and not in_menu:
             for enemy in self.enemies:
-                # remove the ones that passed the screen
-                if not enemy:
-                    continue
-
                 # Increase dificulty
                 if self.game["score"] % 100 == 0 and self.game["score"] != 0:
                     enemy.inc_dificulty()
@@ -225,17 +217,17 @@ class Scene:
                 # remove the ones that passed the screen
                 if enemy.x_y[0] < 2:
                     self.game["score"] -= enemy.lives * 10
-                    self.remove_enemy(enemy)
+                    self.enemies.remove(enemy)
                     continue
 
                 # remove dead enemies
                 if enemy.lives <= 0:
                     self.game["score"] += 1 + enemy.gun
-                    self.remove_enemy(enemy)
+                    self.enemies.remove(enemy)
                     continue
 
-                if cnt % 10 == 0:
-                    enemy.move(self.game["window"])
+                if cnt % 6 == 0:
+                    enemy.move([self.game["width"], self.game["height"]])
 
                 for bullet in self.bullets:
                     if bullet.all_points() in enemy.all_points():
@@ -245,11 +237,30 @@ class Scene:
 
                 # fast way to detect collision
                 if (set(enemy.all_points()).intersection(
-                            set(self.ship.all_points()))):
+                        set(self.ship.all_points()))):
                     self.ship.shooted()
-                    self.remove_enemy(enemy)
+                    self.enemies.remove(enemy)
+                    continue
                 if enemy:
+                    self.render(enemy, True)
                     self.render(enemy)
+
+
+def get_name():
+    """Function to get the name of the player for scoreboard"""
+    name = ""
+    while name == "":
+        name = input("Enter your name for the scoreboard (max 7 characters): ")
+        try:
+            if isinstance(int(name), int):
+                print("Sorry but you can't use just numbers")
+                name = ""
+        except ValueError:
+            pass
+    # check if name is bigger than scoreboard max size
+    if len(name) > 7:
+        name = name[:7]
+    return name
 
 
 def intro():
@@ -265,7 +276,7 @@ def intro():
 def run_game():
     """Main function to run the game"""
     cnt = 0
-    fps = 45
+    fps = 35
     dificulty = 0
     with FullscreenWindow() as window:
         # call intro
@@ -285,12 +296,14 @@ def run_game():
                     temp_msg = input_generator.send(
                         max(0, t_now - (time_0 + time_per_frame))
                     )
-                    if temp_msg is not None and temp_msg in scene.game["keys"]:
-                        msg = temp_msg
+                    
                     if time_per_frame < t_now - time_0:
                         break
-                # ----------------end of FPS example----------------
+                    
+                    if temp_msg is not None and temp_msg in scene.game["keys"]:
+                        msg = temp_msg
 
+                # ----------------end of FPS example----------------
                 # Update the background
                 scene.update_background(cnt, scene.game["in_menu"])
 

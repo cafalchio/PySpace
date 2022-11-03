@@ -53,7 +53,7 @@ class Ship:
         self.x_y[1] -= up_down
         if self.x_y[0] + up_down <= 10:
             self.x_y[0] += up_down + 1
-        elif self.x_y[0] + up_down >= window.height - 10:
+        elif self.x_y[0] + up_down >= window[0] - 10:
             self.x_y[0] += up_down - 1
 
     def all_points(self):
