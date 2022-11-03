@@ -62,7 +62,7 @@ class Scene:
 
     def create_enemies(self):
         """ Create enemies in the screen"""
-        type_ship = random.choice([0, 0, 1, 1, 2, 3, 3, 4, 4, 5])
+        type_ship = random.choice([0, 1, 2, 3, 4, 5])
         self.enemies.append(
             Ship(
                 lives=(type_ship + 1) * 2,

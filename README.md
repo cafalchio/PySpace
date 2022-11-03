@@ -50,16 +50,15 @@ The game was created as a project for the course "Diploma in Software Developmen
 ## Technologies
 
 The technologies used in this project were the following:
-    * HTML
-    * CSS
-    * JavaScript
-    * Python
+  * HTML
+  * CSS
+  * JavaScript
+  * Python
 
+
+The diagram below show the main classes and interactions between them. Scene is the main class, it contains all data to be used and updated during the game and the methods to update the data. The screen data is updated during the game but just rendered once in the "run_game" function. The game is rendered in the terminal using the "curtsies" library https://github.com/bpython/curtsies. The library was required to both render the game without blinking, but also to receive input from any pressed key. Beside the "curtsies" library, the game uses the "random" library to generate random numbers, the "time" library to set the game speed and the gspread and oauth2client libraries to connect to the Google Sheets database. The game is deployed on Heroku and the database is hosted on Google Sheets.
 
 <img src="images/scheme.png" alt="Diagram"/>
-
-The diagram above show the main classes and interactions between them. Scene is the main class, it contains all data to be used and updated during the game and the methods to update the data. The screen data is updated during the game but just rendered once in the "run_game" function. The game is rendered in the terminal using the "curtsies" library https://github.com/bpython/curtsies. The library was required to both render the game without blinking, but also to receive input from any pressed key.
-
 
 ## Features
 
@@ -96,10 +95,19 @@ When the user selects the about option, a window with the game autor and version
 
 The game is played on a 90x30 terminal screen. There are three enemy ships that move in random directions. 
 
+Main ship:
+<img src="images/ship.png" alt="main ship" width="120" height="120"/>
+
+Alien ships in the order of strength:
 
 <img src="images/s0.png" alt="ship 0" width="120" height="120"/>
 <img src="images/s1.png" alt="ship 1" width="120" height="120"/>
-<img src="images/s3.png" alt="ship 2" width="120" height="120"/>
+<img src="images/s2.png" alt="ship 2" width="120" height="120"/>
+<img src="images/s3.png" alt="ship 3" width="120" height="120"/>
+<img src="images/s4.png" alt="ship 4" width="120" height="120"/>
+<img src="images/s5.png" alt="ship 5" width="120" height="120"/>
+
+The ship lives are got from the equation: (type_ship + 1) * 2. For example, the ship 0 has live 2. The ship 5 has lives 12.
 
 New enemies and movement rules can be easilly added to the game. 
 
