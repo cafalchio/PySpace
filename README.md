@@ -121,7 +121,15 @@ The code is tested with the PEP8 pylint extension in VS Code. To pass the pylint
 
 ## Unfixed Bugs
 
-- The game is not responsive to the terminal window size. It was designed to be played on a 90x30 terminal window. If the window is smaller, the game is not displayed correctly. If the window is bigger, it can get sloow.
+- After playing for a while the game starts to slow down. I could not find why it is slowing down. In the proccess, using debug, I found an error that it could also be affecting speed.
+
+On the image bellow is possible to see that I was adding a new enemy ship to the list of enemies. I was appending twice, resulting in a None being added to the list. I fixed the bug, but the game still slows down.
+
+<img src="images/solve_bug.png" alt="solving bug"/>
+
+-I have tried both cProfile and memory profiler, but I cound not find it.
+
+- The game is not responsive to the terminal window size. It was designed to be played on a 90x30 terminal window. If the window is smaller, the game is not displayed correctly. If the window is bigger, it can get slow.
 
 ## Features Left to Implement
 
