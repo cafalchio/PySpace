@@ -9,14 +9,11 @@ designs = {
     "alien_0": [yellow("<○{")],
     "alien_1": [magenta("   █§"), magenta(" <(█§"), magenta("   █§")],
     "alien_2": [red(" ╔-{"), red("<╣-{"), red(" ╚-{")],
-    "alien_3": [green("  /"), green("<<{"), green("  \\")],
-    "alien_4": [yellow("  /"), yellow("<<{"), yellow("  \\")],
-    "alien_5": [
-        magenta("         ___    "),
-        magenta("  ______/  /    "),
-        magenta("< ______ --]%%% "),
-        magenta("        \\__\\ "),
-    ],
+    "alien_3": [green("  /-"), green("<<{ "), green("  \\-")],
+    "alien_4": [yellow("  ┼ "), 
+                yellow("<E┤┼"), 
+                yellow("  ┼ ")],
+
 }
 
 

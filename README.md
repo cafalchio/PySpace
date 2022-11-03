@@ -99,7 +99,7 @@ Main ship:
 
 <img src="images/ship.png" alt="main ship" width="120" height="120"/>
 
-Alien ships in the order of strength 0 - 6:
+Alien ships in the order of strength 0 - 4:
 
 
 
@@ -107,7 +107,7 @@ Alien ships in the order of strength 0 - 6:
 <img src="images/s3.png" alt="ship 1" width="120" height="120"/> | <img src="images/s4.png" alt="ship 2" width="120" height="120"/> | 
 
 
-The ship lives are got from the equation: (type_ship + 1) * 2. For example, the ship 0 has live 2. The ship 5 has lives 12.
+The ship lives are got from the equation: (type_ship + 1) * 2. For example, the ship 0 has live 2. The ship 4 has lives 9.
 
 New enemies and movement rules can be easilly added to the game. 
 
@@ -132,7 +132,7 @@ On the image bellow is possible to see that I was adding a new enemy ship to the
 - The game is not responsive to the terminal window size. It was designed to be played on a 90x30 terminal window. If the window is smaller, the game is not displayed correctly. If the window is bigger, it can get slow.
 
 
-- During the development process, I have also discovered that depending on the characters on the ship, the curties library crash. I removed one of the ships that was causing the problem. This bug took me all day to solve.
+- During the development process, I have also discovered that one of the ships had one character less in one line. It was crashing the render function depending on the position of the ship. I fixed the bug after hours running the debugger.
 
 Problematic ship removed:
 
