@@ -103,8 +103,8 @@ Alien ships in the order of strength 0 - 4:
 
 
 
-<img src="images/s1.png" alt="ship 1" width="120" height="120"/> | <img src="images/s2.png" alt="ship 2" width="120" height="120"/> | <img src="images/s3.png" alt="ship 3" width="120" height="120"/> |
-<img src="images/s3.png" alt="ship 1" width="120" height="120"/> | <img src="images/s4.png" alt="ship 2" width="120" height="120"/> | 
+<img src="images/s0.png" alt="ship 0" width="120" height="120"/> | <img src="images/s1.png" alt="ship 1" width="120" height="120"/> | <img src="images/s2.png" alt="ship 2" width="120" height="120"/> | <img src="images/s3.png" alt="ship 3" width="120" height="120"/> |
+<img src="images/s4.png" alt="ship 1" width="120" height="120"/> 
 
 
 The ship lives are got from the equation: (type_ship + 1) * 2. For example, the ship 0 has live 2. The ship 4 has lives 9.
