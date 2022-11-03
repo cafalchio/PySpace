@@ -134,10 +134,6 @@ On the image bellow is possible to see that I was adding a new enemy ship to the
 
 - During the development process, I have also discovered that one of the ships had one character less in one line. It was crashing the render function depending on the position of the ship. I fixed the bug after hours running the debugger.
 
-Problematic ship removed:
-
-<img src="images/s5.png" alt="ship 3" width="120" height="120"/> |
-
 
 ## Features Left to Implement
 
