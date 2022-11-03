@@ -49,8 +49,9 @@ class Scene:
             "in_menu": True,
             "score": 0,
             "sheet": sheet,
-            "records": sheet.get_records(),
+            "records": sheet.get_scores(),
         }
+
         # create initial conditions
         menu_spanw = window.width // 2, window.height // 2
         self.menu = Menu(menu_spanw)
@@ -174,8 +175,8 @@ class Scene:
         fig = Figlet(font="big")
         print(fig.renderText("\nGAME  OVER"))
         print(f"Your score is: {self.game['score']}")
-        time.sleep(1)
-        if self.game["score"] > sorted(self.game["records"])[0]:
+        time.sleep(2)
+        if self.game["score"] > self.game["records"][0]:
             print("Congratulations! You are in the top 7\n")
             name = input(fmtstr("Name for Scoreboard: "))
             # check if name is bigger than scoreboard max size
