@@ -8,6 +8,7 @@ from pyfiglet import Figlet
 from draw import Ship, Menu, designs
 from sheet_data import Sheet
 
+
 @dataclasses.dataclass
 class Background:
     """Create The stars background"""
@@ -65,17 +66,16 @@ class Scene:
     def create_enemies(self):
         """ Create enemies in the screen"""
         type_ship = random.choice([0, 1, 2, 3, 4, 5])
-        ship =  Ship(
+        ship = Ship(
                 lives=(type_ship + 1) * 2,
                 gun=type_ship,
                 spawn=[
-                    self.game["window"].width - 15,
-                    random.randint(9, self.game["window"].height - 9),
+                    int(self.game["window"].width - 15),
+                    random.randint(9, int(self.game["window"].height - 9)),
                 ],
                 design=designs["alien_" + str(type_ship)],
             )
         self.enemies.append(ship)
-
 
     def make_enemies(self, cnt, in_menu, dificulty):
         """Create enemies"""
@@ -182,10 +182,7 @@ class Scene:
         time.sleep(2)
         if self.game["score"] > self.game["records"][0]:
             print("Congratulations! You are in the top 7\n")
-            name = input(fmtstr("Name for Scoreboard: "))
-            # check if name is bigger than scoreboard max size
-            if len(name) > 7:
-                name = name[:7]
+            name = get_name()
             self.game["sheet"].update_records([name, self.game["score"]])
             print("\n\nYour score has been added to the leaderboard!\n\n")
             time.sleep(1)
@@ -199,7 +196,6 @@ class Scene:
 
     def update_bullets(self, in_menu):
         """Update the bullets"""
-        # update bullets
         if self.bullets and not in_menu:
             for bullet in self.bullets:
                 bullet.move()
@@ -210,13 +206,8 @@ class Scene:
 
     def update_enemies(self, cnt, in_menu):
         """Update the enemies"""
-        print("Len enemies: ", self.enemies)
         if len(self.enemies) > 0 and not in_menu:
             for enemy in self.enemies:
-                # remove the ones that passed the screen
-                if not enemy:
-                    continue
-
                 # Increase dificulty
                 if self.game["score"] % 100 == 0 and self.game["score"] != 0:
                     enemy.inc_dificulty()
@@ -244,12 +235,29 @@ class Scene:
 
                 # fast way to detect collision
                 if (set(enemy.all_points()).intersection(
-                            set(self.ship.all_points()))):
+                        set(self.ship.all_points()))):
                     self.ship.shooted()
                     self.enemies.remove(enemy)
                     continue
                 if enemy:
                     self.render(enemy)
+
+
+def get_name():
+    """Function to get the name of the player for scoreboard"""
+    name = ""
+    while name == "":
+        name = input("Enter your name for the scoreboard (max 7 characters): ")
+        try:
+            if int(name):
+                print("Sorry but you can't use just numbers")
+                name = ""
+        except ValueError:
+            pass
+    # check if name is bigger than scoreboard max size
+    if len(name) > 7:
+        name = name[:7]
+    return name
 
 
 def intro():
@@ -260,6 +268,7 @@ def intro():
     print("\tUse the arrow keys to move, space to shoot and esc for menu\n")
     input("press Enter to start")
     print(red("\nLoading..."))
+
 
 def run_game():
     """Main function to run the game"""
@@ -290,7 +299,6 @@ def run_game():
                     if time_per_frame < t_now - time_0:
                         break
                 # ----------------end of FPS example----------------
-                
                 # Update the background
                 scene.update_background(cnt, scene.game["in_menu"])
 
@@ -347,5 +355,5 @@ def run_game():
     scene.end_game()
 
 
-if __name__ == "__main__":    
+if __name__ == "__main__":
     run_game()
