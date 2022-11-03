@@ -8,7 +8,6 @@ from pyfiglet import Figlet
 from draw import Ship, Menu, designs
 from sheet_data import Sheet
 
-
 @dataclasses.dataclass
 class Background:
     """Create The stars background"""
@@ -66,8 +65,7 @@ class Scene:
     def create_enemies(self):
         """ Create enemies in the screen"""
         type_ship = random.choice([0, 1, 2, 3, 4, 5])
-        self.enemies.append(
-            Ship(
+        ship =  Ship(
                 lives=(type_ship + 1) * 2,
                 gun=type_ship,
                 spawn=[
@@ -76,19 +74,19 @@ class Scene:
                 ],
                 design=designs["alien_" + str(type_ship)],
             )
-        )
+        self.enemies.append(ship)
+
 
     def make_enemies(self, cnt, in_menu, dificulty):
         """Create enemies"""
         if cnt % 50 == 0 and not in_menu:
-            self.enemies.append(self.create_enemies())
-        if len(self.enemies) < 5 and cnt % max(30, 200 -
-                                               (10 * dificulty)) == 0:
-            self.enemies.append(self.create_enemies())
-
-    def remove_enemy(self, enemy):
-        """Remove enemy from the list"""
-        self.enemies.remove(enemy)
+            self.create_enemies()
+        if (
+            len(self.enemies) < 5 and
+            cnt % max(30, 200 - (10 * dificulty)) == 0 and
+            not in_menu
+        ):
+            self.create_enemies()
 
     def update_ship(self, msg, cnt=None):
         """Update the scene"""
@@ -212,7 +210,8 @@ class Scene:
 
     def update_enemies(self, cnt, in_menu):
         """Update the enemies"""
-        if self.enemies and not in_menu:
+        print("Len enemies: ", self.enemies)
+        if len(self.enemies) > 0 and not in_menu:
             for enemy in self.enemies:
                 # remove the ones that passed the screen
                 if not enemy:
@@ -225,13 +224,13 @@ class Scene:
                 # remove the ones that passed the screen
                 if enemy.x_y[0] < 2:
                     self.game["score"] -= enemy.lives * 10
-                    self.remove_enemy(enemy)
+                    self.enemies.remove(enemy)
                     continue
 
                 # remove dead enemies
                 if enemy.lives <= 0:
                     self.game["score"] += 1 + enemy.gun
-                    self.remove_enemy(enemy)
+                    self.enemies.remove(enemy)
                     continue
 
                 if cnt % 10 == 0:
@@ -247,7 +246,8 @@ class Scene:
                 if (set(enemy.all_points()).intersection(
                             set(self.ship.all_points()))):
                     self.ship.shooted()
-                    self.remove_enemy(enemy)
+                    self.enemies.remove(enemy)
+                    continue
                 if enemy:
                     self.render(enemy)
 
@@ -260,7 +260,6 @@ def intro():
     print("\tUse the arrow keys to move, space to shoot and esc for menu\n")
     input("press Enter to start")
     print(red("\nLoading..."))
-
 
 def run_game():
     """Main function to run the game"""
@@ -287,10 +286,11 @@ def run_game():
                     )
                     if temp_msg is not None and temp_msg in scene.game["keys"]:
                         msg = temp_msg
+
                     if time_per_frame < t_now - time_0:
                         break
                 # ----------------end of FPS example----------------
-
+                
                 # Update the background
                 scene.update_background(cnt, scene.game["in_menu"])
 
@@ -347,5 +347,5 @@ def run_game():
     scene.end_game()
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":    
     run_game()
