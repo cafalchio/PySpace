@@ -20,8 +20,7 @@ class Background:
             "".join(random.choice(" " * 20 + ".") for i in range(width))
             for _ in range(height)
         ]
-        self.row = 0
-        self.col = 0
+        self.x_y = [0, 0]
 
     def move_background(self):
         """Move the background right to left"""
@@ -142,27 +141,27 @@ class Scene:
         # update line per line to be faster
         if delete:
             self.grid[
-                obj.col : obj.col + len(obj.design),
-                obj.row : obj.row + len(obj.design[0]),
+                obj.x_y[1] : obj.x_y[1] + len(obj.design),
+                obj.x_y[0] : obj.x_y[0] + len(obj.design[0]),
             ] = fsarray([" " * len(obj.design[0]) for _ in range(len(obj.design))])
         else:
             self.grid[
-                obj.col : obj.col + len(obj.design),
-                obj.row : obj.row + len(obj.design[0]),
+                obj.x_y[1] : obj.x_y[1] + len(obj.design),
+                obj.x_y[0] : obj.x_y[0] + len(obj.design[0]),
             ] = fsarray(obj.design)
 
     def move_ship(self, msg):
         """Move the spaceship to all directions"""
         # Need to check borders
         self.render(self.ship, True)
-        if msg == "<UP>" and self.ship.col > 1:
-            self.ship.col -= 1
-        elif msg == "<DOWN>" and self.ship.col < self.window.height - 5:
-            self.ship.col += 1
-        elif msg == "<LEFT>" and self.ship.row > 5:
-            self.ship.row -= 1
-        elif msg == "<RIGHT>" and self.ship.row < self.window.width - 10:
-            self.ship.row += 1
+        if msg == "<UP>" and self.ship.x_y[1] > 1:
+            self.ship.x_y[1] -= 1
+        elif msg == "<DOWN>" and self.ship.x_y[1] < self.window.height - 5:
+            self.ship.x_y[1] += 1
+        elif msg == "<LEFT>" and self.ship.x_y[0] > 5:
+            self.ship.x_y[0] -= 1
+        elif msg == "<RIGHT>" and self.ship.x_y[0] < self.window.width - 10:
+            self.ship.x_y[0] += 1
         elif msg == "<SPACE>":
             self.bullets.append(self.ship.fire())
             msg = None
@@ -196,7 +195,7 @@ class Scene:
         if self.bullets and not in_menu:
             for bullet in self.bullets:
                 bullet.move()
-                if bullet.row < self.window.width:
+                if bullet.x_y[0] < self.window.width:
                     self.render(bullet)
                 else:
                     self.bullets.remove(bullet)
@@ -214,7 +213,7 @@ class Scene:
                     enemy.inc_dificulty()
 
                 # remove the ones that passed the screen
-                if enemy.row < 2:
+                if enemy.x_y[0] < 2:
                     self.score -= enemy.lives * 10
                     self.remove_enemy(enemy)
                     continue

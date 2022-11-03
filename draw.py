@@ -23,13 +23,10 @@ designs = {
 class Ship:
     """A spaceship that can be drawn on the screen."""
 
-    # pylint: disable=too-many-instance-attributes
-    # 8 is reasonable in this case. I could use a dict but I prefer this way
     def __init__(self, lives, gun, spawn, design):
         self.lives = lives
         self.gun = gun
-        self.row = spawn[0]
-        self.col = spawn[1]
+        self.x_y = [spawn[0], spawn[1]]
         self.design = design
         self.bullet = None
         self.points = []
@@ -52,18 +49,18 @@ class Ship:
         speed = random.choice([4, 3, 2, 2, 1, 1, 1])
         up_down = random.choice([1, 0, 0, 0, -1])
         # limit the speed
-        self.row -= min(3, speed + self.difficulty)
-        self.col -= up_down
-        if self.row + up_down <= 10:
-            self.row += up_down + 1
-        elif self.row + up_down >= window.height - 10:
-            self.row += up_down - 1
+        self.x_y[0] -= min(3, speed + self.difficulty)
+        self.x_y[1] -= up_down
+        if self.x_y[0] + up_down <= 10:
+            self.x_y[0] += up_down + 1
+        elif self.x_y[0] + up_down >= window.height - 10:
+            self.x_y[0] += up_down - 1
 
     def all_points(self):
         """ Return all the points of the ship """
         for i in range(len(self.design)):
             for j in range(len(self.design[0])):
-                self.points.append((self.row + j, self.col + i))
+                self.points.append((self.x_y[0] + j, self.x_y[1] + i))
         return self.points
 
 
@@ -71,8 +68,7 @@ class Bullet:
     """A bullet that can be drawn on the screen."""
 
     def __init__(self, obj):
-        self.row = obj.row + len(obj.design[0])
-        self.col = self.get_y(obj)
+        self.x_y = [obj.x_y[0] + len(obj.design[0]), self.get_y(obj)]
         self.gun = obj.gun
         if obj == "spaceship":
             self.dir = -1
@@ -94,27 +90,26 @@ class Bullet:
     def get_y(self, obj):
         """ Return the y position of the bullet """
         if len(obj.design) == 3:
-            return obj.col + 1
-        return obj.col
+            return obj.x_y[1] + 1
+        return obj.x_y[1]
 
     def move(self):
         """ Move the bullet """
         if self.dir > 0:
-            self.row += 4
+            self.x_y[0] += 4
         else:
-            self.row -= 4
+            self.x_y[0] -= 4
 
     def all_points(self):
         """ Return all the points of the bullet """
-        return (self.row, self.col)
+        return (self.x_y[0], self.x_y[1])
 
 
 class Menu:
     """ Create the design of the menu """
 
     def __init__(self, spawn):
-        self.row = spawn[0] - 8
-        self.col = spawn[1] - 7
+        self.x_y = [spawn[0] - 8, spawn[1] - 7]
         self.option = 0
         sheet = Sheet()
         self.data = sheet.get_records()
