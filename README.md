@@ -96,13 +96,20 @@ When the user selects the about option, a window with the game autor and version
 The game is played on a 90x30 terminal screen. There are three enemy ships that move in random directions. 
 
 Main ship:
+
 <img src="images/ship.png" alt="main ship" width="120" height="120"/>
 
 Alien ships in the order of strength:
 
-<img src="images/s0.png" alt="ship 0" width="120" height="120"/>
-<img src="images/s1.png" alt="ship 1" width="120" height="120"/>
-<img src="images/s2.png" alt="ship 2" width="120" height="120"/>
+
+alien 0:                                                         | alien 1:                                                          |  alien 2:
+:---------------------------------------------------------------:| :----------------------------------------------------------------:| :----------------------------------------------------------------:| <img src="images/s1.png" alt="ship 1" width="120" height="120"/> | <img src="images/s2.png" alt="ship 2" width="120" height="120"/> | <img src="images/s3.png" alt="ship 3" width="120" height="120"/> |
+
+
+
+<img src="images/s0.png" alt="ship 0" width="120" height="120"/>|
+<img src="images/s1.png" alt="ship 1" width="120" height="120"/> 
+<img src="images/s2.png" alt="ship 2" width="120" height="120"/> 
 <img src="images/s3.png" alt="ship 3" width="120" height="120"/>
 <img src="images/s4.png" alt="ship 4" width="120" height="120"/>
 <img src="images/s5.png" alt="ship 5" width="120" height="120"/>
