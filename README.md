@@ -127,7 +127,7 @@ On the image bellow is possible to see that I was adding a new enemy ship to the
 
 <img src="images/solve_bug.png" alt="solving bug"/>
 
--I have tried both cProfile and memory profiler, but I cound not find it.
+- I have tried both cProfile and memory profiler, but I cound not find it.
 
 - The game is not responsive to the terminal window size. It was designed to be played on a 90x30 terminal window. If the window is smaller, the game is not displayed correctly. If the window is bigger, it can get slow.
 
