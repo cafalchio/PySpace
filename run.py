@@ -16,11 +16,11 @@ class Background:
     def __init__(self, width, height):
         self.width = width
         self.height = height
+        self.x_y = [0, 0]
         self.design = [
             "".join(random.choice(" " * 20 + ".") for i in range(width))
             for _ in range(height)
         ]
-        self.x_y = [0, 0]
 
     def move_background(self):
         """Move the background right to left"""
@@ -31,32 +31,34 @@ class Background:
 class Scene:
     """Scene class to manage the game"""
 
-    # pylint: disable=too-many-instance-attributes
-    # Disabled because it is the main class that controls the game
     def __init__(self, window):
-        self.window = window
-        self.grid = FSArray(window.height, window.width)
-        self.keys = [
-            "<ESC>",
-            "<UP>",
-            "<DOWN>",
-            "<LEFT>",
-            "<RIGHT>",
-            "<SPACE>",
-            "<Ctrl-j>",
-        ]
+
+        sheet = Sheet()
+        self.game = {
+            "window": window,
+            "grid": FSArray(window.height, window.width),
+            "keys": [
+                "<ESC>",
+                "<UP>",
+                "<DOWN>",
+                "<LEFT>",
+                "<RIGHT>",
+                "<SPACE>",
+                "<Ctrl-j>",
+            ],
+            "in_menu": True,
+            "score": 0,
+            "sheet": sheet,
+            "records": sheet.get_records(),
+        }
         # create initial conditions
         menu_spanw = window.width // 2, window.height // 2
         self.menu = Menu(menu_spanw)
-        self.in_menu = True
         self.render(self.menu)
         self.ship = Ship(lives=3, gun=2, spawn=[10, 10], design=designs["spaceship"])
         self.enemies = []
         self.background = Background(window.width, window.height)
         self.bullets = []  # List of bullets to be updated every frame
-        self.score = 0
-        self.sheet = Sheet()
-        self.data = self.sheet.get_scores()
 
     def create_enemies(self):
         """ Create enemies in the screen"""
@@ -66,8 +68,8 @@ class Scene:
                 lives=(type_ship + 1) * 2,
                 gun=type_ship,
                 spawn=[
-                    self.window.width - 15,
-                    random.randint(9, self.window.height - 9),
+                    self.game["window"].width - 15,
+                    random.randint(9, self.game["window"].height - 9),
                 ],
                 design=designs["alien_" + str(type_ship)],
             )
@@ -86,12 +88,12 @@ class Scene:
 
     def update_ship(self, msg, cnt=None):
         """Update the scene"""
-        if msg == "<ESC>" and not self.in_menu:
-            self.in_menu = True
+        if msg == "<ESC>" and not self.game["in_menu"]:
+            self.game["in_menu"] = True
             msg = "<UP>"
-        if msg in self.keys and self.in_menu:
+        if msg in self.game["keys"] and self.game["in_menu"]:
             self.menu_options(msg)
-        elif msg in self.keys and not self.in_menu:
+        elif msg in self.game["keys"] and not self.game["in_menu"]:
             if cnt % 3 == 0:
                 self.move_ship(msg)
         if msg is None:
@@ -111,13 +113,13 @@ class Scene:
         # leave the menu
         elif msg == "<ESC>" and self.menu.option < 3:
             self.menu.set_option(0)
-            self.in_menu = False  # stop to show menu
+            self.game["in_menu"] = False  # stop to show menu
             self.render(self.menu, True)
 
         # enter the submenus
         elif (msg in ["<SPACE>", "<Ctrl-j>"]) and self.menu.option == 0:
             self.render(self.menu, True)
-            self.in_menu = False  # need to restart the game
+            self.game["in_menu"] = False  # need to restart the game
 
         elif (msg in ["<SPACE>", "<Ctrl-j>"]) and self.menu.option == 1:
             self.render(self.menu, True)
@@ -133,19 +135,19 @@ class Scene:
             self.menu.set_option(self.menu.option - 10)
 
         # render menu if menu is active
-        if self.in_menu:
+        if self.game["in_menu"]:
             self.render(self.menu)
 
     def render(self, obj, delete=False):
         """Function that draw objects in the screen"""
         # update line per line to be faster
         if delete:
-            self.grid[
+            self.game["grid"][
                 obj.x_y[1] : obj.x_y[1] + len(obj.design),
                 obj.x_y[0] : obj.x_y[0] + len(obj.design[0]),
             ] = fsarray([" " * len(obj.design[0]) for _ in range(len(obj.design))])
         else:
-            self.grid[
+            self.game["grid"][
                 obj.x_y[1] : obj.x_y[1] + len(obj.design),
                 obj.x_y[0] : obj.x_y[0] + len(obj.design[0]),
             ] = fsarray(obj.design)
@@ -156,11 +158,11 @@ class Scene:
         self.render(self.ship, True)
         if msg == "<UP>" and self.ship.x_y[1] > 1:
             self.ship.x_y[1] -= 1
-        elif msg == "<DOWN>" and self.ship.x_y[1] < self.window.height - 5:
+        elif msg == "<DOWN>" and self.ship.x_y[1] < self.game["window"].height - 5:
             self.ship.x_y[1] += 1
         elif msg == "<LEFT>" and self.ship.x_y[0] > 5:
             self.ship.x_y[0] -= 1
-        elif msg == "<RIGHT>" and self.ship.x_y[0] < self.window.width - 10:
+        elif msg == "<RIGHT>" and self.ship.x_y[0] < self.game["window"].width - 10:
             self.ship.x_y[0] += 1
         elif msg == "<SPACE>":
             self.bullets.append(self.ship.fire())
@@ -171,14 +173,14 @@ class Scene:
         """ End the game"""
         fig = Figlet(font="big")
         print(fig.renderText("\nGAME  OVER"))
-        print(f"Your score is: {self.score}")
+        print(f"Your score is: {self.game['score']}")
         time.sleep(1)
-        if self.score > sorted(self.data)[0]:
+        if self.game["score"] > sorted(self.game["records"])[0]:
             print("Congratulations! You are in the top 7\n")
             name = input(fmtstr("Name for Scoreboard: "))
             if len(name) > 7:
                 name = name[:7]
-            self.sheet.update_records([name, self.score])
+            self.game["sheet"].update_records([name, self.game["score"]])
             print("\n\nYour score has been added to the leaderboard!\n\n")
             time.sleep(1)
         input("\nPress Run Program to play again\n")
@@ -195,7 +197,7 @@ class Scene:
         if self.bullets and not in_menu:
             for bullet in self.bullets:
                 bullet.move()
-                if bullet.x_y[0] < self.window.width:
+                if bullet.x_y[0] < self.game["window"].width:
                     self.render(bullet)
                 else:
                     self.bullets.remove(bullet)
@@ -209,23 +211,23 @@ class Scene:
                     continue
 
                 # Increase dificulty
-                if self.score % 100 == 0 and self.score != 0:
+                if self.game["score"] % 100 == 0 and self.game["score"] != 0:
                     enemy.inc_dificulty()
 
                 # remove the ones that passed the screen
                 if enemy.x_y[0] < 2:
-                    self.score -= enemy.lives * 10
+                    self.game["score"] -= enemy.lives * 10
                     self.remove_enemy(enemy)
                     continue
 
                 # remove dead enemies
                 if enemy.lives <= 0:
-                    self.score += 1 + enemy.gun
+                    self.game["score"] += 1 + enemy.gun
                     self.remove_enemy(enemy)
                     continue
 
                 if cnt % 10 == 0:
-                    enemy.move(self.window)
+                    enemy.move(self.game["window"])
 
                 for bullet in self.bullets:
                     if bullet.all_points() in enemy.all_points():
@@ -273,50 +275,50 @@ def run_game():
                     temp_msg = input_generator.send(
                         max(0, t_now - (time_0 + time_per_frame))
                     )
-                    if temp_msg is not None and temp_msg in scene.keys:
+                    if temp_msg is not None and temp_msg in scene.game["keys"]:
                         msg = temp_msg
                     if time_per_frame < t_now - time_0:
                         break
 
                 # Update the background
-                scene.update_background(cnt, scene.in_menu)
+                scene.update_background(cnt, scene.game["in_menu"])
 
                 # Create the aliens
-                scene.make_enemies(cnt, scene.in_menu, dificulty)
+                scene.make_enemies(cnt, scene.game["in_menu"], dificulty)
 
                 # update scene
                 scene.update_ship(msg, cnt)
                 scene.render(scene.ship)
                 # stop to run forever in menu
-                if scene.in_menu:
+                if scene.game["in_menu"]:
                     msg = None
                     cnt = 0
 
                 # stop menu to run forever
-                elif not scene.in_menu and msg == "<ESC>":
+                elif not scene.game["in_menu"] and msg == "<ESC>":
                     msg = None
                     cnt = 0
 
                 # update bullets
-                scene.update_bullets(scene.in_menu)
+                scene.update_bullets(scene.game["in_menu"])
                 # update enemies
-                scene.update_enemies(cnt, scene.in_menu)
+                scene.update_enemies(cnt, scene.game["in_menu"])
 
                 # negative score looses lives
-                if scene.score < 0:
+                if scene.game["score"] < 0:
                     scene.ship.lives -= 1
-                    scene.score = 0
+                    scene.game["score"] = 0
 
                 # update score and lives
-                scene.grid[0, 1 : 1 + len(f"Score: {scene.score}")] = [
-                    f"Score: {scene.score}"
+                scene.game["grid"][0, 1 : 1 + len(f"Score: {scene.game['score']}")] = [
+                    f"Score: {scene.game['score']}"
                 ]
-                scene.grid[1, 1 : 1 + scene.ship.lives * 2] = [
+                scene.game["grid"][1, 1 : 1 + scene.ship.lives * 2] = [
                     fmtstr(red("♥ " * scene.ship.lives))
                 ]
 
                 # rencer the entire grid
-                window.render_to_terminal(scene.grid)
+                window.render_to_terminal(scene.game["grid"])
 
                 # check if game is over
                 if scene.ship.lives == 0:
