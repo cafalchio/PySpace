@@ -40,5 +40,4 @@ class Sheet:
         Return a list of scores
         """
         data = self.get_records()
-        print(data)
         return sorted([int(row[1]) for row in data])[-7:]
