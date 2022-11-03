@@ -45,7 +45,7 @@ The game was created as a project for the course "Diploma in Software Developmen
 
 - User goals
   - Shoot at enemy ships
-  - Make a high score
+  - Do not let the eneny pass 
 
 ## Technologies
 
@@ -54,6 +54,12 @@ The technologies used in this project were the following:
     * CSS
     * JavaScript
     * Python
+
+
+<img src="images/scheme.png" alt="Diagram"/>
+
+The diagram above show the main classes and interactions between them. Scene is the main class, it contains all data to be used and updated during the game and the methods to update the data. The screen data is updated during the game but just rendered once in the "run_game" function. The game is rendered in the terminal using the "curtsies" library https://github.com/bpython/curtsies. The library was required to both render the game without blinking, but also to receive input from any pressed key.
+
 
 ## Features
 
@@ -123,7 +129,7 @@ The code is tested with the PEP8 pylint extension in VS Code.
 
 ## Deployment
 
-- The game was deployed on GitHub pages.
+- The game was deployed on Heroku. The code is stored in a GitHub repository. The repository is connected to Heroku and the deployment is automatic.
 
 ## Credits
 
