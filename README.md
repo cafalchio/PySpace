@@ -97,33 +97,14 @@ The game is played on a 90x30 terminal screen. There are three enemy ships that 
 
 New enemies and movement rules can be easilly added to the game. 
 
-Each ship has a number of lives and the score will be determined 
+
 
 ## Testing
 
-The website was tested on a desktop computer and a mobile phone.
-Also, W3C and Jigsaw validation was used to validate the website HTML and CSS.
+The manual testing was done by playing the game and checking the functionality of the game and printing necessary information on the terminal screen.
+The code is tested with the PEP8 pylint extension in VS Code.
 
-W3C Validation:
-
-[W3C](assets/images/W3C.png) -->
-
-Jigsaw Validation:
-
-![Jigsaw](assets/images/jigsaw.png)
-
-Jshint validator was used to validate the JavaScript code.
-
-![Jshint](assets/images/javascript_test.png)
-
-One warning here but was part of the implementation of the game.
-Functions declared within loops referencing an outer scoped variable may lead to confusing semantics.
-
-Lighhouse mobile and desktop testing:
-
-![LightHouse Mobile](assets/images/lighthouse_mobile.png)
-
-![LightHouse Desktop](assets/images/lighthouse_desktop.png)
+<img src="images/linter.png" alt="pylint report"/>
 
 ## Unfixed Bugs
 
