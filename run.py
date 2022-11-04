@@ -4,7 +4,7 @@ import time
 import sys
 import dataclasses
 from curtsies import FullscreenWindow, Input, FSArray, fsarray, fmtstr
-from curtsies.fmtfuncs import red
+from curtsies.fmtfuncs import red, green
 from pyfiglet import Figlet
 from draw import Ship, Menu, designs
 from sheet_data import Sheet
@@ -278,12 +278,11 @@ def get_input(option):
 
 def intro():
     """ Intro of the game"""
-    fig = Figlet(font="big")
-    print(fig.renderText("   PySpace    Game"))
-    print("\tProtect the Earth from the aliens!")
-    print("\tUse the arrow keys to move, space to shoot and esc for menu\n")
-    input("press Enter to start")
-    print(red("\nLoading..."))
+    with open("intro.txt", "r", encoding='utf-8') as f:
+        sys.stdout.write(f.read())
+    sys.stdout.flush()
+    input("\n\n\npress Enter to start")
+    print(green("\nLoading..."))
 
 
 def run_game():
