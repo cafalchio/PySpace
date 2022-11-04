@@ -106,11 +106,11 @@ class Scene:
     def menu_options(self, msg):
         """Manage the menu options"""
         # move up and down
-        if msg == "<UP>" and self.menu.option > 0:
+        if (msg == "<UP>" and self.menu.option > 0 and self.menu.option < 3):
             self.render(self.menu, True)
             self.menu.set_option(self.menu.option - 1)
 
-        elif msg == "<DOWN>" and self.menu.option <= 1:
+        elif (msg == "<DOWN>" and self.menu.option <= 1 and self.menu.option < 3):
             self.render(self.menu, True)
             self.menu.set_option(self.menu.option + 1)
 
@@ -184,11 +184,16 @@ class Scene:
         time.sleep(2)
         if self.game["score"] > self.game["records"][0]:
             print("Congratulations! You are in the top 7\n")
-            name = get_name()
+            name = get_input(option = 0)
             self.game["sheet"].update_records([name, self.game["score"]])
             print("\n\nYour score has been added to the leaderboard!\n\n")
             time.sleep(1)
-        input("\nPress Run Program to play again\n")
+        # play again?
+        name = get_input(option = 1)
+        if name == "y":
+            run_game()
+        else:
+            print("Thanks for playing!")
 
     def update_background(self, cnt, in_menu):
         """Update the background"""
@@ -246,21 +251,27 @@ class Scene:
                     self.render(enemy)
 
 
-def get_name():
-    """Function to get the name of the player for scoreboard"""
-    name = ""
-    while name == "":
-        name = input("Enter your name for the scoreboard (max 7 characters): ")
-        try:
-            if isinstance(int(name), int):
-                print("Sorry but you can't use just numbers")
-                name = ""
-        except ValueError:
-            pass
-    # check if name is bigger than scoreboard max size
-    if len(name) > 7:
-        name = name[:7]
-    return name
+def get_input(option):
+    """Function to get input from the user"""
+    user_input = ""
+    if option == 0:
+        message = "Enter your name for the scoreboard (max 7 characters):"
+        while user_input == "":
+            user_input = input(message)
+            for char in user_input:
+                if not char.isalnum():
+                    user_input = ""
+                    print("Sorry, only alphanumeric characters are allowed")
+                    break
+        # check if name is bigger than scoreboard max size
+        if len(user_input) > 7:
+            user_input = user_input[:7]
+    else:
+        message = "Do you want to play again? (y/n):"
+        while user_input not in ["y","n"]:
+            print("Please enter y or n")
+            user_input = input(message).lower() 
+    return user_input
 
 
 def intro():
@@ -296,13 +307,10 @@ def run_game():
                     temp_msg = input_generator.send(
                         max(0, t_now - (time_0 + time_per_frame))
                     )
-                    
-                    if time_per_frame < t_now - time_0:
-                        break
-                    
                     if temp_msg is not None and temp_msg in scene.game["keys"]:
                         msg = temp_msg
-
+                    if time_per_frame < t_now - time_0:
+                        break
                 # ----------------end of FPS example----------------
                 # Update the background
                 scene.update_background(cnt, scene.game["in_menu"])
