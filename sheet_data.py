@@ -29,7 +29,6 @@ class Sheet:
         """
         msg = ""
         data = self.get_scores()
-        #check for min again:
         if record[1] > data[0]:
             idx = data.index(min(data))
             # sheets: row, col, starting in 1
@@ -46,4 +45,3 @@ class Sheet:
         """
         data = sorted([int(row[1]) for row in self.data])
         return data
-    

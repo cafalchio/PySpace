@@ -10,10 +10,7 @@ designs = {
     "alien_1": [magenta("   █§"), magenta(" <(█§"), magenta("   █§")],
     "alien_2": [red(" ╔-{"), red("<╣-{"), red(" ╚-{")],
     "alien_3": [green("  /-"), green("<<{ "), green("  \\-")],
-    "alien_4": [yellow("  ┼ "), 
-                yellow("<E┤┼"), 
-                yellow("  ┼ ")],
-
+    "alien_4": [yellow("  ┼ "), yellow("<E┤┼"), yellow("  ┼ ")],
 }
 
 

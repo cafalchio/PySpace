@@ -108,7 +108,8 @@ class Scene:
             self.render(self.menu, True)
             self.menu.set_option(self.menu.option - 1)
 
-        elif (msg == "<DOWN>" and self.menu.option <= 1 and self.menu.option < 3):
+        elif (msg == "<DOWN>" and self.menu.option <= 1 and
+              self.menu.option < 3):
             self.render(self.menu, True)
             self.menu.set_option(self.menu.option + 1)
 
@@ -183,12 +184,12 @@ class Scene:
         time.sleep(2)
         if self.game["score"] > min(scores):
             print("Congratulations! You are in the top 10\n")
-            name = get_input(option = 0)
+            name = get_input(option=0)
             self.game["sheet"].update_records([name, self.game["score"]])
-            print("\n\nYour score has been added to the leaderboard!\n\n")
+            print("\nYour score has been added to the leaderboard!\n")
             time.sleep(1)
         # play again?
-        name = get_input(option = 1)
+        name = get_input(option=1)
         if name == "y":
             run_game()
         else:
@@ -267,7 +268,7 @@ def get_input(option):
             user_input = user_input[:7]
     else:
         message = "Do you want to play again? (y/n):"
-        while user_input not in ["y","n"]:
+        while user_input not in ["y", "n"]:
             print("Please enter y or n")
             user_input = input(message).lower()
     return user_input
