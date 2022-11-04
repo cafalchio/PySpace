@@ -164,7 +164,7 @@ class Menu:
                 "║                ║",
                 "╚════════════════╝",
             ],
-            11: ["╔════════════════╗", "║    Records:    ║"]
+            11: ["╔════════════════╗", "║     Top 10!    ║"]
             + list(self.format_score())
             + ["╚════════════════╝"],
         }
@@ -178,14 +178,14 @@ class Menu:
             data.append([i[0], int(i[1])])
 
         data = sorted(data, key=lambda x: x[1], reverse=True)
-        if len(data) > 7:
-            data = data[:7]
-        if len(data) < 7:
-            for i in range(7 - len(data)):
-                data.append(["-------", "00"])
+        if len(data) > 10:
+            data = data[:10]
+        if len(data) < 10:
+            for i in range(10 - len(data)):
+                data.append(["---------", "0000"])
         for name, score in data:
-            if len(name) < 7:
-                name = name + " " * (7 - len(name))
+            if len(name) < 9:
+                name = name + " " * (9 - len(name))
             if len(str(score)) < 5:
                 score = " " * (5 - len(str(score))) + str(score)
-            yield f"║ {name}  {score} ║"
+            yield f"║ {name}{score} ║"

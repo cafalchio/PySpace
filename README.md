@@ -121,9 +121,9 @@ The code is tested with the PEP8 pylint extension in VS Code. To pass the pylint
 
 ## Unfixed Bugs
 
-- After playing for a while the game starts to slow down. I could not find why it is slowing down. In the proccess, using debug, I found an error that it could also be affecting speed.
+- After playing for a while the game starts to slow down. I could not find why it is slowing down. In the proccess, using debug, I found one error that was also affecting speed.
 
-On the image bellow is possible to see that I was adding a new enemy ship to the list of enemies. I was appending twice, resulting in a None being added to the list. I fixed the bug, but the game still slows down.
+On the image bellow is possible to see that I was adding a new enemy ship to the list of enemies. I was appending twice, resulting in a None being added to the list and never deleted. I fixed the bug, but the game id still slowing down.
 
 <img src="images/solve_bug.png" alt="solving bug"/>
 

@@ -182,7 +182,7 @@ class Scene:
         print(f"Your score is: {self.game['score']}")
         time.sleep(2)
         if self.game["score"] > min(scores):
-            print("Congratulations! You are in the top 7\n")
+            print("Congratulations! You are in the top 10\n")
             name = get_input(option = 0)
             self.game["sheet"].update_records([name, self.game["score"]])
             print("\n\nYour score has been added to the leaderboard!\n\n")
@@ -269,7 +269,7 @@ def get_input(option):
         message = "Do you want to play again? (y/n):"
         while user_input not in ["y","n"]:
             print("Please enter y or n")
-            user_input = input(message).lower() 
+            user_input = input(message).lower()
     return user_input
 
 
