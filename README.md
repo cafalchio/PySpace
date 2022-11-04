@@ -29,6 +29,7 @@ The game was created as a project for the course "Diploma in Software Developmen
   - [Features Left to Implement](#features-left-to-implement)
   - [Deployment](#deployment)
   - [Credits](#credits)
+  - [Comments](#comments)
   - [Acknowledgements](#acknowledgements)
 
 
@@ -132,9 +133,6 @@ On the image bellow is possible to see that I was adding a new enemy ship to the
 - The game is not responsive to the terminal window size. It was designed to be played on a 90x30 terminal window. If the window is smaller, the game is not displayed correctly. If the window is bigger, it can get slow.
 
 
-- During the development process, I have also discovered that one of the ships had one character less in one line. It was crashing the render function depending on the position of the ship. I fixed the bug after hours running the debugger.
-
-
 ## Features Left to Implement
 
 There are few ideas left to be implemented:
@@ -152,6 +150,11 @@ There are few ideas left to be implemented:
 
 - curtsies example and documentation: without understanding the curtsies library, the game would not be possible. 
 - The slack community for the support and help.
+
+## Comments
+
+- This game development was a fun process, but also a challenge. I learned different technologies and libraries to make it work. When I had the idea of the game, I knew it was a challange, but I wanted to keep the original idea. I could not implement the gun styles and the power ups, but I am happy with the result. I am looking forward to implement the ideas I have left.
+
 
 ## Acknowledgements
 

@@ -72,14 +72,8 @@ class Bullet:
 
     def get_desing(self):
         """ Return the design of the bullet """
-        style = ""
-        if self.gun == 0:
-            style = ["-"]
-        elif self.gun == 1:
-            style = [red("=")]
-        elif self.gun == 2:
-            style = [yellow("»")]
-        return style
+        # new styles can be added here based on gun type
+        return [yellow("»")]
 
     def get_y(self, obj):
         """ Return the y position of the bullet """
