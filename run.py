@@ -64,7 +64,7 @@ class Scene:
         self.background = Background(self.game["width"], self.game["height"])
         self.bullets = []  # List of bullets to be updated every frame
 
-    def create_enemies(self):
+    def create_enemies(self, difficult):
         """ Create enemies in the screen"""
         type_ship = random.choice([0, 1, 2, 3, 4])
         ship = Ship(
@@ -75,19 +75,20 @@ class Scene:
                     random.randint(9, int(self.game["height"] - 9)),
                 ],
                 design=designs["alien_" + str(type_ship)],
+                difficult=difficult,
             )
         self.enemies.append(ship)
 
-    def make_enemies(self, cnt, in_menu, dificulty):
+    def make_enemies(self, cnt, in_menu, difficult):
         """Create enemies"""
         if cnt % 50 == 0 and not in_menu:
-            self.create_enemies()
+            self.create_enemies(difficult)
         if (
             len(self.enemies) < 5 and
-            cnt % max(30, 200 - (10 * dificulty)) == 0 and
+            cnt % max(30, 200 - (10 * difficult)) == 0 and
             not in_menu
         ):
-            self.create_enemies()
+            self.create_enemies(difficult)
 
     def update_ship(self, msg, cnt=None):
         """Update the scene"""
@@ -217,10 +218,6 @@ class Scene:
         """Update the enemies"""
         if len(self.enemies) > 0 and not in_menu:
             for enemy in self.enemies:
-                # Increase dificulty
-                if self.game["score"] % 100 == 0 and self.game["score"] != 0:
-                    enemy.inc_dificulty()
-
                 # remove the ones that passed the screen
                 if enemy.x_y[0] < 2:
                     self.game["score"] -= enemy.lives * 10
@@ -281,15 +278,15 @@ def intro():
     with open("intro.txt", "r", encoding='utf-8') as file:
         sys.stdout.write(file.read())
     sys.stdout.flush()
-    input("\n press Enter to start", end="  ")
-    print(green("loading..."))
+    input("\n press Enter to start")
+    print(green(" loading..."))
 
 
 def run_game():
     """Main function to run the game"""
     cnt = 0
     fps = 35
-    dificulty = 0
+    difficult = 0
     with FullscreenWindow() as window:
         # call intro
         intro()
@@ -316,7 +313,7 @@ def run_game():
                 scene.update_background(cnt, scene.game["in_menu"])
 
                 # Create the aliens
-                scene.make_enemies(cnt, scene.game["in_menu"], dificulty)
+                scene.make_enemies(cnt, scene.game["in_menu"], difficult)
 
                 # update scene
                 scene.update_ship(msg, cnt)
@@ -356,9 +353,10 @@ def run_game():
                 # check if game is over
                 if scene.ship.lives == 0:
                     break
-                # increase dificulty
-                if cnt != 0 and cnt % 100 == 0:
-                    dificulty += 1
+                # increase difficult
+                if (scene.game['score'] != 0 and
+                        scene.game['score'] % 75 == 0):
+                    difficult += 1
 
                 # add or reset cnt
                 cnt += 1

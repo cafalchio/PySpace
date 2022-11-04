@@ -17,14 +17,14 @@ designs = {
 class Ship:
     """A spaceship that can be drawn on the screen."""
 
-    def __init__(self, lives, gun, spawn, design):
+    def __init__(self, lives, gun, spawn, design, difficult=0):
         self.lives = lives
         self.gun = gun
         self.x_y = [spawn[0], spawn[1]]
         self.design = design
         self.bullet = None
         self.points = []
-        self.difficulty = 0
+        self.difficult = difficult
 
     def fire(self):
         """ Fire a bullet """
@@ -34,16 +34,12 @@ class Ship:
         """ Remove a life from the ship """
         self.lives -= 1
 
-    def inc_dificulty(self):
-        """ Increase the difficulty """
-        self.difficulty += 1
-
     def move(self, window):
         """Move enemy ship"""
         speed = random.choice([4, 3, 2, 2, 1, 1, 1])
         up_down = random.choice([1, 0, 0, 0, -1])
         # limit the speed
-        self.x_y[0] -= min(3, speed + self.difficulty)
+        self.x_y[0] -= min(3, speed + self.difficult)
         self.x_y[1] -= up_down
         if self.x_y[0] + up_down <= 10:
             self.x_y[0] += up_down + 1
