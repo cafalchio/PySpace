@@ -281,8 +281,8 @@ def intro():
     with open("intro.txt", "r", encoding='utf-8') as f:
         sys.stdout.write(f.read())
     sys.stdout.flush()
-    input("\n\n\npress Enter to start")
-    print(green("\nLoading..."))
+    input("\n\n\n press Enter to start")
+    print(green("\n Loading..."))
 
 
 def run_game():
