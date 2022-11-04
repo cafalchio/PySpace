@@ -1,6 +1,7 @@
 """run.py is the main file to run the game"""
 import random
 import time
+import sys
 import dataclasses
 from curtsies import FullscreenWindow, Input, FSArray, fsarray, fmtstr
 from curtsies.fmtfuncs import red
@@ -181,6 +182,7 @@ class Scene:
         fig = Figlet(font="big")
         print(fig.renderText("\nGAME  OVER"))
         print(f"Your score is: {self.game['score']}")
+        sys.stdin.flush()
         time.sleep(2)
         if self.game["score"] > min(scores):
             print("Congratulations! You are in the top 10\n")
