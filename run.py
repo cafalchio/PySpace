@@ -278,11 +278,11 @@ def get_input(option):
 
 def intro():
     """ Intro of the game"""
-    with open("intro.txt", "r", encoding='utf-8') as f:
-        sys.stdout.write(f.read())
+    with open("intro.txt", "r", encoding='utf-8') as file:
+        sys.stdout.write(file.read())
     sys.stdout.flush()
-    input("\n\n\n press Enter to start")
-    print(green("\n Loading..."))
+    input("\n press Enter to start", end="  ")
+    print(green("loading..."))
 
 
 def run_game():
@@ -296,7 +296,6 @@ def run_game():
         scene = Scene(window)
         with Input() as input_generator:
             msg = None
-
             # Game loop
             # FPS example from curties library examples:
             # https://github.com/bpython/curtsies/blob/0a6fd78f6daa3a3cbf301376552ada6c1bd7dc83/examples/realtime.py
