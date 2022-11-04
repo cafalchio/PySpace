@@ -109,7 +109,7 @@ class Menu:
         self.x_y = [spawn[0] - 8, spawn[1] - 7]
         self.option = 0
         sheet = Sheet()
-        self.data = sheet.get_records()
+        self.data = sheet.data
         self.design = self.get_desing(self.option)
 
     def set_option(self, option):

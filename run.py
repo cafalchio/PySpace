@@ -51,10 +51,8 @@ class Scene:
             ],
             "in_menu": True,
             "score": 0,
-            "sheet": sheet,
-            "records": sheet.get_scores(),
-        }
-
+            "sheet": sheet
+            }
         # create initial conditions
         menu_spanw = self.game["width"] // 2, self.game["height"] // 2
         self.menu = Menu(menu_spanw)
@@ -178,11 +176,12 @@ class Scene:
 
     def end_game(self):
         """ End the game"""
+        scores = self.game["sheet"].get_scores()
         fig = Figlet(font="big")
         print(fig.renderText("\nGAME  OVER"))
         print(f"Your score is: {self.game['score']}")
         time.sleep(2)
-        if self.game["score"] > self.game["records"][0]:
+        if self.game["score"] > min(scores):
             print("Congratulations! You are in the top 7\n")
             name = get_input(option = 0)
             self.game["sheet"].update_records([name, self.game["score"]])

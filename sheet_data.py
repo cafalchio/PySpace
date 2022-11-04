@@ -17,14 +17,9 @@ class Sheet:
         creds = Credentials.from_service_account_file("creds.json")
         scoped_creds = creds.with_scopes(scope)
         gspread_client = gspread.authorize(scoped_creds)
-        sheet = gspread_client.open("space_game")
-        self.records = sheet.worksheet("records")
-
-    def get_records(self):
-        """Get records from google sheet
-        Return a list of record lists
-        """
-        return self.records.get_all_values()
+        g_sheets = gspread_client.open("space_game")
+        self.sheet = g_sheets.worksheet("records")
+        self.data = self.sheet.get_all_values()
 
     def update_records(self, record):
         """Update records in google sheet
@@ -32,12 +27,23 @@ class Sheet:
         Input:
             record(list): list of records [name, score]
         """
-        self.records.append_row(record)
-        return "Records updated"
+        msg = ""
+        data = self.get_scores()
+        #check for min again:
+        if record[1] > data[0]:
+            idx = data.index(min(data))
+            # sheets: row, col, starting in 1
+            self.sheet.update_cell(idx + 1, 1, record[0])
+            self.sheet.update_cell(idx + 1, 2, record[1])
+            msg = "Records updated"
+        else:
+            msg = "No new record"
+        return msg
 
     def get_scores(self):
         """Get scores from google sheet
-        Return a list of scores
+        Return a list of scores sorted
         """
-        data = self.get_records()
-        return sorted([int(row[1]) for row in data])[-7:]
+        data = sorted([int(row[1]) for row in self.data])
+        return data
+    
