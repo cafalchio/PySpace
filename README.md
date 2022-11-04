@@ -94,7 +94,7 @@ When the user selects the about option, a window with the game autor and version
 
 ### Game
 
-The game is played on a 90x30 terminal screen. There are three enemy ships that move in random directions. 
+The game is played on a 120x34 terminal screen. There are three enemy ships that move in random directions. 
 
 Main ship:
 
