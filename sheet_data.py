@@ -39,5 +39,7 @@ class Sheet:
         """Get scores from google sheet
         Return a list of scores sorted
         """
-        data = sorted([int(row[1]) for row in self.data])
+        print(self.data)
+        data = [int(row[1]) for row in self.data]
         return data
+    
