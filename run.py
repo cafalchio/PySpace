@@ -179,7 +179,7 @@ class Scene:
 
     def end_game(self):
         """ End the game"""
-        scores = self.game["sheet"].get_scores()
+        scores = sorted(self.game["sheet"].get_scores())
         fig = Figlet(font="big")
         print(fig.renderText("\nGAME  OVER"))
         print(f"Your score is: {self.game['score']}")
