@@ -29,14 +29,10 @@ class Sheet:
         """
         msg = ""
         data = self.get_scores()
-        if record[1] > data[0]:
-            idx = data.index(min(data))
-            # sheets: row, col, starting in 1
-            self.sheet.update_cell(idx + 1, 1, record[0])
-            self.sheet.update_cell(idx + 1, 2, record[1])
-            msg = "Records updated"
-        else:
-            msg = "No new record"
+        idx = data.index(min(data))
+        self.sheet.update_cell(idx + 1, 1, record[0]) # name
+        self.sheet.update_cell(idx + 1, 2, record[1]) # value
+        msg = "Records updated"
         return msg
 
     def get_scores(self):
